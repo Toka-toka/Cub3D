@@ -3,28 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmitchel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sedric <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/02 01:19:11 by jmitchel          #+#    #+#             */
-/*   Updated: 2020/06/02 01:19:18 by jmitchel         ###   ########.fr       */
+/*   Created: 2020/05/06 17:13:04 by sedric            #+#    #+#             */
+/*   Updated: 2020/05/25 20:46:52 by sedric           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memchr(const void *mass, int ch, size_t cnt)
+void				*ft_memchr(const void *arr, int symbol, size_t n)
 {
-	unsigned char *temp_mass;
-	unsigned char temp_ch;
+	unsigned char	*arr_point;
+	unsigned char	ch_symbol;
+	int				i;
+	int				size;
 
-	temp_mass = (unsigned char*)mass;
-	temp_ch = ch;
-	while ((cnt > 0) && (temp_ch != *temp_mass))
-	{
-		temp_mass++;
-		cnt--;
-	}
-	if (cnt != 0)
-		return (temp_mass);
-	return (NULL);
+	arr_point = (unsigned char*)arr;
+	i = 0;
+	size = n - 1;
+	ch_symbol = symbol;
+	while (i < size && arr_point[i] != ch_symbol)
+		i++;
+	if (arr_point[i] == ch_symbol && n != 0)
+		return (arr_point + i);
+	else
+		return (NULL);
 }

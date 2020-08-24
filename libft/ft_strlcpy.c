@@ -3,31 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmitchel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sedric <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/08 01:30:08 by jmitchel          #+#    #+#             */
-/*   Updated: 2020/06/08 01:30:12 by jmitchel         ###   ########.fr       */
+/*   Created: 2020/05/06 17:13:04 by sedric            #+#    #+#             */
+/*   Updated: 2020/05/29 00:53:29 by sedric           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcpy(char *str_out, const char *str_in, size_t len)
+size_t	ft_strlcpy(char *dest, const char *src, size_t len_dest)
 {
-	size_t cnt;
-	size_t len_in;
+	size_t len_src;
+	size_t count;
 
-	cnt = 0;
-	if (str_in == NULL || str_out == NULL)
+	count = 0;
+	if (dest == NULL || src == NULL)
 		return (0);
-	len_in = ft_strlen(str_in);
-	if (len <= 0)
-		return (len_in);
-	while ((cnt < (len - 1)) && str_in[cnt] != '\0')
+	len_src = ft_strlen(src);
+	if (len_dest == 0)
+		return (len_src);
+	len_dest--;
+	while (count < len_dest && src[count] != '\0')
 	{
-		str_out[cnt] = str_in[cnt];
-		cnt++;
+		dest[count] = src[count];
+		count++;
 	}
-	str_out[cnt] = '\0';
-	return (len_in);
+	dest[count] = '\0';
+	return (len_src);
 }

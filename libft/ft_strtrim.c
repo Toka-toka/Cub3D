@@ -3,41 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmitchel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sedric <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/08 04:29:58 by jmitchel          #+#    #+#             */
-/*   Updated: 2020/06/08 04:30:00 by jmitchel         ###   ########.fr       */
+/*   Created: 2020/05/06 17:13:04 by sedric            #+#    #+#             */
+/*   Updated: 2020/05/20 12:05:27 by sedric           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+char		*ft_strtrim(char const *s1, char const *set)
 {
-	char	*temp;
-	size_t	ind;
-	size_t	ind_s;
-	size_t	ind_e;
+	char	*strtrim;
+	size_t	len_begin;
+	size_t	len_end;
 
-	if (s1 == NULL)
+	if (s1 == NULL || set == NULL)
 		return (NULL);
-	if (set[0] == '\0' || set == NULL)
-		return ((char *)s1);
-	ind_s = 0;
-	ind_e = ft_strlen(s1);
-	while (ft_strrchr(set, s1[ind_s]) != 0 && s1[ind_s] != '\0')
-		ind_s++;
-	while (ft_strrchr(set, s1[ind_e]) != 0 && ind_s < ind_e)
-		ind_e--;
-	temp = malloc(sizeof(*s1) * (ind_e - ind_s + 2));
-	if (temp == NULL)
-		return (NULL);
-	ind = 0;
-	while (ind_s + ind <= ind_e)
+	len_begin = 0;
+	while (ft_strrchr(set, s1[len_begin]) != 0 && s1[len_begin] != '\0')
+		len_begin++;
+	if (s1[len_begin] != '\0')
 	{
-		temp[ind] = s1[ind_s + ind];
-		ind++;
+		len_end = ft_strlen(s1);
+		while (ft_strrchr(set, s1[len_end - 1]) != 0)
+			len_end--;
+		strtrim = ft_substr(s1, len_begin, (len_end - len_begin));
 	}
-	temp[ind] = '\0';
-	return (temp);
+	else
+	{
+		if (!(strtrim = malloc(sizeof(char) * 1)))
+			return (NULL);
+		strtrim[0] = '\0';
+	}
+	return (strtrim);
 }

@@ -3,34 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmitchel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sedric <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/31 23:50:03 by jmitchel          #+#    #+#             */
-/*   Updated: 2020/05/31 23:50:07 by jmitchel         ###   ########.fr       */
+/*   Created: 2020/05/06 17:13:04 by sedric            #+#    #+#             */
+/*   Updated: 2020/05/25 20:46:24 by sedric           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memccpy(void *str_out, const void *str_in, int ch, size_t cnt)
+void		*ft_memccpy(void *dest, const void *src, int symbol, size_t n)
 {
-	unsigned char	*temp_out;
-	unsigned char	*temp_in;
-	unsigned char	temp_ch;
-	size_t			ind;
+	unsigned char	*dest_point;
+	unsigned char	*src_point;
+	unsigned char	ch_symbol;
+	size_t			i;
 
-	ind = 0;
-	temp_out = (unsigned char*)str_out;
-	temp_in = (unsigned char*)str_in;
-	temp_ch = (unsigned char)ch;
-	if (temp_out == NULL && temp_in == NULL)
-		return (str_out);
-	while (ind < cnt)
+	i = 0;
+	ch_symbol = symbol;
+	dest_point = (unsigned char*)dest;
+	src_point = (unsigned char*)src;
+	if (dest_point == NULL && src_point == NULL)
+		return (NULL);
+	while (i < n)
 	{
-		temp_out[ind] = temp_in[ind];
-		if (temp_in[ind] == temp_ch)
-			return (temp_out + ind + 1);
-		ind++;
+		dest_point[i] = src_point[i];
+		if (src_point[i] == ch_symbol)
+			return (dest + i + 1);
+		i++;
 	}
 	return (NULL);
 }

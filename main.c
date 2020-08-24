@@ -40,8 +40,12 @@ int			main(int argc, char** argv)
 	int		fd;
 	char	*line;
 	int		i;
+	int		ii;
+	int		iii;
 	static	t_list	*head;
 	t_list			*temp;
+	char	**split;
+	char	color[12];
 
 	if (argc < 2 || argc > 3)
 		return(error(0));
@@ -60,9 +64,14 @@ int			main(int argc, char** argv)
 	temp = head;
 	while (get_next_line(fd, &line) == 1)
 	{
-		if ((temp->next = new_list(line)) == NULL)
-			return (-1);
-		temp = temp->next;
+		if (line[0] == '\0')
+			free(line);
+		else
+		{
+			if ((temp->next = new_list(line)) == NULL)
+				return (-1);
+			temp = temp->next;
+		}
 	}
 	get_next_line(fd, &line);
 	if ((temp->next = new_list(line)) == NULL)
@@ -71,9 +80,49 @@ int			main(int argc, char** argv)
 	temp = head;
 	while (temp->next != NULL)
 	{
+//		if (temp->content[0] == '\0')
+//			printf("Empty line\n");
 		printf("%s\n", temp->content);
 		temp = temp->next;
 	}
+	temp = head;
+	temp = temp->next;
+	split = ft_split(temp->content, ' ');
+	i = 0;
+	while (split[i] != NULL)
+	{
+		printf ("%d = %s\n", i, split[i]);
+		i++;
+	}
+	temp = temp->next;
+	split = ft_split(temp->content, ' ');
+	i = 0;
+	while (split[i] != NULL)
+	{
+		printf ("%d = %s\n", i, split[i]);
+		i++;
+	}
+	i = 1;
+	ii = 0;
+	while (split[i] != NULL)
+	{
+		iii = 0;
+		while (split[i][iii])
+		{
+			color[ii] = split[i][iii];
+			ii++;
+			iii++;
+		}
+		i++;
+	}
+	color[ii] = '\0';
+	printf ("%s\n", color);
+	split = ft_split( color, ',');
+	i = 0;
+	while (split[i] != NULL)
+	{
+		printf ("%d = %s\n", i, split[i]);
+		i++;
+	}
 	return (0);
 }
-

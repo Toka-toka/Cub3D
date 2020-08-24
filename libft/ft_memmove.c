@@ -3,37 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmitchel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sedric <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/01 00:47:31 by jmitchel          #+#    #+#             */
-/*   Updated: 2020/06/01 00:47:35 by jmitchel         ###   ########.fr       */
+/*   Created: 2020/05/06 17:13:04 by sedric            #+#    #+#             */
+/*   Updated: 2020/05/25 20:48:18 by sedric           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *str_out, const void *str_in, size_t cnt)
+void				*ft_memmove(void *dest, const void *src, size_t n)
 {
-	unsigned char	*temp_out;
-	unsigned char	*temp_in;
+	unsigned char	*dest_point;
+	unsigned char	*src_point;
 
-	temp_out = (unsigned char*)str_out;
-	temp_in = (unsigned char*)str_in;
-	if (temp_out == NULL && temp_in == NULL)
+	src_point = (unsigned char*)src;
+	dest_point = (unsigned char*)dest;
+	if (src_point == NULL && dest_point == NULL)
 		return (NULL);
-	if (str_in > str_out)
-		while (cnt > 0)
+	if (src > dest)
+		while (n != 0)
 		{
-			*temp_out = *temp_in;
-			temp_out++;
-			temp_in++;
-			cnt--;
+			*dest_point++ = *src_point++;
+			n--;
 		}
 	else
-		while (cnt > 0)
+	{
+		while (n != 0)
 		{
-			temp_out[cnt - 1] = temp_in[cnt - 1];
-			cnt--;
+			dest_point[n - 1] = src_point[n - 1];
+			n--;
 		}
-	return (str_out);
+	}
+	return (dest);
 }

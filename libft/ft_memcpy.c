@@ -3,30 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmitchel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sedric <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/25 23:58:29 by jmitchel          #+#    #+#             */
-/*   Updated: 2020/05/25 23:58:39 by jmitchel         ###   ########.fr       */
+/*   Created: 2020/05/06 17:13:04 by sedric            #+#    #+#             */
+/*   Updated: 2020/05/25 20:47:51 by sedric           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memcpy(void *str_out, const void *str_in, size_t cnt)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	unsigned char	*temp_out;
-	unsigned char	*temp_in;
+	unsigned char *dest_point;
+	unsigned char *src_point;
 
-	temp_out = (unsigned char*)str_out;
-	temp_in = (unsigned char*)str_in;
-	if (temp_out == NULL && temp_in == NULL)
-		return (str_out);
-	while (cnt > 0)
+	dest_point = (unsigned char*)dest;
+	src_point = (unsigned char*)src;
+	if (dest_point == NULL && src_point == NULL)
+		return (dest);
+	while (n > 0)
 	{
-		*temp_out = *temp_in;
-		temp_out++;
-		temp_in++;
-		cnt--;
+		*dest_point++ = *src_point++;
+		n--;
 	}
-	return (str_out);
+	return (dest);
 }

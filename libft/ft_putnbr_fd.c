@@ -3,49 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmitchel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sedric <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/10 03:05:49 by jmitchel          #+#    #+#             */
-/*   Updated: 2020/06/10 03:05:52 by jmitchel         ###   ########.fr       */
+/*   Created: 2020/05/13 14:00:47 by sedric            #+#    #+#             */
+/*   Updated: 2020/05/25 20:14:25 by sedric           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	invert_pr(int index, int zn, int fd)
-{
-	int	ost;
-
-	if (index != 0)
-	{
-		ost = index % 10;
-		if (ost == 0 && index == 0)
-			return ;
-		invert_pr(index / 10, zn, fd);
-		ft_putchar_fd(ost * zn + '0', fd);
-		return ;
-	}
-}
-
 void	ft_putnbr_fd(int n, int fd)
 {
-	if (n == 0)
-		ft_putchar_fd('0', fd);
-	if (n == -2147483648)
+	char			temp[11];
+	unsigned int	number;
+	int				i;
+
+	i = 0;
+	number = n >= 0 ? n : -n;
+	while (number != 0 || i == 0)
 	{
-		ft_putchar_fd('-', fd);
-		invert_pr(n, -1, fd);
-		return ;
-	}
-	if (n > 0)
-	{
-		invert_pr(n, 1, fd);
-		return ;
+		temp[i] = number % 10 + 48;
+		number = number / 10;
+		i++;
 	}
 	if (n < 0)
 	{
-		ft_putchar_fd('-', fd);
-		invert_pr(n, -1, fd);
-		return ;
+		temp[i] = '-';
+		i++;
+	}
+	while (i > 0)
+	{
+		i--;
+		write(fd, &temp[i], 1);
 	}
 }

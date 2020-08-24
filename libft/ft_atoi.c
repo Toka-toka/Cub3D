@@ -3,39 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmitchel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sedric <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/06 23:49:12 by jmitchel          #+#    #+#             */
-/*   Updated: 2020/06/06 23:49:15 by jmitchel         ###   ########.fr       */
+/*   Created: 2020/04/30 19:12:54 by sedric            #+#    #+#             */
+/*   Updated: 2020/05/15 21:58:59 by sedric           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 int	ft_atoi(const char *str)
 {
-	int i;
-	int flag;
-	int summ;
+	int				i;
+	int				flag;
+	unsigned long	number;
 
-	summ = 0;
-	flag = 1;
 	i = 0;
-	while (*str == '\b' || *str == '\f' || *str == '\n' || *str == '\r'
-			|| *str == '\t' || *str == '\v' || *str == ' ')
+	number = 0;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
 		str++;
-	if (*str == '-')
-		flag = -1;
-	if (*str == '+' || *str == '-')
+	flag = (*str == 45 ? -1 : 1);
+	if (*str == 43 || *str == 45)
 		str++;
-	while (*str <= '9' && *str >= '0')
+	while (*str == 48)
+		str++;
+	while (*str >= 48 && *str <= 57)
 	{
-		summ = summ * 10 + *str - 48;
+		number = *str - 48 + number * 10;
+		i++;
 		str++;
-		if (*str > '0' || i > 0)
-			i++;
 	}
-	if (i >= 20)
+	if (number > 9223372036854775807 || i >= 20)
 		return (-0.5 * (flag + 1));
-	return (summ = summ * flag);
+	return (number * flag);
 }

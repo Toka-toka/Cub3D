@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmitchel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sedric <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/05 01:52:20 by jmitchel          #+#    #+#             */
-/*   Updated: 2020/06/05 01:52:25 by jmitchel         ###   ########.fr       */
+/*   Created: 2020/05/06 17:13:04 by sedric            #+#    #+#             */
+/*   Updated: 2020/05/25 20:49:11 by sedric           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *str, int ch)
+char		*ft_strchr(const char *s, int c)
 {
-	char	*str_temp;
-	size_t	ind;
+	char	*str;
+	char	symbol;
+	size_t	i;
 
-	str_temp = (char*)str;
-	ind = 0;
-	while (str_temp[ind] != '\0')
+	i = 0;
+	symbol = (char)c;
+	str = (char*)s;
+	while (str[i] != '\0')
 	{
-		if (str_temp[ind] == ch)
-			return (str_temp + ind);
-		ind++;
+		if (str[i] == symbol)
+			return (str + i);
+		i++;
 	}
-	if (ch == '\0')
-		return (str_temp + ind);
-	return (NULL);
+	return (c == '\0' ? str + i : NULL);
 }
