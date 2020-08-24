@@ -10,7 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror
+# FLAGS = -Wall -Wextra -Werror
+
+FLAGS = -Wall
 
 NAME = cub3D
 

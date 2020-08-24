@@ -18,6 +18,25 @@
 # include <fcntl.h>
 //# include <stdio.h>
 
+typedef	struct		s_settings
+{
+	int				resol_x;
+    int				resol_y;
+    char            *path_no;
+    char            *path_so;
+    char            *path_we;
+    char            *path_ea;
+    char            *path_s;
+    int             *color_f[3];
+    int             *color_c[3];
+}					t_settings;
+
+typedef struct		s_list
+{
+	char			*content;
+	struct s_list	*next;
+}					t_list;
+
 int		main(int argc, char** argv);
 
 #endif
