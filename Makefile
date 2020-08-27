@@ -16,9 +16,9 @@ FLAGS = -Wall
 
 NAME = cub3D
 
-#HEADER = cub3D.h
+HEADER = includes/cub3D.h
 
-SRC = main.c
+SRC = src/*.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -26,7 +26,7 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(SRC) #$(HEADER)
+$(NAME): $(SRC) $(HEADER)
 	make -C libft
 #	cp libft/libft.a .
 	gcc $(FLAGS) $(SRC) libft/libft.a -o $(NAME)
