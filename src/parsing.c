@@ -141,7 +141,10 @@ void	map_chek(char **map, int i, int ii, char *flag)
 		while (map[i][ii] == ' ')
 			ii++;
 		if (map[i][ii] == '0')
+		{
+			printf("Error here 1");
 			error(13);
+		}
 		while (map[i][ii] != '\0')
 		{
 			if (map[i][ii] == '1' || map[i][ii] == '2' || map[i][ii] == ' ')
@@ -149,13 +152,25 @@ void	map_chek(char **map, int i, int ii, char *flag)
 			else if (map[i][ii] == '0') 
 			{
 				if (map[i + 1][ii] == '\0' || map[i + 1][ii] == ' ')
+				{
+					printf("Error here 2");
 					error(13);
+				}
 				if (map[i - 1][ii] == '\0' || map[i - 1][ii] == ' ')
+				{
+					printf("Error here 3");
 					error(13);
+				}
 				if (map[i][ii + 1] == '\0' || map[i][ii + 1] == ' ')
+				{
+					printf("Error here 4");
 					error(13);
+				}
 				if (map[i][ii - 1] == '\0' || map[i][ii - 1] == ' ')
+				{
+					printf("Error here 5");
 					error(13);
+				}
 				ii++;
 			}
 			else if (map[i][ii] == 'N' || map[i][ii] == 'S' || map[i][ii] == 'E' || map[i][ii] == 'W')
