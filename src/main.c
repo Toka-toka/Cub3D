@@ -129,6 +129,7 @@ int			main(int argc, char** argv)
 	printf("save_flag = %c", settings.save_flag);
 	struct_clear(&settings);
 	read_settings(fd, &settings);
-	struct_printclear(&settings);
+//	struct_printclear(&settings);
+	init_window(&settings);
 	return (0);
 }

@@ -16,6 +16,8 @@ FLAGS = -Wall
 
 NAME = cub3D
 
+INCLIB=../../../../lib
+
 HEADER = includes/cub3D.h
 
 SRC = src/*.c
@@ -29,7 +31,7 @@ all: $(NAME)
 $(NAME): $(SRC) $(HEADER)
 	make -C libft
 #	cp libft/libft.a .
-	gcc $(FLAGS) $(SRC) libft/libft.a -o $(NAME)
+	gcc $(FLAGS) -o $(NAME) $(SRC) libft/libft.a -Lminilibx-linux -lmlx -lXext -lX11 -lm
 
 clean:
 	rm -f $(OBJ)

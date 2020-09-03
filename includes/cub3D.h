@@ -14,6 +14,7 @@
 
 # define CUB3D_H
 
+# include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 # include <fcntl.h>
 //# include <stdio.h>
@@ -32,6 +33,8 @@ typedef	struct		s_settings
     int             color_c[3];
     char            **map;
     char            orientation_flag;
+    void            *mlx_ptr;
+    void            *window_ptr;
 }					t_settings;
 
 typedef struct		s_list
@@ -45,5 +48,6 @@ int		main(int argc, char** argv);
 void	read_settings(int fd, t_settings *settings);
 int		error(int err);
 void	free_char_arr(void **arr);
+void	init_window(t_settings *settings);
 
 #endif
