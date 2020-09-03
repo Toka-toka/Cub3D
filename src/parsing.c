@@ -196,8 +196,13 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 	i = 0;
 	while (i < lists)
 	{
+		printf("i = %d, list = %d\n", i, lists);
+		printf("This line = %s\n", head->content);
 		if (head->content[head->len - 1] != '1' || head->content[0] == '0')
+		{
+			printf("Error here 6");				
 			error(13);
+		}
 		settings->map[i] = (char*)ft_calloc((len_max + 1), sizeof(char ));
 		settings->map[i] = ft_memcpy(settings->map[i], head->content, head->len);
 		temp = head;
@@ -269,7 +274,6 @@ void	read_map(int fd, t_settings *settings, char *line)
 	temp->next = new_list(line);
 	temp = temp->next;
 	temp->len = ft_strlen(line);
-	i++;
 	printf("len_max = %d\ni = %d\n", len_max, i);
 //	printf("%s\n", *line);
 //	if ((temp->next = new_list(*line)) == NULL)
