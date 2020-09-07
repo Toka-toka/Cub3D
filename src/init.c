@@ -26,17 +26,32 @@ void	pixel_hero(t_settings *settings, int color)
 {
 	int i = 0;
 	int ii = 0;
+	int iii = 0;
 
 	while (i < 10)
 	{
 		ii = 0;
 		while (ii < 10)
 		{		
-			mlx_pixel_put(settings->mlx_ptr, settings->window_ptr, settings->location_x + ii, settings->location_y + i, color);
+			mlx_pixel_put(settings->mlx_ptr, settings->window_ptr, settings->location_x + ii - 5, settings->location_y + i - 5, color);
 			ii++;
 		}
 		i++;
 	}
+	i = settings->location_y;
+	ii = settings->location_x;
+	printf("\nlocation_x = %d\nsettings->location_y = %d\nsettings->orientation = %f",  settings->location_x,  settings->location_y, settings->orientation / M_PI);
+	while (iii < 10)
+	{
+		i = i + sin(settings->orientation) * 5;
+		printf ("\ni = %d ii = %d", i, ii);
+		ii = ii + cos(settings->orientation) * 5;
+		mlx_pixel_put(settings->mlx_ptr, settings->window_ptr, ii, i, color);
+		mlx_pixel_put(settings->mlx_ptr, settings->window_ptr, ii + 1, i, color);
+		mlx_pixel_put(settings->mlx_ptr, settings->window_ptr, ii + 1, i, color);
+		iii++;
+	}
+
 }
 
 void	map_hero_draw(t_settings *settings)
@@ -82,13 +97,23 @@ int	close_window(int keycode, t_settings *settings)
 		exit(1);
 	}
 	if (keycode == 119) // w
-		settings->location_y -= CBSZ / 4; 
+	{
+		settings->location_y += sin(settings->orientation) * CBSZ / 4;
+		settings->location_x += cos(settings->orientation) * CBSZ / 4;
+	} 
 	if (keycode == 115) // s 
-		settings->location_y += CBSZ / 4;
+	{
+		settings->location_y -= sin(settings->orientation) * CBSZ / 4;
+		settings->location_x -= cos(settings->orientation) * CBSZ / 4;
+	}
 	if (keycode == 97)
-		settings->location_x -= CBSZ / 4;
+	{
+		settings->orientation -= M_PI / 16;
+	}
 	if (keycode == 100)
-		settings->location_x += CBSZ / 4;
+	{
+		settings->orientation += M_PI / 16;
+	}
 	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
 	map_hero_draw(settings);
 	return(0);

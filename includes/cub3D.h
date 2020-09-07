@@ -20,6 +20,8 @@
 # include <math.h>
 //# include <stdio.h>
 
+#define _USE_MATH_DEFINES
+
 # ifndef CBSZ
 #  define CBSZ 20
 # endif
@@ -38,6 +40,7 @@ typedef	struct		s_settings
     int             color_c[3];
     char            **map;
     char            orientation_flag;
+    float           orientation;
     int             location_x;
     int             location_y;  
     void            *mlx_ptr;

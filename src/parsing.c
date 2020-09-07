@@ -178,6 +178,14 @@ void	map_chek(char **map, int i, int ii, t_settings *settings)
 				settings->orientation_flag == 0 ? settings->orientation_flag = map[i][ii] : error(16);
 				settings->location_x = ii * CBSZ;
 				settings->location_y = i * CBSZ;
+				if (map[i][ii] == 'N')
+					settings->orientation = M_PI / 4;
+				if (map[i][ii] == 'S')
+					settings->orientation = M_PI * 3 / 2;
+				if (map[i][ii] == 'E')
+					settings->orientation = 0;
+				if (map[i][ii] == 'W')
+					settings->orientation =  M_PI / 2;
 				map[i][ii] = '0';
 				ii++;
 			}
