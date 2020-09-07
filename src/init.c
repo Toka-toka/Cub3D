@@ -24,9 +24,11 @@ void	pixel_map(t_settings *settings, int x, int y, int color)
 
 void	pixel_hero(t_settings *settings, int color)
 {
-	int i = 0;
-	int ii = 0;
-	int iii = 0;
+	float i = 0;
+	float ii = 0;
+
+	float view_start = settings->orientation - M_PI_4;
+	float view_end = settings->orientation + M_PI_4;
 
 	while (i < 10)
 	{
@@ -41,17 +43,19 @@ void	pixel_hero(t_settings *settings, int color)
 	i = settings->location_y;
 	ii = settings->location_x;
 	printf("\nlocation_x = %d\nsettings->location_y = %d\nsettings->orientation = %f",  settings->location_x,  settings->location_y, settings->orientation / M_PI);
-	while (iii < 10)
+	while (view_start < view_end)
 	{
-		i = i + sin(settings->orientation) * 5;
-		printf ("\ni = %d ii = %d", i, ii);
-		ii = ii + cos(settings->orientation) * 5;
-		mlx_pixel_put(settings->mlx_ptr, settings->window_ptr, ii, i, color);
-		mlx_pixel_put(settings->mlx_ptr, settings->window_ptr, ii + 1, i, color);
-		mlx_pixel_put(settings->mlx_ptr, settings->window_ptr, ii + 1, i, color);
-		iii++;
+		i = settings->location_y;
+		while (settings->map[(int)i / CBSZ][(int)ii / CBSZ] != '1')
+		{
+			i = i + sin(view_start);
+//			printf ("\ni = %d ii = %d", i, ii);
+			ii = ii + cos(view_start);
+			mlx_pixel_put(settings->mlx_ptr, settings->window_ptr, ii, i, 0xff00);
+		}
+		view_start += M_PI_2 / 1000;
+		ii = settings->location_x;
 	}
-
 }
 
 void	map_hero_draw(t_settings *settings)
