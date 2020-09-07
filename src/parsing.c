@@ -133,7 +133,7 @@ void		pars_settings(char **line, t_settings *settings)
 	t_list			*temp;
 	char	**split;
 	char	color[12]; */
-void	map_chek(char **map, int i, int ii, char *flag)
+void	map_chek(char **map, int i, int ii, t_settings *settings)
 {
 	while(map[i + 1] != NULL)
 	{
@@ -175,14 +175,17 @@ void	map_chek(char **map, int i, int ii, char *flag)
 			}
 			else if (map[i][ii] == 'N' || map[i][ii] == 'S' || map[i][ii] == 'E' || map[i][ii] == 'W')
 			{
-				*flag == 0 ? *flag = map[i][ii] : error(16);
+				settings->orientation_flag == 0 ? settings->orientation_flag = map[i][ii] : error(16);
+				settings->location_x = ii * CBSZ;
+				settings->location_y = i * CBSZ;
+				map[i][ii] = '0';
 				ii++;
 			}
 			else error(15);
 		}
 		i++;
 	}
-	if (flag == 0)
+	if (settings->orientation_flag == 0)
 		error(17);
 }
 
@@ -226,7 +229,7 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 		printf("\nmap[%d] = %s", i, settings->map[i]);
 		i++;
 	}
-	map_chek(settings->map, 1, 0, &settings->orientation_flag);
+	map_chek(settings->map, 1, 0, settings);
 }
 
 void	read_map(int fd, t_settings *settings, char *line)

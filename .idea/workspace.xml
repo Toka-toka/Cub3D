@@ -10,8 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="030257a9-8404-4d92-93c8-f443569da2f7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cub3D" beforeDir="false" afterPath="$PROJECT_DIR$/cub3D" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/cub3D.h" beforeDir="false" afterPath="$PROJECT_DIR$/includes/cub3D.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/map1.cub" beforeDir="false" afterPath="$PROJECT_DIR$/map1.cub" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/init.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/init.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parsing.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/parsing.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,13 +41,6 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="MakefileSettings" />
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -52,6 +50,8 @@
       <option name="presentableId" value="Default" />
       <updated>1598133881118</updated>
       <workItem from="1598133883326" duration="540000" />
+      <workItem from="1599410385822" duration="343000" />
+      <workItem from="1599469571029" duration="99000" />
     </task>
     <servers />
   </component>
@@ -59,10 +59,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="418" y="210" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598134384833">
+    <state x="418" y="210" width="1084" height="710" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599469666528">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="418" y="210" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1598134384833" />
+    <state x="418" y="210" width="1084" height="710" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1599469666528" />
     <state x="800" y="311" width="309" height="482" key="EnvironmentVariablesDialog" timestamp="1598134352328">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>

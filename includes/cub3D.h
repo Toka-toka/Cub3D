@@ -17,7 +17,12 @@
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 # include <fcntl.h>
+# include <math.h>
 //# include <stdio.h>
+
+# ifndef CBSZ
+#  define CBSZ 20
+# endif
 
 typedef	struct		s_settings
 {
@@ -33,6 +38,8 @@ typedef	struct		s_settings
     int             color_c[3];
     char            **map;
     char            orientation_flag;
+    int             location_x;
+    int             location_y;  
     void            *mlx_ptr;
     void            *window_ptr;
 }					t_settings;

@@ -31,7 +31,7 @@ all: $(NAME)
 $(NAME): $(SRC) $(HEADER)
 	make -C libft
 #	cp libft/libft.a .
-	gcc $(FLAGS) -o $(NAME) $(SRC) libft/libft.a -Lminilibx-linux -lmlx -lXext -lX11 -lm
+	gcc $(FLAGS) -g -o $(NAME) $(SRC) libft/libft.a -Lminilibx-linux -lmlx -lXext -lX11 -lm
 
 clean:
 	rm -f $(OBJ)

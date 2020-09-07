@@ -126,7 +126,7 @@ int			main(int argc, char** argv)
 	if((fd = open(argv[1], O_APPEND)) == -1)
 		error(3);
 	settings.save_flag = argc == 3 ? '1' : '0';
-	printf("save_flag = %c", settings.save_flag);
+//	printf("save_flag = %c", settings.save_flag);
 	struct_clear(&settings);
 	read_settings(fd, &settings);
 //	struct_printclear(&settings);
