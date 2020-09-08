@@ -113,7 +113,9 @@ int			main(int argc, char** argv)
 	int		i;
 	int		fd;
 	t_settings settings;
-	
+	t_win		win;
+
+	settings.win = &win;
 	if (argc < 2 || argc > 3)
 		error(0);
 	if ((i = ft_strlen(argv[1])) < 4)

@@ -1,5 +1,34 @@
 # include "../includes/cub3D.h"
 
+void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color)
+{
+    char    *pixel;
+
+    pixel = settings->win->addr + (y * settings->win->line_l + x * (settings->win->bpp / 8));
+    *(unsigned int*)pixel = color;
+}
+
+void	make_img(t_settings *settings)
+{
+	int i = 100;
+	int ii = 100;
+	
+	settings->win->img = mlx_new_image(settings->mlx_ptr, settings->resol_x, settings->resol_y);
+	settings->win->addr = mlx_get_data_addr(settings->win->img, &settings->win->bpp, &settings->win->line_l, &settings->win->en);
+	while (i < 200)
+	{
+		ii = 100;
+		while (ii < 200)
+		{
+			my_mlx_pixel_put(settings, i, ii, 0xff00);
+			ii++;
+		}
+		i++;
+	}
+	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
+	mlx_put_image_to_window(settings->mlx_ptr, settings->window_ptr, settings->win->img, 0, 0);
+}
+
 void	pixel_map(t_settings *settings, int x, int y, int color)
 {
 	int i = 0;
@@ -26,9 +55,12 @@ void	pixel_hero(t_settings *settings, int color)
 {
 	float i = 0;
 	float ii = 0;
+	int	iii = 0;
+	int	iiii = 0;
 
 	float view_start = settings->orientation - M_PI_4;
 	float view_end = settings->orientation + M_PI_4;
+	int	distance[2][1920];
 
 	while (i < 10)
 	{
@@ -52,9 +84,12 @@ void	pixel_hero(t_settings *settings, int color)
 //			printf ("\ni = %d ii = %d", i, ii);
 			ii = ii + cos(view_start);
 			mlx_pixel_put(settings->mlx_ptr, settings->window_ptr, ii, i, 0xff00);
+			iii++;
 		}
-		view_start += M_PI_2 / 1000;
+		distance[0][iiii] = iii / CBSZ;
+		view_start += M_PI_2 / 1920;
 		ii = settings->location_x;
+		iiii++;
 	}
 }
 
@@ -100,10 +135,14 @@ int	close_window(int keycode, t_settings *settings)
 		mlx_destroy_window(settings->mlx_ptr, settings->window_ptr);
 		exit(1);
 	}
+//	if (keycode == 119) // w
+//	{
+//		settings->location_y += sin(settings->orientation) * CBSZ / 4;
+//		settings->location_x += cos(settings->orientation) * CBSZ / 4;
+//	} 
 	if (keycode == 119) // w
 	{
-		settings->location_y += sin(settings->orientation) * CBSZ / 4;
-		settings->location_x += cos(settings->orientation) * CBSZ / 4;
+		make_img(settings);
 	} 
 	if (keycode == 115) // s 
 	{
@@ -118,8 +157,8 @@ int	close_window(int keycode, t_settings *settings)
 	{
 		settings->orientation += M_PI / 16;
 	}
-	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
-	map_hero_draw(settings);
+//	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
+//	map_hero_draw(settings);
 	return(0);
 }
 

@@ -26,6 +26,17 @@
 #  define CBSZ 20
 # endif
 
+typedef struct	s_win
+{
+	void		*mlx;
+	void		*win;
+	void		*img;
+	void		*addr;
+	int			line_l;
+	int			bpp;
+	int			en;
+}				  t_win;
+
 typedef	struct		s_settings
 {
 	char            save_flag;
@@ -45,6 +56,7 @@ typedef	struct		s_settings
     int             location_y;  
     void            *mlx_ptr;
     void            *window_ptr;
+    t_win		    *win;
 }					t_settings;
 
 typedef struct		s_list
