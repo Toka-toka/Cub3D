@@ -23,8 +23,21 @@
 #define _USE_MATH_DEFINES
 
 # ifndef CBSZ
-#  define CBSZ 20
+#  define CBSZ 32
 # endif
+
+typedef struct	s_win_3d
+{
+	void		*mlx;
+	void		*win;
+	void		*img;
+	void		*addr;
+	int			line_l;
+	int			bpp;
+	int			en;
+    void        *mlx_ptr;
+    void        *window_ptr;
+}				  t_win_3d;
 
 typedef struct	s_win
 {
@@ -57,6 +70,7 @@ typedef	struct		s_settings
     void            *mlx_ptr;
     void            *window_ptr;
     t_win		    *win;
+    t_win_3d		*win_3d;
 }					t_settings;
 
 typedef struct		s_list

@@ -240,6 +240,41 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 	map_chek(settings->map, 1, 0, settings);
 }
 
+void	optimaze_map(t_settings *settings)
+{
+	int i = 0;
+	int ii = 0;
+	
+	while(settings->map[i + 1] != NULL)
+	{
+		ii = 1;
+		while (settings->map[i][ii] != '\0')
+		{
+			if (settings->map[i][ii] == '1')
+			{
+				if (settings->map[i + 1][ii] == '0')
+					settings->map[i + 1][ii] = '5';
+				if (i > 0 && settings->map[i - 1][ii] == '0')
+					settings->map[i - 1][ii] = '5';
+				if (settings->map[i][ii + 1] == '0')
+					settings->map[i][ii + 1] = '5';
+				if (settings->map[i][ii - 1] == '0')
+					settings->map[i][ii - 1] = '5';
+				if (settings->map[i + 1][ii + 1] == '0')
+					settings->map[i + 1][ii + 1] = '5';
+				if (settings->map[i + 1][ii - 1] == '0')
+					settings->map[i + 1][ii - 1] = '5';
+				if (i > 0 && settings->map[i - 1][ii - 1] == '0')
+					settings->map[i - 1][ii - 1] = '5';
+				if (i > 0 && settings->map[i - 1][ii + 1] == '0')
+					settings->map[i - 1][ii + 1] = '5';
+			}
+			ii++;
+		}
+		i++;
+	}
+}
+
 void	read_map(int fd, t_settings *settings, char *line)
 {
 	t_list *head;
@@ -303,6 +338,7 @@ void	read_map(int fd, t_settings *settings, char *line)
 	printf("%d\n", temp->len);
 	close(fd);
 	pars_map(settings, len_max, i, head);
+	optimaze_map(settings);
 }
 
 void	read_settings(int fd, t_settings *settings)

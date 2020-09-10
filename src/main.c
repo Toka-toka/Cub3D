@@ -114,8 +114,10 @@ int			main(int argc, char** argv)
 	int		fd;
 	t_settings settings;
 	t_win		win;
+	t_win_3d	win_3d;
 
 	settings.win = &win;
+	settings.win_3d = &win_3d;
 	if (argc < 2 || argc > 3)
 		error(0);
 	if ((i = ft_strlen(argv[1])) < 4)
@@ -128,7 +130,6 @@ int			main(int argc, char** argv)
 	if((fd = open(argv[1], O_APPEND)) == -1)
 		error(3);
 	settings.save_flag = argc == 3 ? '1' : '0';
-//	printf("save_flag = %c", settings.save_flag);
 	struct_clear(&settings);
 	read_settings(fd, &settings);
 //	struct_printclear(&settings);
