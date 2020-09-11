@@ -73,11 +73,12 @@ void	pixel_hero(t_settings *settings, int color)
 	float column_h = 0;
 	int	i = 0;
 	int step = 1;
+	int cos_a = 0;
 
-	float view_start = settings->orientation - M_PI_4;
-	float view_end = settings->orientation + M_PI_4;
+	float view_start = settings->orientation - M_PI / 6;
+	float view_end = settings->orientation + M_PI / 6;
 
-	conts = settings->resol_x / 2 * tan(M_PI_4);
+	conts = (float)settings->resol_x / 2 * tan(M_PI / 3);
 	while (y < 8)
 	{
 		x = 0;
@@ -96,17 +97,24 @@ void	pixel_hero(t_settings *settings, int color)
 		while (settings->map[(int)y / CBSZ][(int)x / CBSZ] != '1')
 		{
 			if (settings->map[(int)y / CBSZ][(int)x / CBSZ] == '0')
+			{
 				step = 16;
+				y += sin(view_start) * step;
+				x += cos(view_start) * step;
+			}
 			else if (settings->map[(int)y / CBSZ][(int)x / CBSZ] == '5')
-				step = 1;
-			y += sin(view_start) * step;
-			x += cos(view_start) * step;
+			{
+				step = 5;
+				y += sin(view_start) / step;
+				x += cos(view_start) / step;
+			}
 			my_mlx_pixel_put(settings, x, y, 0x20b2aa);
 		}
 		column_d = sqrt (pow(settings->location_x - x, 2) + pow(settings->location_y - y, 2)); // * cos(view_start);
+		column_d = column_d * cos(view_start - settings->orientation);
 		column_h = 64 / column_d * conts;
 		game_draw(settings, column_h, i);
-		view_start += M_PI_2 / 1920;
+		view_start += M_PI / 3 / 1920;
 		i++;
 		x = settings->location_x;
 	}
@@ -175,11 +183,11 @@ int	close_window(int keycode, t_settings *settings)
 	}
 	if (keycode == 97)
 	{
-		settings->orientation -= M_PI / 16;
+		settings->orientation -= M_PI / 32;
 	}
 	if (keycode == 100)
 	{
-		settings->orientation += M_PI / 16;
+		settings->orientation += M_PI / 32;
 	}
 //	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
 	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
