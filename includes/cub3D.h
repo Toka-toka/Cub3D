@@ -65,8 +65,8 @@ typedef	struct		s_settings
     char            **map;
     char            orientation_flag;
     float           orientation;
-    int             location_x;
-    int             location_y;  
+    float           location_x;
+    float             location_y; 
     void            *mlx_ptr;
     void            *window_ptr;
     t_win		    *win;

@@ -73,7 +73,8 @@ void	pixel_hero(t_settings *settings, int color)
 	float column_h = 0;
 	int	i = 0;
 	int step = 1;
-	int cos_a = 0;
+	float step_y = 0;
+	float step_x = 0;
 
 	float view_start = settings->orientation - M_PI / 6;
 	float view_end = settings->orientation + M_PI / 6;
@@ -94,25 +95,28 @@ void	pixel_hero(t_settings *settings, int color)
 	while (view_start < view_end)
 	{
 		y = settings->location_y;
+		step_y = sin(view_start) / step;
+		step_x = cos(view_start) / step;
 		while (settings->map[(int)y / CBSZ][(int)x / CBSZ] != '1')
 		{
-			if (settings->map[(int)y / CBSZ][(int)x / CBSZ] == '0')
-			{
-				step = 16;
-				y += sin(view_start) * step;
-				x += cos(view_start) * step;
-			}
-			else if (settings->map[(int)y / CBSZ][(int)x / CBSZ] == '5')
-			{
+///			if (settings->map[(int)y / CBSZ][(int)x / CBSZ] == '0')
+//			{
+//				step = 16;
+//				y += sin(view_start) * step;
+//				x += cos(view_start) * step;
+//			}
+//			else if (settings->map[(int)y / CBSZ][(int)x / CBSZ] == '5')
+//			{
 				step = 5;
-				y += sin(view_start) / step;
-				x += cos(view_start) / step;
-			}
+				y += step_y;
+				x += step_x;
+//			}
 			my_mlx_pixel_put(settings, x, y, 0x20b2aa);
 		}
 		column_d = sqrt (pow(settings->location_x - x, 2) + pow(settings->location_y - y, 2)); // * cos(view_start);
 		column_d = column_d * cos(view_start - settings->orientation);
 		column_h = 64 / column_d * conts;
+//		printf("view_start = %f, x = %f, y = %f, column_d = %f, column_h = %f column_h = %d\n", view_start, x, y, column_d, column_h, (int)column_h);
 		game_draw(settings, column_h, i);
 		view_start += M_PI / 3 / 1920;
 		i++;
@@ -159,36 +163,56 @@ void	map_hero_draw(t_settings *settings)
 	mlx_put_image_to_window(settings->win_3d->mlx_ptr, settings->win_3d->window_ptr, settings->win_3d->img, 0, 0);
 }
 
+void check_location (t_settings *settings, float new_loc_y, float new_loc_x)
+{
+	if (settings->map[(int)new_loc_y / CBSZ][(int)settings->location_x / CBSZ] != '1')
+		settings->location_y = new_loc_y;
+	if (settings->map[(int)settings->location_y / CBSZ][(int)new_loc_x / CBSZ] != '1')
+		settings->location_x = new_loc_x;
+}
+
 int	close_window(int keycode, t_settings *settings)
 {
+	float new_loc_y;
+	float new_loc_x;
+	
+	new_loc_y = settings->location_y;
+	new_loc_x = settings->location_x;
 	if (keycode == 65307) // esc
 	{
 		mlx_destroy_window(settings->win_3d->mlx_ptr, settings->win_3d->window_ptr);
 		mlx_destroy_window(settings->mlx_ptr, settings->window_ptr);
 		exit(1);
 	}
-	if (keycode == 119) // && settings->map[(int)(settings->location_y + 16) / CBSZ][(int)(settings->location_x + 16) / CBSZ] != '1') // w
+	if (keycode == 119 || keycode == 65362)
 	{
-		settings->location_y += sin(settings->orientation) * CBSZ;
-		settings->location_x += cos(settings->orientation) * CBSZ;
+		new_loc_y += sin(settings->orientation) * CBSZ / 4;
+		new_loc_x += cos(settings->orientation) * CBSZ / 4;
+		check_location (settings, new_loc_y, new_loc_x);
 	} 
-//	if (keycode == 119) // w
-//	{
-//		make_img(settings);
-//	} 
-	if (keycode == 115) // && settings->map[(int)(settings->location_y - 16) / CBSZ][(int)(settings->location_x - 16) / CBSZ] != '1') // s 
+	if (keycode == 115 || keycode == 65364)
 	{
-		settings->location_y -= sin(settings->orientation) * CBSZ / 4;
-		settings->location_x -= cos(settings->orientation) * CBSZ / 4;
+		new_loc_y -= sin(settings->orientation) * CBSZ / 4;
+		new_loc_x -= cos(settings->orientation) * CBSZ / 4;
+		check_location (settings, new_loc_y, new_loc_x);
 	}
 	if (keycode == 97)
 	{
-		settings->orientation -= M_PI / 32;
+		new_loc_y -= cos(settings->orientation) * CBSZ / 4;
+		new_loc_x += sin(settings->orientation) * CBSZ / 4;
+		check_location (settings, new_loc_y, new_loc_x);
 	}
 	if (keycode == 100)
 	{
-		settings->orientation += M_PI / 32;
+		new_loc_y += cos(settings->orientation) * CBSZ / 4;
+		new_loc_x -= sin(settings->orientation) * CBSZ / 4;
+		check_location (settings, new_loc_y, new_loc_x);
 	}
+	if (keycode == 65363)
+		settings->orientation += M_PI / 32;
+	if (keycode == 65361)
+		settings->orientation -= M_PI / 32;
+//	else printf("keycode = %d", keycode);
 //	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
 	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
 	map_hero_draw(settings);
