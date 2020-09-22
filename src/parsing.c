@@ -11,7 +11,7 @@ static t_list	*new_list(char *line)
 	return (new);
 }
 
-void	colors_pars(char **line, int *color)
+void	colors_pars(char **line, int *color) // TODO: перевести цвет в инт по битам
 {
 		int i;
 		int	ii;
@@ -133,7 +133,8 @@ void		pars_settings(char **line, t_settings *settings)
 	t_list			*temp;
 	char	**split;
 	char	color[12]; */
-void	map_chek(char **map, int i, int ii, t_settings *settings)
+
+void	map_chek(char **map, int i, int ii, t_settings *settings) // TODO: огромная функция!!!))
 {
 	while(map[i + 1] != NULL)
 	{

@@ -26,6 +26,16 @@
 #  define CBSZ 32
 # endif
 
+# define W 119
+# define A 97
+# define S 115
+# define D 100
+# define UP 65362
+# define DOWN 65364
+# define LEFT 65361
+# define RIGHT 65363
+# define ESC 65307
+
 typedef struct	s_win_3d
 {
 	void		*mlx;
@@ -50,6 +60,16 @@ typedef struct	s_win
 	int			en;
 }				  t_win;
 
+typedef struct			s_actions
+{
+	int					move_forward;
+	int					move_backward;
+	int					move_left;
+	int					move_right;
+	int					turn_left;
+	int					turn_right;
+}						t_actions;
+
 typedef	struct		s_settings
 {
 	char            save_flag;
@@ -71,6 +91,7 @@ typedef	struct		s_settings
     void            *window_ptr;
     t_win		    *win;
     t_win_3d		*win_3d;
+    t_actions      	*actions;
 }					t_settings;
 
 typedef struct		s_list
@@ -85,5 +106,15 @@ void	read_settings(int fd, t_settings *settings);
 int		error(int err);
 void	free_char_arr(void **arr);
 void	init_window(t_settings *settings);
+int     key_pressed(int keycode, t_settings *settings);
+int 	key_released(int keycode, t_settings *settings);
+int 	actions_call(t_settings *settings);
+void    check_location (t_settings *settings, float new_loc_y, float new_loc_x);
+void	move_forward(t_settings *settings);
+void	move_backward(t_settings *settings);
+void	move_left(t_settings *settings);
+void	move_right(t_settings *settings);
+void	turn(t_settings *settings);
+void	map_hero_draw(t_settings *settings);
 
 #endif

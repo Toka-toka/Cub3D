@@ -10,7 +10,7 @@ void		error_print(char *error)
 		write(2, error++, 1);
 }
 
-int		error(int err)
+int		error(int err) // TODO: передавать ошибки при вызове функций
 {
 	char	*error[22];
 
@@ -115,9 +115,11 @@ int			main(int argc, char** argv)
 	t_settings settings;
 	t_win		win;
 	t_win_3d	win_3d;
+	t_actions	actions;
 
 	settings.win = &win;
 	settings.win_3d = &win_3d;
+	settings.actions = &actions;
 	if (argc < 2 || argc > 3)
 		error(0);
 	if ((i = ft_strlen(argv[1])) < 4)
@@ -132,7 +134,7 @@ int			main(int argc, char** argv)
 	settings.save_flag = argc == 3 ? '1' : '0';
 	struct_clear(&settings);
 	read_settings(fd, &settings);
-//	struct_printclear(&settings);
+//	struct_printclear(&settings); // TODO: настроить очистку памяти при выходе
 	init_window(&settings);
 	return (0);
 }

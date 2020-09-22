@@ -97,7 +97,7 @@ void	pixel_hero(t_settings *settings, int color)
 		y = settings->location_y;
 		step_y = sin(view_start) / step;
 		step_x = cos(view_start) / step;
-		while (settings->map[(int)y / CBSZ][(int)x / CBSZ] != '1')
+		while (settings->map[(int)y / CBSZ][(int)x / CBSZ] != '1') // TODO: вернуть "быстрые" шаги луча
 		{
 ///			if (settings->map[(int)y / CBSZ][(int)x / CBSZ] == '0')
 //			{
@@ -132,7 +132,7 @@ void	map_hero_draw(t_settings *settings)
 	int y = 0;
 	int color;
 	
-	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
+//	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
 	x = 0;
 	i = 0;
 	while (settings->map[i] != NULL)
@@ -151,7 +151,7 @@ void	map_hero_draw(t_settings *settings)
 				color = 0xffffff;
 			else if (settings->map[i][ii] == '5')
 				color = 0xf0f0f0;
-			pixel_map(settings, x, y, color);
+//			pixel_map(settings, x, y, color);
 			x += CBSZ;
 			ii++;
 		}
@@ -163,61 +163,13 @@ void	map_hero_draw(t_settings *settings)
 	mlx_put_image_to_window(settings->win_3d->mlx_ptr, settings->win_3d->window_ptr, settings->win_3d->img, 0, 0);
 }
 
-void check_location (t_settings *settings, float new_loc_y, float new_loc_x)
-{
-	if (settings->map[(int)new_loc_y / CBSZ][(int)settings->location_x / CBSZ] != '1')
-		settings->location_y = new_loc_y;
-	if (settings->map[(int)settings->location_y / CBSZ][(int)new_loc_x / CBSZ] != '1')
-		settings->location_x = new_loc_x;
-}
-
-int	close_window(int keycode, t_settings *settings)
-{
-	float new_loc_y;
-	float new_loc_x;
-	
-	new_loc_y = settings->location_y;
-	new_loc_x = settings->location_x;
-	if (keycode == 65307) // esc
-	{
-		mlx_destroy_window(settings->win_3d->mlx_ptr, settings->win_3d->window_ptr);
-		mlx_destroy_window(settings->mlx_ptr, settings->window_ptr);
-		exit(1);
-	}
-	if (keycode == 119 || keycode == 65362)
-	{
-		new_loc_y += sin(settings->orientation) * CBSZ / 4;
-		new_loc_x += cos(settings->orientation) * CBSZ / 4;
-		check_location (settings, new_loc_y, new_loc_x);
-	} 
-	if (keycode == 115 || keycode == 65364)
-	{
-		new_loc_y -= sin(settings->orientation) * CBSZ / 4;
-		new_loc_x -= cos(settings->orientation) * CBSZ / 4;
-		check_location (settings, new_loc_y, new_loc_x);
-	}
-	if (keycode == 97)
-	{
-		new_loc_y -= cos(settings->orientation) * CBSZ / 4;
-		new_loc_x += sin(settings->orientation) * CBSZ / 4;
-		check_location (settings, new_loc_y, new_loc_x);
-	}
-	if (keycode == 100)
-	{
-		new_loc_y += cos(settings->orientation) * CBSZ / 4;
-		new_loc_x -= sin(settings->orientation) * CBSZ / 4;
-		check_location (settings, new_loc_y, new_loc_x);
-	}
-	if (keycode == 65363)
-		settings->orientation += M_PI / 32;
-	if (keycode == 65361)
-		settings->orientation -= M_PI / 32;
-//	else printf("keycode = %d", keycode);
+//int	close_window(int keycode, t_settings *settings)
+//{
+//
 //	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
-	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
-	map_hero_draw(settings);
-	return(0);
-}
+//	map_hero_draw(settings);
+//	return(0);
+//}
 
 void	init_window(t_settings *settings)
 {
@@ -227,14 +179,15 @@ void	init_window(t_settings *settings)
 	settings->win->addr = mlx_get_data_addr(settings->win->img, &settings->win->bpp, &settings->win->line_l, &settings->win->en);
 
 	settings->win_3d->mlx_ptr = mlx_init();
-	settings->win_3d->window_ptr = mlx_new_window(settings->mlx_ptr, settings->resol_x, settings->resol_y, "game");
-	settings->win_3d->img = mlx_new_image(settings->mlx_ptr, settings->resol_x, settings->resol_y);
+	settings->win_3d->window_ptr = mlx_new_window(settings->win_3d->mlx_ptr, settings->resol_x, settings->resol_y, "game");
+	settings->win_3d->img = mlx_new_image(settings->win_3d->mlx_ptr, settings->resol_x, settings->resol_y);
 	settings->win_3d->addr = mlx_get_data_addr(settings->win_3d->img, &settings->win_3d->bpp, &settings->win_3d->line_l, &settings->win_3d->en);
 	
 	map_hero_draw(settings);
-	mlx_key_hook(settings->window_ptr, close_window, settings);
-	mlx_loop(settings->mlx_ptr);
+
+	mlx_hook(settings->win_3d->window_ptr, 2, 1L << 0, key_pressed, settings);
+	mlx_hook(settings->win_3d->window_ptr, 3, 1L << 1, key_released, settings);
+	mlx_loop_hook(settings->win_3d->mlx_ptr, actions_call, settings);
 	mlx_loop(settings->win_3d->mlx_ptr);
 	exit(1);
-//	return (0);
 }
