@@ -40,7 +40,7 @@ void	pixel_map(t_settings *settings, int x, int y, int color)
 	}
 }
 
-void	game_draw(t_settings *settings, float column_h, int x)
+void	game_draw(t_settings *settings, float column_h, int x, int color)
 {
 		int y = 0;
 		int y_start_col;
@@ -50,18 +50,47 @@ void	game_draw(t_settings *settings, float column_h, int x)
 		{
 			while (y < y_start_col && y < settings->resol_y)
 			{
-				my_mlx_pixel_put_game(settings, x, y, 0x87ceeb); //blue
+				my_mlx_pixel_put_game(settings, x, y, 0x87ceeb); 
 				y++;
 			}
 			while (column_h > 0 && y < settings->resol_y)
 			{
-				my_mlx_pixel_put_game(settings, x, y, 0xff6347); //red
+				my_mlx_pixel_put_game(settings, x, y, color); 
 				column_h--;
 				y++;
 			}
-		my_mlx_pixel_put_game(settings, x, y, 0x708090); //green
+		my_mlx_pixel_put_game(settings, x, y, 0x708090);
 		y++;
 		}
+}
+
+int remains_by_bits (float value, int base)
+{
+	return((int)value & base - 1);
+}
+
+int		color_column(float x, float y)
+{
+	static int x_prev;
+	static int y_prev;
+	static char nswe_prev;
+
+	if (remains_by_bits(y + 1, 32) == 0) //&& nswe_prev != 'E')// && (x_prev != (int)x && nswe_prev == 'S'))
+	{
+		x_prev = (int)x;
+		nswe_prev = 'S';
+		return(0xffff00); // yellow
+	}
+	else if (remains_by_bits(x, 32) == 0) // && (y_prev != (int)y && nswe_prev == 'E'))
+	{
+		y_prev = (int)y;
+		nswe_prev = 'E';
+		return(0xff0000); // red
+	}
+	else if (remains_by_bits(y, 32) == 0) // && remains_by_bits(x, 32) != 0)
+		return(0xff); // blue
+	else if (remains_by_bits(x + 1, 32) == 0)
+		return(0xffa500); // orange
 }
 
 void	pixel_hero(t_settings *settings, int color)
@@ -72,7 +101,7 @@ void	pixel_hero(t_settings *settings, int color)
 	float column_d = 0;
 	float column_h = 0;
 	int	i = 0;
-	int step = 1;
+	int step = 10;
 	float step_y = 0;
 	float step_x = 0;
 
@@ -107,7 +136,6 @@ void	pixel_hero(t_settings *settings, int color)
 //			}
 //			else if (settings->map[(int)y / CBSZ][(int)x / CBSZ] == '5')
 //			{
-				step = 5;
 				y += step_y;
 				x += step_x;
 //			}
@@ -116,8 +144,8 @@ void	pixel_hero(t_settings *settings, int color)
 		column_d = sqrt (pow(settings->location_x - x, 2) + pow(settings->location_y - y, 2)); // * cos(view_start);
 		column_d = column_d * cos(view_start - settings->orientation);
 		column_h = 64 / column_d * conts;
-//		printf("view_start = %f, x = %f, y = %f, column_d = %f, column_h = %f column_h = %d\n", view_start, x, y, column_d, column_h, (int)column_h);
-		game_draw(settings, column_h, i);
+		printf("x = %f,(int)x = %d (int)x / CBSZ = %d y = %f (int)y = %d (int)y / CBSZ = %d\n", x, (int)x, (int)x / CBSZ, y, (int)y, (int)y / CBSZ);
+		game_draw(settings, column_h, i, color_column(x, y));
 		view_start += M_PI / 3 / 1920;
 		i++;
 		x = settings->location_x;
@@ -183,10 +211,18 @@ void	init_window(t_settings *settings)
 	settings->win_3d->img = mlx_new_image(settings->win_3d->mlx_ptr, settings->resol_x, settings->resol_y);
 	settings->win_3d->addr = mlx_get_data_addr(settings->win_3d->img, &settings->win_3d->bpp, &settings->win_3d->line_l, &settings->win_3d->en);
 	
-	map_hero_draw(settings);
+	settings->actions->move_forward = 0;
+	settings->actions->move_backward = 0;
+	settings->actions->move_left = 0;
+	settings->actions->move_right = 0;
+	settings->actions->turn_left = 0;
+	settings->actions->turn_right = 0;
 
-	mlx_hook(settings->win_3d->window_ptr, 2, 1L << 0, key_pressed, settings);
-	mlx_hook(settings->win_3d->window_ptr, 3, 1L << 1, key_released, settings);
+	map_hero_draw(settings);
+	settings->actions->move_forward = 0;
+	settings->actions->move_backward = 0;
+	mlx_hook(settings->win_3d->window_ptr, 2, 1L << 0, key_pressed_released, settings);
+	mlx_hook(settings->win_3d->window_ptr, 3, 1L << 1, key_pressed_released, settings);
 	mlx_loop_hook(settings->win_3d->mlx_ptr, actions_call, settings);
 	mlx_loop(settings->win_3d->mlx_ptr);
 	exit(1);

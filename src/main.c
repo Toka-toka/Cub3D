@@ -120,7 +120,7 @@ int			main(int argc, char** argv)
 	settings.win = &win;
 	settings.win_3d = &win_3d;
 	settings.actions = &actions;
-	if (argc < 2 || argc > 3)
+	if (argc < 2 || argc > 3) // TODO: перенести в отделную функцию
 		error(0);
 	if ((i = ft_strlen(argv[1])) < 4)
 		error(1);
@@ -135,6 +135,6 @@ int			main(int argc, char** argv)
 	struct_clear(&settings);
 	read_settings(fd, &settings);
 //	struct_printclear(&settings); // TODO: настроить очистку памяти при выходе
-	init_window(&settings);
+	init_window(&settings); // TODO: перенести инициализацию окна и луп-хуп сюда
 	return (0);
 }

@@ -27,9 +27,9 @@
 # endif
 
 # define W 119
-# define A 97
+# define A 100
 # define S 115
-# define D 100
+# define D 97
 # define UP 65362
 # define DOWN 65364
 # define LEFT 65361
@@ -106,8 +106,7 @@ void	read_settings(int fd, t_settings *settings);
 int		error(int err);
 void	free_char_arr(void **arr);
 void	init_window(t_settings *settings);
-int     key_pressed(int keycode, t_settings *settings);
-int 	key_released(int keycode, t_settings *settings);
+int     key_pressed_released(int keycode, t_settings *settings);
 int 	actions_call(t_settings *settings);
 void    check_location (t_settings *settings, float new_loc_y, float new_loc_x);
 void	move_forward(t_settings *settings);
