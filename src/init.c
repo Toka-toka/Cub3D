@@ -1,12 +1,5 @@
 # include "../includes/cub3D.h"
 
-void	my_mlx_pixel_put_game(t_settings *settings, int x, int y, int color)
-{
-    char    *pixel;
-
-    pixel = settings->win_3d->addr + (y * settings->win_3d->line_l + x * (settings->win_3d->bpp / 8));
-    *(unsigned int*)pixel = color;
-}
 
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color)
 {
@@ -40,75 +33,11 @@ void	pixel_map(t_settings *settings, int x, int y, int color)
 	}
 }
 
-void	game_draw(t_settings *settings, float column_h, int x, int color)
-{
-		int y = 0;
-		int y_start_col;
-
-		y_start_col = settings->resol_y / 2 - column_h / 2;
-		while (y < settings->resol_y)
-		{
-			while (y < y_start_col && y < settings->resol_y)
-			{
-				my_mlx_pixel_put_game(settings, x, y, 0x87ceeb); 
-				y++;
-			}
-			while (column_h > 0 && y < settings->resol_y)
-			{
-				my_mlx_pixel_put_game(settings, x, y, color); 
-				column_h--;
-				y++;
-			}
-		my_mlx_pixel_put_game(settings, x, y, 0x708090);
-		y++;
-		}
-}
-
-int remains_by_bits (float value, int base)
-{
-	return((int)value & base - 1);
-}
-
-int		color_column(float x, float y)
-{
-	static int x_prev;
-	static int y_prev;
-	static char nswe_prev;
-
-	if (remains_by_bits(y + 1, 32) == 0) //&& nswe_prev != 'E')// && (x_prev != (int)x && nswe_prev == 'S'))
-	{
-		x_prev = (int)x;
-		nswe_prev = 'S';
-		return(0xffff00); // yellow
-	}
-	else if (remains_by_bits(x, 32) == 0) // && (y_prev != (int)y && nswe_prev == 'E'))
-	{
-		y_prev = (int)y;
-		nswe_prev = 'E';
-		return(0xff0000); // red
-	}
-	else if (remains_by_bits(y, 32) == 0) // && remains_by_bits(x, 32) != 0)
-		return(0xff); // blue
-	else if (remains_by_bits(x + 1, 32) == 0)
-		return(0xffa500); // orange
-}
-
 void	pixel_hero(t_settings *settings, int color)
 {
 	float y = 0;
 	float x = 0;
-	float conts = 0;
-	float column_d = 0;
-	float column_h = 0;
-	int	i = 0;
-	int step = 10;
-	float step_y = 0;
-	float step_x = 0;
 
-	float view_start = settings->orientation - M_PI / 6;
-	float view_end = settings->orientation + M_PI / 6;
-
-	conts = (float)settings->resol_x / 2 * tan(M_PI / 3);
 	while (y < 8)
 	{
 		x = 0;
@@ -119,37 +48,14 @@ void	pixel_hero(t_settings *settings, int color)
 		}
 		y++;
 	}
-	y = settings->location_y;
-	x = settings->location_x;
-	while (view_start < view_end)
-	{
-		y = settings->location_y;
-		step_y = sin(view_start) / step;
-		step_x = cos(view_start) / step;
-		while (settings->map[(int)y / CBSZ][(int)x / CBSZ] != '1') // TODO: вернуть "быстрые" шаги луча
-		{
-///			if (settings->map[(int)y / CBSZ][(int)x / CBSZ] == '0')
-//			{
-//				step = 16;
-//				y += sin(view_start) * step;
-//				x += cos(view_start) * step;
-//			}
-//			else if (settings->map[(int)y / CBSZ][(int)x / CBSZ] == '5')
-//			{
-				y += step_y;
-				x += step_x;
-//			}
-			my_mlx_pixel_put(settings, x, y, 0x20b2aa);
-		}
-		column_d = sqrt (pow(settings->location_x - x, 2) + pow(settings->location_y - y, 2)); // * cos(view_start);
-		column_d = column_d * cos(view_start - settings->orientation);
-		column_h = 64 / column_d * conts;
-		printf("x = %f,(int)x = %d (int)x / CBSZ = %d y = %f (int)y = %d (int)y / CBSZ = %d\n", x, (int)x, (int)x / CBSZ, y, (int)y, (int)y / CBSZ);
-		game_draw(settings, column_h, i, color_column(x, y));
-		view_start += M_PI / 3 / 1920;
-		i++;
-		x = settings->location_x;
-	}
+//	y = settings->location_y;
+//	x = settings->location_x;
+//	while (settings->map[(int)y / CBSZ][(int)x / CBSZ] != '1')
+//		{
+//			y += sin(settings->orientation);
+//			x += cos(settings->orientation);
+//			my_mlx_pixel_put(settings, x, y, 0x20b2aa);
+//		}
 }
 
 void	map_hero_draw(t_settings *settings)
@@ -179,7 +85,7 @@ void	map_hero_draw(t_settings *settings)
 				color = 0xffffff;
 			else if (settings->map[i][ii] == '5')
 				color = 0xf0f0f0;
-//			pixel_map(settings, x, y, color);
+			pixel_map(settings, x, y, color);
 			x += CBSZ;
 			ii++;
 		}
@@ -187,43 +93,68 @@ void	map_hero_draw(t_settings *settings)
 		y += CBSZ;
 	}
 	pixel_hero (settings, color);
-	mlx_put_image_to_window(settings->mlx_ptr, settings->window_ptr, settings->win->img, 0, 0);
-	mlx_put_image_to_window(settings->win_3d->mlx_ptr, settings->win_3d->window_ptr, settings->win_3d->img, 0, 0);
 }
 
-//int	close_window(int keycode, t_settings *settings)
-//{
-//
-//	mlx_clear_window(settings->mlx_ptr, settings->window_ptr);
-//	map_hero_draw(settings);
-//	return(0);
-//}
-
-void	init_window(t_settings *settings)
+void column_draw(float distanse, t_settings *settings, char orientation, int x)
 {
-	settings->mlx_ptr = mlx_init();
-	settings->window_ptr = mlx_new_window(settings->mlx_ptr, 1100, 480, "map");
-	settings->win->img = mlx_new_image(settings->mlx_ptr, 1100, 480);
-	settings->win->addr = mlx_get_data_addr(settings->win->img, &settings->win->bpp, &settings->win->line_l, &settings->win->en);
+//	static int x;
+	int y;
+	int y_start_col;
+	float height;
+	int color;
 
-	settings->win_3d->mlx_ptr = mlx_init();
-	settings->win_3d->window_ptr = mlx_new_window(settings->win_3d->mlx_ptr, settings->resol_x, settings->resol_y, "game");
-	settings->win_3d->img = mlx_new_image(settings->win_3d->mlx_ptr, settings->resol_x, settings->resol_y);
-	settings->win_3d->addr = mlx_get_data_addr(settings->win_3d->img, &settings->win_3d->bpp, &settings->win_3d->line_l, &settings->win_3d->en);
-	
-	settings->actions->move_forward = 0;
-	settings->actions->move_backward = 0;
-	settings->actions->move_left = 0;
-	settings->actions->move_right = 0;
-	settings->actions->turn_left = 0;
-	settings->actions->turn_right = 0;
-
-	map_hero_draw(settings);
-	settings->actions->move_forward = 0;
-	settings->actions->move_backward = 0;
-	mlx_hook(settings->win_3d->window_ptr, 2, 1L << 0, key_pressed_released, settings);
-	mlx_hook(settings->win_3d->window_ptr, 3, 1L << 1, key_pressed_released, settings);
-	mlx_loop_hook(settings->win_3d->mlx_ptr, actions_call, settings);
-	mlx_loop(settings->win_3d->mlx_ptr);
-	exit(1);
+	if (orientation == 'N')
+		color = 0xff0000;
+	if (orientation == 'S')
+		color = 0xffff00;
+	if (orientation == 'W')
+		color = 0xffa500;
+	if (orientation == 'E')
+		color = 0xffc0cb;
+	y = 0;
+	height = 32 / distanse * settings->win->constant;
+	y_start_col = settings->resol_y / 2 - height / 2;
+	while (y < settings->resol_y)
+	{
+		while (y < y_start_col && y < settings->resol_y)
+		{
+			my_mlx_pixel_put(settings, x, y, 0x87ceeb); 
+			y++;
+		}
+		while (height > 0 && y < settings->resol_y)
+		{
+			my_mlx_pixel_put(settings, x, y, color); 
+			height--;
+			y++;
+		}
+		my_mlx_pixel_put(settings, x, y, 0x708090);
+		y++;
+	}
+//	x++;
+//	if (x == settings->resol_x)
+//		x = 0;
 }
+/*
+int		color_column(float x, float y)
+{
+	static int x_prev;
+	static int y_prev;
+	static char nswe_prev;
+
+	if (remains_by_bits(y + 1, 32) == 0) //&& nswe_prev != 'E')// && (x_prev != (int)x && nswe_prev == 'S'))
+	{
+		x_prev = (int)x;
+		nswe_prev = 'S';
+		return(0xffff00); // yellow
+	}
+	else if (remains_by_bits(x, 32) == 0) // && (y_prev != (int)y && nswe_prev == 'E'))
+	{
+		y_prev = (int)y;
+		nswe_prev = 'E';
+		return(0xff0000); // red
+	}
+	else if (remains_by_bits(y, 32) == 0) // && remains_by_bits(x, 32) != 0)
+		return(0xff); // blue
+	else if (remains_by_bits(x + 1, 32) == 0)
+		return(0xffa500); // orange
+}*/

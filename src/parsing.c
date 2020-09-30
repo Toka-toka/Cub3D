@@ -57,7 +57,6 @@ void	colors_pars(char **line, int *color) // TODO: перевести цвет �
 void	path_pars(char **line, char **way)
 {
 		int fd;
-		char *temp;
 //		printf("way = %s", *way);
 		if (*way != NULL)
 			error(19);
@@ -98,8 +97,6 @@ void	resolution_pars(char **line, t_settings *settings)
 
 void		pars_settings(char **line, t_settings *settings)
 {
-  	int i;
-
 	if (ft_memcmp(line[0], "R", 2) == 0)
 		resolution_pars(line, settings);
 	else if (ft_memcmp(line[0], "NO", 3) == 0)
@@ -118,7 +115,6 @@ void		pars_settings(char **line, t_settings *settings)
 		colors_pars(line, settings->color_c);
 	else
 		error(6);
-	i = 0;
 //	while(line[i] != NULL)
 //	{
 //		free(line[i]);
@@ -180,13 +176,13 @@ void	map_chek(char **map, int i, int ii, t_settings *settings) // TODO: огро
 				settings->location_x = ii * CBSZ;
 				settings->location_y = i * CBSZ;
 				if (map[i][ii] == 'N')
-					settings->orientation = M_PI / 4;
+					settings->orientation = M_PI / 2;
 				if (map[i][ii] == 'S')
 					settings->orientation = M_PI * 3 / 2;
 				if (map[i][ii] == 'E')
 					settings->orientation = 0;
 				if (map[i][ii] == 'W')
-					settings->orientation =  M_PI / 2;
+					settings->orientation = M_PI;
 				map[i][ii] = '0';
 				ii++;
 			}
@@ -204,7 +200,7 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 
 	t_list *temp;
 	printf("lists = %d", lists);
-	settings->map = (char**)malloc((lists +1) * sizeof(char *));
+	settings->map = (char**)malloc((lists + 1) * sizeof(char *));
 	i = 0;
 	while (i < lists)
 	{
@@ -223,6 +219,8 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 		free(temp);
 		i++;
 	}
+	settings->max_x = len_max - 1;
+	settings->max_y = lists - 1; // TODO: проверить значения
 	len_max = 0;
 	while (settings->map[i - 1][len_max] != '\0')
 	{
@@ -241,48 +239,11 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 	map_chek(settings->map, 1, 0, settings);
 }
 
-void	optimaze_map(t_settings *settings)
-{
-	int i = 0;
-	int ii = 0;
-	
-	while(settings->map[i + 1] != NULL)
-	{
-		ii = 1;
-		while (settings->map[i][ii] != '\0')
-		{
-			if (settings->map[i][ii] == '1')
-			{
-				if (settings->map[i + 1][ii] == '0')
-					settings->map[i + 1][ii] = '5';
-				if (i > 0 && settings->map[i - 1][ii] == '0')
-					settings->map[i - 1][ii] = '5';
-				if (settings->map[i][ii + 1] == '0')
-					settings->map[i][ii + 1] = '5';
-				if (settings->map[i][ii - 1] == '0')
-					settings->map[i][ii - 1] = '5';
-				if (settings->map[i + 1][ii + 1] == '0')
-					settings->map[i + 1][ii + 1] = '5';
-				if (settings->map[i + 1][ii - 1] == '0')
-					settings->map[i + 1][ii - 1] = '5';
-				if (i > 0 && settings->map[i - 1][ii - 1] == '0')
-					settings->map[i - 1][ii - 1] = '5';
-				if (i > 0 && settings->map[i - 1][ii + 1] == '0')
-					settings->map[i - 1][ii + 1] = '5';
-			}
-			ii++;
-		}
-		i++;
-	}
-}
-
 void	read_map(int fd, t_settings *settings, char *line)
 {
 	t_list *head;
 	t_list *temp;
-	char	*line1;
 	int		i;
-	int		len;
 	int		len_max;
 
 	i = 1;
@@ -339,16 +300,12 @@ void	read_map(int fd, t_settings *settings, char *line)
 	printf("%d\n", temp->len);
 	close(fd);
 	pars_map(settings, len_max, i, head);
-	optimaze_map(settings);
 }
 
 void	read_settings(int fd, t_settings *settings)
 {
     char    *line;
-	char	*line1;
     int     i;
-	t_list *head;
-	t_list *temp;
 	
 	i = 0;
     while (get_next_line(fd, &line) == 1 && i < 8)
@@ -368,8 +325,6 @@ void	read_settings(int fd, t_settings *settings)
 			error(11);
 	}
 	i = 0;
-//	while (get_next_line(fd, &line) == 1)
-//		printf("%s\n", line);
 	while (line[i] != '\0')
 	{
 		if (line[i] == '1' || line[i] == ' ')
@@ -377,19 +332,6 @@ void	read_settings(int fd, t_settings *settings)
 		else
 			error(7);
 	}
-//	get_next_line(fd, &line);
-//	printf("%s\n", line);
 	read_map(fd, settings, line);
-//	if ((head = new_list(line)) == NULL)
-//		error(12);
-//	temp = head;
-//	printf("%s\n", temp->content);
-//	get_next_line(fd, &line1);
-//	temp->next = new_list(line);
-//	temp = temp->next;
-//	
-//	temp->next = new_list(line);
-//	temp = temp->next;
-//	printf("%d\n", fd);
 	close(fd);
 }

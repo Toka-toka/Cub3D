@@ -4,8 +4,7 @@ int	key_pressed_released(int keycode, t_settings *settings)
 {
 	if (keycode == ESC)
 	{
-		mlx_destroy_window(settings->win_3d->mlx_ptr, settings->win_3d->window_ptr);
-		mlx_destroy_window(settings->mlx_ptr, settings->window_ptr);
+		mlx_destroy_window(settings->win->mlx, settings->win->win);
 		exit(1);
 	}
 	if (keycode == 119 || keycode == UP)
@@ -35,7 +34,8 @@ int	actions_call(t_settings *settings)
 		move_right(settings);
 	if (settings->actions->turn_left == 1 || settings->actions->turn_right == 1)
 		turn(settings);
-	mlx_clear_window(settings->win_3d->mlx_ptr, settings->window_ptr);
-	map_hero_draw(settings);
+//	printf("orientation = %f/n", settings->orientation);
+	mlx_clear_window(settings->win->mlx, settings->win->win);
+	ray_emission(settings);
 	return(0);
 }

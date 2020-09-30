@@ -36,19 +36,6 @@
 # define RIGHT 65363
 # define ESC 65307
 
-typedef struct	s_win_3d
-{
-	void		*mlx;
-	void		*win;
-	void		*img;
-	void		*addr;
-	int			line_l;
-	int			bpp;
-	int			en;
-    void        *mlx_ptr;
-    void        *window_ptr;
-}				  t_win_3d;
-
 typedef struct	s_win
 {
 	void		*mlx;
@@ -58,6 +45,7 @@ typedef struct	s_win
 	int			line_l;
 	int			bpp;
 	int			en;
+	float		constant;
 }				  t_win;
 
 typedef struct			s_actions
@@ -83,14 +71,13 @@ typedef	struct		s_settings
     int             color_f[3];
     int             color_c[3];
     char            **map;
+    int             max_x;
+    int             max_y;
     char            orientation_flag;
     float           orientation;
     float           location_x;
-    float             location_y; 
-    void            *mlx_ptr;
-    void            *window_ptr;
+    float           location_y;
     t_win		    *win;
-    t_win_3d		*win_3d;
     t_actions      	*actions;
 }					t_settings;
 
@@ -115,5 +102,8 @@ void	move_left(t_settings *settings);
 void	move_right(t_settings *settings);
 void	turn(t_settings *settings);
 void	map_hero_draw(t_settings *settings);
+void	ray_emission(t_settings *settings);
+void	column_draw(float distanse, t_settings *settings, char orientation, int x);
+void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color);
 
 #endif

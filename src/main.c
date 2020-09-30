@@ -65,6 +65,12 @@ void	struct_clear(t_settings *settings)
     settings->path_ea = NULL;
     settings->path_s = NULL;
 	settings->orientation_flag = 0;
+	settings->actions->move_forward = 0;
+	settings->actions->move_backward = 0;
+	settings->actions->move_left = 0;
+	settings->actions->move_right = 0;
+	settings->actions->turn_left = 0;
+	settings->actions->turn_right = 0;
 //    settings->color_f[3] = NULL;
  //   settings->color_c[3] = NULL;
 }
@@ -108,17 +114,27 @@ void	struct_printclear(t_settings *settings)
 	free_char_arr((void**)settings->map);
 }
 
+int			init_mlx_magic(t_settings *settings, int resol_x, int resol_y, char *name)
+{
+	settings->win->mlx = mlx_init();
+	settings->win->win = mlx_new_window(settings->win->mlx, resol_x, resol_y, name);
+	if (settings->win->mlx == NULL || settings->win->win == NULL)
+		return(-1);
+	settings->win->img = mlx_new_image(settings->win->mlx, resol_x, resol_y);
+	settings->win->addr = mlx_get_data_addr(settings->win->img, &settings->win->bpp, &settings->win->line_l, &settings->win->en);
+	settings->win->constant = (float)settings->resol_x / 2 / tan(M_PI / 3);
+	return(0);
+}
+
 int			main(int argc, char** argv)
 {
 	int		i;
 	int		fd;
 	t_settings settings;
 	t_win		win;
-	t_win_3d	win_3d;
 	t_actions	actions;
 
 	settings.win = &win;
-	settings.win_3d = &win_3d;
 	settings.actions = &actions;
 	if (argc < 2 || argc > 3) // TODO: перенести в отделную функцию
 		error(0);
@@ -134,7 +150,12 @@ int			main(int argc, char** argv)
 	settings.save_flag = argc == 3 ? '1' : '0';
 	struct_clear(&settings);
 	read_settings(fd, &settings);
+	init_mlx_magic(&settings, settings.resol_x, settings.resol_y, argv[1]);
 //	struct_printclear(&settings); // TODO: настроить очистку памяти при выходе
-	init_window(&settings); // TODO: перенести инициализацию окна и луп-хуп сюда
+	ray_emission(&settings);
+	mlx_hook(settings.win->win, 2, 1L << 0, key_pressed_released, &settings);
+	mlx_hook(settings.win->win, 3, 1L << 1, key_pressed_released, &settings);
+	mlx_loop_hook(settings.win->mlx, actions_call, &settings);
+	mlx_loop(settings.win->mlx);
 	return (0);
 }
