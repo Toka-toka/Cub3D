@@ -7,7 +7,7 @@ int	key_pressed_released(int keycode, t_settings *settings)
 		mlx_destroy_window(settings->win->mlx, settings->win->win);
 		exit(1);
 	}
-	if (keycode == 119 || keycode == UP)
+	if (keycode == W || keycode == UP)
 		settings->actions->move_forward = settings->actions->move_forward == 0 ? 1 : 0;
 	if (keycode == S || keycode == DOWN)
 		settings->actions->move_backward = settings->actions->move_backward == 0 ? 1 : 0;

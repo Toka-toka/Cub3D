@@ -1,4 +1,5 @@
 # include "../includes/cub3D.h"
+# include <stdio.h>
 
 static t_list	*new_list(char *line)
 {
@@ -46,11 +47,11 @@ void	colors_pars(char **line, int *color) // TODO: перевести цвет �
 			i++;
 		}
 		i = 0;
-		while (new_line[i] != NULL)
-		{
-			printf("color[%d] = %s", i, new_line[i]);
-			i++;
-		}
+//		while (new_line[i] != NULL)
+//		{
+//			printf("color[%d] = %s", i, new_line[i]);
+//			i++;
+//		}
 		free_char_arr((void**)new_line);
 }
 
@@ -85,13 +86,13 @@ void	resolution_pars(char **line, t_settings *settings)
 	settings->resol_x = ft_atoi(line[1]);
 	settings->resol_y = ft_atoi(line[2]);
 
-	while(line[i] != NULL)
-	{
-		printf("\nline[i] = %s\n", line[i]);
-		i++;
-	}
-	printf("\nresol = %d\n", settings->resol_x);
-	printf("\nresol = %d\n", settings->resol_y);
+//	while(line[i] != NULL)
+//	{
+//		printf("\nline[i] = %s\n", line[i]);
+//		i++;
+//	}
+//	printf("\nresol = %d\n", settings->resol_x);
+//	printf("\nresol = %d\n", settings->resol_y);
 	free_char_arr((void**)line);
 }
 

@@ -12,7 +12,7 @@ void		error_print(char *error)
 
 int		error(int err) // TODO: передавать ошибки при вызове функций
 {
-	char	*error[22];
+	char	*error[25];
 
 	error[0] = "Invalid quantity of arguments\n";
 	error[1] = "Format of the 1-st argument is not '.cub'\n";

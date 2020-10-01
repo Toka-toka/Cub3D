@@ -14,7 +14,7 @@
 
 # define CUB3D_H
 
-# include "../minilibx-linux/mlx.h"
+# include "../minilibx_mac/mlx.h"
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <math.h>
@@ -26,15 +26,15 @@
 #  define CBSZ 32
 # endif
 
-# define W 119
-# define A 100
-# define S 115
-# define D 97
+# define W  13// 119
+# define A  0//100
+# define S 1//115
+# define D 2//97
 # define UP 65362
 # define DOWN 65364
-# define LEFT 65361
-# define RIGHT 65363
-# define ESC 65307
+# define LEFT 123//65361
+# define RIGHT 124//65363
+# define ESC 53//65307
 
 typedef struct	s_win
 {
