@@ -12,7 +12,7 @@ void		error_print(char *error)
 
 int		error(int err) // TODO: передавать ошибки при вызове функций
 {
-	char	*error[22];
+	char	*error[24];
 
 	error[0] = "Invalid quantity of arguments\n";
 	error[1] = "Format of the 1-st argument is not '.cub'\n";
@@ -37,6 +37,7 @@ int		error(int err) // TODO: передавать ошибки при вызов
 	error[20] = "Too much \\ less parametrs for color of floor \\ ceiling\n";
 	error[21] = "Wront symbols in color of floor \\ ceiling\n";
 	error[22] = "Incorrect color definition \\ ceiling\n";
+	error[23] = "Size of the textures is not 64x64, i can't init magic\n";
 
 	error_print(error[err]);
 	exit(-1);

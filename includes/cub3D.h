@@ -36,6 +36,18 @@
 # define RIGHT 65363
 # define ESC 65307
 
+typedef struct	s_xpm
+{
+    void		*img; // нужна
+    int         width;
+    int         height;
+
+	int 		*addr;
+	int			line_l; // нужна
+	int			bpp; // нужна
+	int			en; // нужна
+}				  t_xpm;
+
 typedef struct	s_win
 {
 	void		*mlx;
@@ -79,6 +91,7 @@ typedef	struct		s_settings
     float           location_y;
     t_win		    *win;
     t_actions      	*actions;
+    t_xpm           *xpm;
 }					t_settings;
 
 typedef struct		s_list
@@ -105,5 +118,6 @@ void	map_hero_draw(t_settings *settings);
 void	ray_emission(t_settings *settings);
 void	column_draw(float distanse, t_settings *settings, char orientation, int x);
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color);
+void	load_textures(t_settings *settings);
 
 #endif

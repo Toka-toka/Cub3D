@@ -198,6 +198,7 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 {
 	int i;
 
+
 	t_list *temp;
 	printf("lists = %d", lists);
 	settings->map = (char**)malloc((lists + 1) * sizeof(char *));

@@ -100,6 +100,7 @@ void	ray_emission(t_settings *settings)
 	
 	int i;
 
+//	load_textures(settings);
 	view_start = settings->orientation + M_PI / 6;
 	view_end = settings->orientation - M_PI / 6;
 	view_step = M_PI / 3 / settings->resol_x;

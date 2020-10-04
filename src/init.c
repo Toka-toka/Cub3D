@@ -48,14 +48,6 @@ void	pixel_hero(t_settings *settings, int color)
 		}
 		y++;
 	}
-//	y = settings->location_y;
-//	x = settings->location_x;
-//	while (settings->map[(int)y / CBSZ][(int)x / CBSZ] != '1')
-//		{
-//			y += sin(settings->orientation);
-//			x += cos(settings->orientation);
-//			my_mlx_pixel_put(settings, x, y, 0x20b2aa);
-//		}
 }
 
 void	map_hero_draw(t_settings *settings)
@@ -97,64 +89,46 @@ void	map_hero_draw(t_settings *settings)
 
 void column_draw(float distanse, t_settings *settings, char orientation, int x)
 {
-//	static int x;
-	int y;
-	int y_start_col;
-	float height;
-	int color;
 
-	if (orientation == 'N')
-		color = 0xff0000;
-	if (orientation == 'S')
-		color = 0xffff00;
-	if (orientation == 'W')
-		color = 0xffa500;
-	if (orientation == 'E')
-		color = 0xffc0cb;
+	int floor_h;
+	int ceiling_h;
+	float column_h;
+	int column_y;
+	float xpm_scale;
+	int y;
+
 	y = 0;
-	height = 32 / distanse * settings->win->constant;
-	y_start_col = settings->resol_y / 2 - height / 2;
-	while (y < settings->resol_y)
+	column_h = 32 / distanse * settings->win->constant;
+	xpm_scale = column_h / settings->xpm->height;
+	if (column_h >= settings->resol_y)
 	{
-		while (y < y_start_col && y < settings->resol_y)
-		{
-			my_mlx_pixel_put(settings, x, y, 0x87ceeb); 
-			y++;
-		}
-		while (height > 0 && y < settings->resol_y)
-		{
-			my_mlx_pixel_put(settings, x, y, color); 
-			height--;
-			y++;
-		}
-		my_mlx_pixel_put(settings, x, y, 0x708090);
+		floor_h = 0;
+		ceiling_h = 0;
+		column_y = (settings->resol_y - column_h) / 2;
+		column_h = column_y + settings->resol_y;
+	}
+	else
+	{
+		floor_h = (settings->resol_y - column_h) / 2;
+		ceiling_h = floor_h;
+		column_y = 0;
+	}
+	while (floor_h > 0)
+	{
+		my_mlx_pixel_put(settings, x, y, 0x87ceeb);
+		floor_h--;
 		y++;
 	}
-//	x++;
-//	if (x == settings->resol_x)
-//		x = 0;
+	while (column_y < column_h)
+	{
+		my_mlx_pixel_put(settings, x, y, 0xff0000);
+		column_y++;
+		y++;
+	}
+	while (ceiling_h > 0)
+	{
+		my_mlx_pixel_put(settings, x, y, 0x708090);
+		y++;
+		ceiling_h--;
+	}
 }
-/*
-int		color_column(float x, float y)
-{
-	static int x_prev;
-	static int y_prev;
-	static char nswe_prev;
-
-	if (remains_by_bits(y + 1, 32) == 0) //&& nswe_prev != 'E')// && (x_prev != (int)x && nswe_prev == 'S'))
-	{
-		x_prev = (int)x;
-		nswe_prev = 'S';
-		return(0xffff00); // yellow
-	}
-	else if (remains_by_bits(x, 32) == 0) // && (y_prev != (int)y && nswe_prev == 'E'))
-	{
-		y_prev = (int)y;
-		nswe_prev = 'E';
-		return(0xff0000); // red
-	}
-	else if (remains_by_bits(y, 32) == 0) // && remains_by_bits(x, 32) != 0)
-		return(0xff); // blue
-	else if (remains_by_bits(x + 1, 32) == 0)
-		return(0xffa500); // orange
-}*/

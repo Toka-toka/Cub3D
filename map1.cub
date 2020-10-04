@@ -1,9 +1,9 @@
 R 1900 1000
-NO ./textures/NO.cub
-SO ./textures/SO.cub
-WE ./textures/WE.cub
-EA ./textures/EA.cub
-S ./textures/S.cub
+NO ./textures/NO_TXT.xpm
+SO ./textures/SO_TXT.xpm
+WE ./textures/WE_TXT.xpm
+EA ./textures/EA_TXT.xpm
+S ./textures/S_TXT.xpm
 F 20,50,100
 C 25,3,2
 
