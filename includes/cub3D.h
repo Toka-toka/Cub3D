@@ -23,7 +23,7 @@
 #define _USE_MATH_DEFINES
 
 # ifndef CBSZ
-#  define CBSZ 32
+#  define CBSZ 1024
 # endif
 
 # define W 119
@@ -41,8 +41,8 @@ typedef struct	s_xpm
     void		*img; // нужна
     int         width;
     int         height;
-
-	int 		*addr;
+	int 		***addr;
+    int         **addr_no;
 	int			line_l; // нужна
 	int			bpp; // нужна
 	int			en; // нужна
@@ -116,8 +116,8 @@ void	move_right(t_settings *settings);
 void	turn(t_settings *settings);
 void	map_hero_draw(t_settings *settings);
 void	ray_emission(t_settings *settings);
-void	column_draw(float distanse, t_settings *settings, char orientation, int x);
+void	column_draw(float distanse, t_settings *settings, int plase, int x);
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color);
-void	load_textures(t_settings *settings);
+void	load_textures(t_settings *settings, t_xpm *xpm, char **line, int side);
 
 #endif

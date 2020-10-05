@@ -54,19 +54,6 @@ void	colors_pars(char **line, int *color) // TODO: перевести цвет �
 		free_char_arr((void**)new_line);
 }
 
-void	path_pars(char **line, char **way)
-{
-		int fd;
-//		printf("way = %s", *way);
-		if (*way != NULL)
-			error(19);
-		if (line[1] == NULL || line[2] != NULL || (fd = open(line[1], O_APPEND)) == -1)
-			error(18);
-		*way = line[1];
-		line[1] = ft_strdup("");
-		free_char_arr((void**)line);
-}
-
 void	resolution_pars(char **line, t_settings *settings)
 {
 	int i;
@@ -99,16 +86,16 @@ void		pars_settings(char **line, t_settings *settings)
 {
 	if (ft_memcmp(line[0], "R", 2) == 0)
 		resolution_pars(line, settings);
-	else if (ft_memcmp(line[0], "NO", 3) == 0)
-		path_pars(line, &settings->path_no);
-	else if (ft_memcmp(line[0], "SO", 3) == 0)
-		path_pars(line, &settings->path_so);
-	else if (ft_memcmp(line[0], "WE", 3) == 0)
-		path_pars(line, &settings->path_we);
 	else if (ft_memcmp(line[0], "EA", 3) == 0)
-		path_pars(line, &settings->path_ea);
+		load_textures(settings, settings->xpm, line, 0);
+	else if (ft_memcmp(line[0], "NO", 3) == 0)
+		load_textures(settings, settings->xpm, line, 1);
+	else if (ft_memcmp(line[0], "WE", 3) == 0)
+		load_textures(settings, settings->xpm, line, 2);
+	else if (ft_memcmp(line[0], "SO", 3) == 0)
+		load_textures(settings, settings->xpm, line, 3);
 	else if (ft_memcmp(line[0], "S", 2) == 0)
-		path_pars(line, &settings->path_s);
+		load_textures(settings, settings->xpm, line, 4);
 	else if (ft_memcmp(line[0], "F", 2) == 0)
 		colors_pars(line, settings->color_f);
 	else if (ft_memcmp(line[0], "C", 2) == 0)

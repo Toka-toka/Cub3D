@@ -1,5 +1,9 @@
 # include "../includes/cub3D.h"
 
+int remains_by_bits (int value, int base)
+{
+	return(value & (base - 1));
+}
 
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color)
 {
@@ -87,9 +91,10 @@ void	map_hero_draw(t_settings *settings)
 	pixel_hero (settings, color);
 }
 
-void column_draw(float distanse, t_settings *settings, char orientation, int x)
+void column_draw(float distanse, t_settings *settings, int plase, int side)
 {
 
+	static int x;
 	int floor_h;
 	int ceiling_h;
 	float column_h;
@@ -98,13 +103,14 @@ void column_draw(float distanse, t_settings *settings, char orientation, int x)
 	int y;
 
 	y = 0;
-	column_h = 32 / distanse * settings->win->constant;
+	column_h = CBSZ / distanse * settings->win->constant * 3;
 	xpm_scale = column_h / settings->xpm->height;
-	if (column_h >= settings->resol_y)
+	plase = remains_by_bits (plase, CBSZ);
+	if ((int)column_h >= settings->resol_y)
 	{
 		floor_h = 0;
 		ceiling_h = 0;
-		column_y = (settings->resol_y - column_h) / 2;
+		column_y = (column_h - settings->resol_y) / 2;
 		column_h = column_y + settings->resol_y;
 	}
 	else
@@ -121,7 +127,7 @@ void column_draw(float distanse, t_settings *settings, char orientation, int x)
 	}
 	while (column_y < column_h)
 	{
-		my_mlx_pixel_put(settings, x, y, 0xff0000);
+		my_mlx_pixel_put(settings, x, y, settings->xpm->addr[side][(int) (column_y / xpm_scale)][plase]);
 		column_y++;
 		y++;
 	}
@@ -131,4 +137,7 @@ void column_draw(float distanse, t_settings *settings, char orientation, int x)
 		y++;
 		ceiling_h--;
 	}
+	x++;
+	if (x > settings->resol_x)
+		x = 0;
 }

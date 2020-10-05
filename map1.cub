@@ -1,9 +1,9 @@
-R 1900 1000
-NO ./textures/NO_TXT.xpm
-SO ./textures/SO_TXT.xpm
-WE ./textures/WE_TXT.xpm
-EA ./textures/EA_TXT.xpm
-S ./textures/S_TXT.xpm
+R 2000 1000
+NO ./textures/NO.xpm
+SO ./textures/SO.xpm
+WE ./textures/WE.xpm
+EA ./textures/EA.xpm
+S ./textures/S.xpm
 F 20,50,100
 C 25,3,2
 
@@ -12,5 +12,5 @@ C 25,3,2
 100000000001
 100011000001
 100000000001
-10000N000001
+10000E000001
 111111111111

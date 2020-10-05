@@ -117,7 +117,6 @@ void	struct_printclear(t_settings *settings)
 
 int			init_mlx_magic(t_settings *settings, int resol_x, int resol_y, char *name)
 {
-	settings->win->mlx = mlx_init();
 	settings->win->win = mlx_new_window(settings->win->mlx, resol_x, resol_y, name);
 	if (settings->win->mlx == NULL || settings->win->win == NULL)
 		return(-1);
@@ -134,9 +133,13 @@ int			main(int argc, char** argv)
 	t_settings settings;
 	t_win		win;
 	t_actions	actions;
+	t_xpm xpm;
 
+	settings.xpm = &xpm; // TODO: убрать отсюда
+	xpm.addr = NULL;
 	settings.win = &win;
 	settings.actions = &actions;
+	settings.win->mlx = mlx_init();
 	if (argc < 2 || argc > 3) // TODO: перенести в отделную функцию
 		error(0);
 	if ((i = ft_strlen(argv[1])) < 4)
