@@ -35,23 +35,28 @@ void	drow_sprite(t_settings *settings, t_sprite *sprite)
 	int start_y;
 	int i;
 	int ii;
-	int scale;
+	float size;
+	int color;
 	float check;
+	float xpm_scale;
 
 	i = 0;
 	ii = 0;
-	scale = 300 * (float)(1000 / sprite->dist);
-	start_x = settings->resol_x / 2 - (settings->resol_x / (M_PI / 3)) * sprite->angle;
-	start_y = settings->resol_y / 2;
-	while (i < scale && (i + start_y) < settings->resol_y)
+	size = CBSZ / sprite->dist * 2000;
+	xpm_scale = size / 64;
+	start_x = settings->resol_x / 2 - (settings->resol_x / (M_PI / 3)) * sprite->angle - size / 2;
+	start_y = settings->resol_y / 2 - size / 2;
+	while (i < size && (i + start_y) < settings->resol_y)
 	{
 		ii = 0;
-		while (ii < scale && (ii + start_x) < settings->resol_x)
+		while (ii < size && (ii + start_x) < settings->resol_x)
 		{
 			if (settings->rays[start_x + ii] > sprite->dist)
 			{
 				check = settings->rays[start_x + ii];
-				my_mlx_pixel_put(settings, start_x + ii, start_y + i, sprite->color);
+				color = settings->xpm->addr[4][(int) (i / xpm_scale)][(int) (ii / xpm_scale)];
+				if (color != 0)
+					my_mlx_pixel_put(settings, start_x + ii, start_y + i, color);
 			}
 			ii++;
 		}

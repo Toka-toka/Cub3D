@@ -105,7 +105,7 @@ void		load_textures(t_settings *settings, t_xpm *xpm, char **line, int side)
 	array = (int*)mlx_get_data_addr(xpm->img, &xpm->bpp, &xpm->line_l, &xpm->en);
 	if (array == NULL)
 		error(23);
-	if (side == 1 || side == 0)
+	if (side == 1 || side == 0 || side == 4)
 		make_xpm(xpm, array, side);
 	else
 		make_xpm_revers(xpm, array, side);

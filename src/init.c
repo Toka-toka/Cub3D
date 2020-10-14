@@ -8,9 +8,11 @@ int remains_by_bits (int value, int base)
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color)
 {
     char    *pixel;
-
-    pixel = settings->win->addr + (y * settings->win->line_l + x * (settings->win->bpp / 8));
-    *(unsigned int*)pixel = color;
+	if (x >= 0 && y >= 0)
+	{
+    	pixel = settings->win->addr + (y * settings->win->line_l + x * (settings->win->bpp / 8));
+    	*(unsigned int*)pixel = color;
+	}
 }
 
 void	pixel_map(t_settings *settings, int x, int y, int color)
@@ -104,7 +106,7 @@ void column_draw(float distanse, t_settings *settings, int plase, int side)
 
 	y = 0;
 	column_h = CBSZ / distanse * settings->win->constant * 3;
-	xpm_scale = column_h / settings->xpm->height;
+	xpm_scale = column_h / settings->xpm->height; // TODO: сделать для каждой текстуры! Иначе берет просто по последней
 	plase = remains_by_bits (plase, CBSZ);
 	if ((int)column_h >= settings->resol_y)
 	{
