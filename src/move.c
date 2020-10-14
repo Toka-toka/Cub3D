@@ -15,8 +15,8 @@ void	move_forward(t_settings *settings)
 	
 	new_loc_y = settings->location_y;
 	new_loc_x = settings->location_x;
-	new_loc_y -= sin(settings->orientation) * CBSZ / 8;
-	new_loc_x += cos(settings->orientation) * CBSZ / 8;
+	new_loc_y -= (sin(settings->orientation) * CBSZ / 3); //* settings->actions->move_forward;
+	new_loc_x += (cos(settings->orientation) * CBSZ / 3); //* settings->actions->move_forward;
 	check_location (settings, new_loc_y, new_loc_x);
 }
 
@@ -27,8 +27,8 @@ void	move_backward(t_settings *settings)
 	
 	new_loc_y = settings->location_y;
 	new_loc_x = settings->location_x;
-	new_loc_y += sin(settings->orientation) * CBSZ / 8;
-	new_loc_x -= cos(settings->orientation) * CBSZ / 8;
+	new_loc_y += sin(settings->orientation) * CBSZ / 10;
+	new_loc_x -= cos(settings->orientation) * CBSZ / 10;
 	check_location (settings, new_loc_y, new_loc_x);
 }
 
@@ -39,8 +39,8 @@ void	move_left(t_settings *settings)
 	
 	new_loc_y = settings->location_y;
 	new_loc_x = settings->location_x;
-	new_loc_y -= cos(settings->orientation) * CBSZ / 8;
-	new_loc_x += sin(settings->orientation) * CBSZ / 8;
+	new_loc_y -= cos(settings->orientation) * CBSZ / 10;
+	new_loc_x += sin(settings->orientation) * CBSZ / 10;
 	check_location (settings, new_loc_y, new_loc_x);
 }
 
@@ -51,17 +51,17 @@ void	move_right(t_settings *settings)
 	
 	new_loc_y = settings->location_y;
 	new_loc_x = settings->location_x;
-	new_loc_y += cos(settings->orientation) * CBSZ / 8;
-	new_loc_x -= sin(settings->orientation) * CBSZ / 8;
+	new_loc_y += cos(settings->orientation) * CBSZ / 10;
+	new_loc_x -= sin(settings->orientation) * CBSZ / 10;
 	check_location (settings, new_loc_y, new_loc_x);
 }
 
 void	turn(t_settings *settings)
 {
 	if (settings->actions->turn_right == 1)
-		settings->orientation -= M_PI / 90;
+		settings->orientation -= M_PI / 45;
 	else if (settings->actions->turn_left == 1)
-		settings->orientation += M_PI / 90;
+		settings->orientation += M_PI / 45;
 	if (settings->orientation > M_PI * 2)
 		settings->orientation = 0;
 	else if (settings->orientation < 0)

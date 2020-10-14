@@ -57,28 +57,35 @@ void	colors_pars(char **line, int *color) // TODO: перевести цвет �
 void	resolution_pars(char **line, t_settings *settings)
 {
 	int i;
+	int ii;
+	int x;
+	int y;
 	
-	i = 0;
 	if (settings->resol_x != -1 && settings->resol_y != -1)
 		error(8);
 	if (line[3] != NULL || line[1] == NULL || line[2] == NULL)
 		error(9);
+	i = 0;
+	ii = 0;
 	while (line[1][i] != '\0')
 	{
 		if (line[1][i] < '0' || line[1][i] > '9')
 			error(10);
 		i++;
 	}
-	settings->resol_x = ft_atoi(line[1]);
-	settings->resol_y = ft_atoi(line[2]);
-
-	while(line[i] != NULL)
+	while (line[2][ii + 1] != '\0')
 	{
-		printf("\nline[i] = %s\n", line[i]);
-		i++;
+		if  (line[2][ii] < '0' || line[2][ii] > '9')
+			error(10);
+		ii++;
 	}
-	printf("\nresol = %d\n", settings->resol_x);
-	printf("\nresol = %d\n", settings->resol_y);
+	mlx_get_screen_size(settings->win->mlx, &x, &y);
+	if ((settings->resol_x = ft_atoi(line[1])) > x || i > 5)
+		settings->resol_x = x;
+	if ((settings->resol_y = ft_atoi(line[2])) > y || ii > 5)
+		settings->resol_y = y;
+	if (settings->resol_x == 0 || settings->resol_y == 0)
+		error(10);
 	free_char_arr((void**)line);
 }
 
@@ -131,8 +138,14 @@ void	map_chek(char **map, int i, int ii, t_settings *settings) // TODO: огро
 		}
 		while (map[i][ii] != '\0')
 		{
-			if (map[i][ii] == '1' || map[i][ii] == '2' || map[i][ii] == ' ')
+			if (map[i][ii] == '1' || map[i][ii] == ' ')
 				ii++;
+			else if (map[i][ii] == '2')
+			{
+				new_sprite(i, ii, settings);
+//				map[i][ii] = '0';
+				ii++;
+			}
 			else if (map[i][ii] == '0') 
 			{
 				if (map[i + 1][ii] == '\0' || map[i + 1][ii] == ' ')
@@ -160,8 +173,8 @@ void	map_chek(char **map, int i, int ii, t_settings *settings) // TODO: огро
 			else if (map[i][ii] == 'N' || map[i][ii] == 'S' || map[i][ii] == 'E' || map[i][ii] == 'W')
 			{
 				settings->orientation_flag == 0 ? settings->orientation_flag = map[i][ii] : error(16);
-				settings->location_x = ii * CBSZ;
-				settings->location_y = i * CBSZ;
+				settings->location_x = ii * CBSZ + CBSZ / 2;
+				settings->location_y = i * CBSZ + CBSZ / 2;
 				if (map[i][ii] == 'N')
 					settings->orientation = M_PI / 2;
 				if (map[i][ii] == 'S')

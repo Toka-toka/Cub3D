@@ -117,12 +117,15 @@ void	struct_printclear(t_settings *settings)
 
 int			init_mlx_magic(t_settings *settings, int resol_x, int resol_y, char *name)
 {
+	name = ft_strjoin("Cub3d:", name);
 	settings->win->win = mlx_new_window(settings->win->mlx, resol_x, resol_y, name);
 	if (settings->win->mlx == NULL || settings->win->win == NULL)
 		return(-1);
 	settings->win->img = mlx_new_image(settings->win->mlx, resol_x, resol_y);
 	settings->win->addr = mlx_get_data_addr(settings->win->img, &settings->win->bpp, &settings->win->line_l, &settings->win->en);
 	settings->win->constant = (float)settings->resol_x / 2 / tan(M_PI / 3);
+	settings->rays = (float *)malloc(sizeof(float) * resol_x);
+	free(name);
 	return(0);
 }
 
@@ -135,6 +138,7 @@ int			main(int argc, char** argv)
 	t_actions	actions;
 	t_xpm xpm;
 
+	settings.sprite = NULL;
 	settings.xpm = &xpm; // TODO: убрать отсюда
 	xpm.addr = NULL;
 	settings.win = &win;
@@ -154,12 +158,15 @@ int			main(int argc, char** argv)
 	settings.save_flag = argc == 3 ? '1' : '0';
 	struct_clear(&settings);
 	read_settings(fd, &settings);
+	argv[1][i] = '\0';
 	init_mlx_magic(&settings, settings.resol_x, settings.resol_y, argv[1]);
 //	struct_printclear(&settings); // TODO: настроить очистку памяти при выходе
-	ray_emission(&settings);
-	mlx_hook(settings.win->win, 2, 1L << 0, key_pressed_released, &settings);
-	mlx_hook(settings.win->win, 3, 1L << 1, key_pressed_released, &settings);
+	actions_call (&settings);
+	mlx_put_image_to_window(settings.win->mlx, settings.win->win, settings.win->img, 0, 0);
+	mlx_hook(settings.win->win, 2, 1L << 0, key_pressed, &settings);
+	mlx_hook(settings.win->win, 3, 1L << 1, key_released, &settings);
 	mlx_loop_hook(settings.win->mlx, actions_call, &settings);
 	mlx_loop(settings.win->mlx);
+	mlx_clear_window(win.mlx, win.win); // TODO: должна работать только при выходе
 	return (0);
 }

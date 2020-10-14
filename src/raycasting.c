@@ -7,10 +7,10 @@ int		cross_finder(t_settings *settings, float x, float y)
 	y = (int)y / CBSZ;
 	if (x > settings->max_x || y > settings->max_y || x < 0 || y < 0 || settings->map[(int)y][(int)x] == ' ')
 		return(-1);
-	else if (settings->map[(int)y][(int)x] == '0')
-		return(0);
-	else
+	else if (settings->map[(int)y][(int)x] == '1')
 		return(1);
+	else
+		return(0);
 }
 
 float	cross_vert(t_settings *settings, float ray_angle, int*	vert, int* side)
@@ -84,7 +84,6 @@ float	cross_horiz(t_settings *settings, float ray_angle, int* horiz, int* side)
 void	ray_emission(t_settings *settings)
 {
 	float view_start;
-	float view_end;
 	float view_step;
 	float dist_horiz;
 	float dist_vert;
@@ -98,7 +97,6 @@ void	ray_emission(t_settings *settings)
 	int i;
 
 	view_start = settings->orientation + M_PI / 6;
-	view_end = settings->orientation - M_PI / 6;
 	view_step = M_PI / 3 / settings->resol_x;
 	i = 0;
 	while (i <= settings->resol_x)
@@ -106,9 +104,15 @@ void	ray_emission(t_settings *settings)
 		dist_horiz = cross_horiz(settings, view_start, &horiz, &side_horiz);
 		dist_vert = cross_vert(settings, view_start, &vert, &side_vert);
 		if (dist_horiz < dist_vert)
+		{
 			column_draw(dist_horiz * cos(view_start - settings->orientation), settings, horiz, side_horiz);
+			settings->rays[i] = dist_horiz * cos(view_start - settings->orientation);
+		}
 		else
+		{
 			column_draw(dist_vert * cos(view_start - settings->orientation), settings, vert, side_vert);
+			settings->rays[i] = dist_vert * cos(view_start - settings->orientation);
+		}
 		view_start -= view_step;
 		i++;
 	}
@@ -126,5 +130,4 @@ void	ray_emission(t_settings *settings)
 		}
 		view_start -= view_step; 
 	} */
-	mlx_put_image_to_window(settings->win->mlx, settings->win->win, settings->win->img, 0, 0);
 }

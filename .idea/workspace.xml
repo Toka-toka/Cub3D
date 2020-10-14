@@ -10,13 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="030257a9-8404-4d92-93c8-f443569da2f7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cub3D" beforeDir="false" afterPath="$PROJECT_DIR$/cub3D" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/cub3D.h" beforeDir="false" afterPath="$PROJECT_DIR$/includes/cub3D.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/map1.cub" beforeDir="false" afterPath="$PROJECT_DIR$/map1.cub" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/init.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/init.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/key_events.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/key_events.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parsing.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/parsing.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/move.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/move.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +50,7 @@
       <workItem from="1598133883326" duration="540000" />
       <workItem from="1599410385822" duration="343000" />
       <workItem from="1599469571029" duration="99000" />
+      <workItem from="1602004047926" duration="9000" />
     </task>
     <servers />
   </component>
@@ -63,6 +62,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="418" y="210" width="1084" height="710" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1599469666528" />
+    <state x="662" y="354" width="586" height="396" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1602004054076">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="662" y="354" width="586" height="396" key="#com.intellij.fileTypes.FileTypeChooser/0.27.1920.1053@0.27.1920.1053" timestamp="1602004054076" />
     <state x="800" y="311" width="309" height="482" key="EnvironmentVariablesDialog" timestamp="1598134352328">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
