@@ -46,6 +46,23 @@ void	drow_sprite(t_settings *settings, t_sprite *sprite)
 	xpm_scale = size / 64;
 	start_x = settings->resol_x / 2 - (settings->resol_x / (M_PI / 3)) * sprite->angle - size / 2;
 	start_y = settings->resol_y / 2 - size / 2;
+	while (ii < size && (ii + start_x) < settings->resol_x)
+	{
+		if (settings->rays[start_x + ii] > sprite->dist)
+		{
+			i = 0;
+			while (i < size && (i + start_y) < settings->resol_y)
+			{
+				check = settings->rays[start_x + ii];
+				color = settings->xpm->addr[4][(int) (i / xpm_scale)][(int) (ii / xpm_scale)];
+				if (color != 0)
+					my_mlx_pixel_put(settings, start_x + ii, start_y + i, color);
+				i++;
+			}
+		}
+		ii++;
+	}
+/*
 	while (i < size && (i + start_y) < settings->resol_y)
 	{
 		ii = 0;
@@ -61,7 +78,7 @@ void	drow_sprite(t_settings *settings, t_sprite *sprite)
 			ii++;
 		}
 		i++;
-	}
+	}*/
 }
 
 void	sprite_sort(t_settings *settings)
