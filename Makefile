@@ -41,4 +41,7 @@ fclean: clean
 
 re: fclean all
 
+mac: 
+	gcc $(FLAGS) -g -o $(NAME) $(SRC) libft/libft.a -lmlx -framework OpenGL -framework AppKit
+
 bonus: all

@@ -100,6 +100,7 @@ void		load_textures(t_settings *settings, t_xpm *xpm, char **line, int side)
 	if (xpm->addr == NULL)
 		xpm->addr = (int***)malloc(5 * sizeof(int **));
 	xpm->img = mlx_xpm_file_to_image(settings->win->mlx, line[1], &xpm->width, &xpm->height); // TODO: проверка на нул
+	free_char_arr((void**)line);
 	if (xpm->img == NULL)
 		error(23);
 	array = (int*)mlx_get_data_addr(xpm->img, &xpm->bpp, &xpm->line_l, &xpm->en);

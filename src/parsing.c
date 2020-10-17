@@ -61,6 +61,8 @@ void	resolution_pars(char **line, t_settings *settings)
 	int x;
 	int y;
 	
+    x = 5120;
+    y = 2880;
 	if (settings->resol_x != -1 && settings->resol_y != -1)
 		error(8);
 	if (line[3] != NULL || line[1] == NULL || line[2] == NULL)
@@ -79,7 +81,7 @@ void	resolution_pars(char **line, t_settings *settings)
 			error(10);
 		ii++;
 	}
-	mlx_get_screen_size(settings->win->mlx, &x, &y);
+//	mlx_get_screen_size(settings->win->mlx, &x, &y);
 	if ((settings->resol_x = ft_atoi(line[1])) > x || i > 5)
 		settings->resol_x = x;
 	if ((settings->resol_y = ft_atoi(line[2])) > y || ii > 5)

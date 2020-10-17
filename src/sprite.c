@@ -102,7 +102,9 @@ void	sprite_sort(t_settings *settings)
 	while (current != NULL)
 	{
 		current->angle = atan2(settings->location_y - current->y, current->x - settings->location_x);
-		if (current->angle < 0 && settings->orientation > M_PI / 3)
+		if (current->angle < 0 && settings->orientation > M_PI / 6 && settings->orientation < (M_PI * 2 - M_PI / 6))
+			current->angle += 2 * M_PI;
+		else if (settings->orientation > (M_PI * 2 - M_PI / 6) && settings->orientation <= M_PI * 2)
 			current->angle += 2 * M_PI;
 		current->angle -= settings->orientation;
 		if (current->angle > - (M_PI / 6) && current->angle < M_PI / 6)
@@ -131,8 +133,9 @@ void	sprite_sort(t_settings *settings)
 			current = current->next;
 		}
 		if (dist_max != -1)
+		{
 			drow_sprite(settings, sprite_max);
-//		printf("dist_max = %f", dist_max);
-		sprite_max->dist = -1;
+			sprite_max->dist = -1;
+		}
 	}
 }

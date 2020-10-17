@@ -23,41 +23,18 @@
 #define _USE_MATH_DEFINES
 
 # ifndef CBSZ
-#  define CBSZ 1024
+#  define CBSZ 32
 # endif
 
-/*
-# define W 119
-# define A 100
-# define S 115
-# define D 97
+# define W  13// 119
+# define A  0//100
+# define S 1//115
+# define D 2//97
 # define UP 65362
 # define DOWN 65364
-# define LEFT 65361
-# define RIGHT 65363
-# define ESC 65307 */
-
-# define W  13 // 119
-# define A  0 //100
-# define S 1 //115
-# define D 2 //97
-# define UP 65362
-# define DOWN 65364
-# define LEFT 123 //65361
-# define RIGHT 124 //65363
-# define ESC 53 //65307
-
-typedef struct	s_xpm
-{
-    void		*img; // нужна
-    int         width;
-    int         height;
-	int 		***addr;
-    int         **addr_no;
-	int			line_l; // нужна
-	int			bpp; // нужна
-	int			en; // нужна
-}				  t_xpm;
+# define LEFT 123//65361
+# define RIGHT 124//65363
+# define ESC 53//65307
 
 typedef struct	s_win
 {
@@ -81,17 +58,6 @@ typedef struct			s_actions
 	int					turn_right;
 }						t_actions;
 
-typedef struct		s_sprite
-{
-	float           x;
-    float           y;
-    float           angle;
-    float           dist;
-    int 		    **addr;
-    int             color;
-	struct s_sprite	*next;
-}					t_sprite;
-
 typedef	struct		s_settings
 {
 	char            save_flag;
@@ -111,11 +77,8 @@ typedef	struct		s_settings
     float           orientation;
     float           location_x;
     float           location_y;
-    float           *rays;
     t_win		    *win;
     t_actions      	*actions;
-    t_xpm           *xpm;
-    t_sprite        *sprite;
 }					t_settings;
 
 typedef struct		s_list
@@ -130,8 +93,7 @@ void	read_settings(int fd, t_settings *settings);
 int		error(int err);
 void	free_char_arr(void **arr);
 void	init_window(t_settings *settings);
-int     key_pressed(int keycode, t_settings *settings);
-int     key_released(int keycode, t_settings *settings);
+int     key_pressed_released(int keycode, t_settings *settings);
 int 	actions_call(t_settings *settings);
 void    check_location (t_settings *settings, float new_loc_y, float new_loc_x);
 void	move_forward(t_settings *settings);
@@ -141,10 +103,7 @@ void	move_right(t_settings *settings);
 void	turn(t_settings *settings);
 void	map_hero_draw(t_settings *settings);
 void	ray_emission(t_settings *settings);
-void	column_draw(float distanse, t_settings *settings, int plase, int x);
+void	column_draw(float distanse, t_settings *settings, char orientation, int x);
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color);
-void	load_textures(t_settings *settings, t_xpm *xpm, char **line, int side);
-void	new_sprite(int x, int y, t_settings *settings);
-void	sprite_sort(t_settings *settings);
 
 #endif
