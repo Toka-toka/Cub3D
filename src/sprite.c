@@ -102,9 +102,9 @@ void	sprite_sort(t_settings *settings)
 	while (current != NULL)
 	{
 		current->angle = atan2(settings->location_y - current->y, current->x - settings->location_x);
-		if (current->angle < 0 && settings->orientation > M_PI / 6 && settings->orientation < (M_PI * 2 - M_PI / 6))
+		if (current->angle < 0 && settings->orientation >= M_PI / 6 && settings->orientation <= (M_PI * 2 - M_PI / 6))
 			current->angle += 2 * M_PI;
-		else if (settings->orientation > (M_PI * 2 - M_PI / 6) && settings->orientation <= M_PI * 2)
+		if (settings->orientation > (M_PI * 2 - M_PI / 6) && settings->orientation <= M_PI * 2)
 			current->angle += 2 * M_PI;
 		current->angle -= settings->orientation;
 		if (current->angle > - (M_PI / 6) && current->angle < M_PI / 6)

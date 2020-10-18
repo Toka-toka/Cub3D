@@ -47,18 +47,20 @@ int	key_released(int keycode, t_settings *settings)
 int	actions_call(t_settings *settings)
 {
 	if (settings->actions->move_forward == 1)
-		move_forward(settings);
+		move_forward_backward(settings, settings->location_y, settings->location_x, SPEED);
 	if (settings->actions->move_backward == 1)
-		move_backward(settings);
+		move_forward_backward(settings, settings->location_y, settings->location_x, -SPEED);
 	if (settings->actions->move_left == 1)
-		move_left(settings);
+		move_left_right(settings, settings->location_y, settings->location_x, SPEED / 2);
 	if (settings->actions->move_right == 1)
-		move_right(settings);
-	if (settings->actions->turn_left == 1 || settings->actions->turn_right == 1)
-		turn(settings);
+		move_left_right(settings, settings->location_y, settings->location_x, -SPEED / 2);
+	if (settings->actions->turn_left == 1)
+		turn(settings, M_PI / 90);
+	if (settings->actions->turn_right == 1)
+		turn(settings, - M_PI / 90);
 	ray_emission(settings);
 	sprite_sort(settings);
-//	mlx_do_sync(settings->win->mlx);
 	mlx_put_image_to_window(settings->win->mlx, settings->win->win, settings->win->img, 0, 0);
+	mlx_do_sync(settings->win->mlx);
 	return(0);
 }

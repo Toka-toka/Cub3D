@@ -14,7 +14,7 @@
 
 # define CUB3D_H
 
-# include "../minilibx_mac/mlx.h"
+# include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <math.h>
@@ -26,17 +26,17 @@
 #  define CBSZ 1024
 # endif
 
-/*
 # define W 119
-# define A 100
+# define A 97
 # define S 115
-# define D 97
+# define D 100
 # define UP 65362
 # define DOWN 65364
 # define LEFT 65361
 # define RIGHT 65363
-# define ESC 65307 */
-
+# define ESC 65307
+# define SPEED CBSZ / 7
+/*
 # define W  13 // 119
 # define A  0 //100
 # define S 1 //115
@@ -46,7 +46,7 @@
 # define LEFT 123 //65361
 # define RIGHT 124 //65363
 # define ESC 53 //65307
-
+*/
 typedef struct	s_xpm
 {
     void		*img; // нужна
@@ -133,12 +133,9 @@ void	init_window(t_settings *settings);
 int     key_pressed(int keycode, t_settings *settings);
 int     key_released(int keycode, t_settings *settings);
 int 	actions_call(t_settings *settings);
-void    check_location (t_settings *settings, float new_loc_y, float new_loc_x);
-void	move_forward(t_settings *settings);
-void	move_backward(t_settings *settings);
-void	move_left(t_settings *settings);
-void	move_right(t_settings *settings);
-void	turn(t_settings *settings);
+void	move_forward_backward(t_settings *settings, float new_loc_y, float new_loc_x, float speed);
+void	move_left_right(t_settings *settings, float new_loc_y, float new_loc_x, float speed);
+void	turn(t_settings *set, float spd);
 void	map_hero_draw(t_settings *settings);
 void	ray_emission(t_settings *settings);
 void	column_draw(float distanse, t_settings *settings, int plase, int x);

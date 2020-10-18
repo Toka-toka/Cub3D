@@ -1,69 +1,37 @@
-# include "../includes/cub3D.h"
+#include "../includes/cub3D.h"
 
-void check_location (t_settings *settings, float new_loc_y, float new_loc_x)
+void	check_location(t_settings *set, float new_y, float new_x)
 {
-	if (settings->map[(int)new_loc_y / CBSZ][(int)settings->location_x / CBSZ] != '1')
-		settings->location_y = new_loc_y;
-	if (settings->map[(int)settings->location_y / CBSZ][(int)new_loc_x / CBSZ] != '1')
-		settings->location_x = new_loc_x;
+	int y;
+	int x;
+
+	y = new_y / CBSZ;
+	x = new_x / CBSZ;
+	if (set->map[y][(int)set->location_x / CBSZ] != '1')
+		set->location_y = new_y;
+	if (set->map[(int)set->location_y / CBSZ][x] != '1')
+		set->location_x = new_x;
 }
 
-void	move_forward(t_settings *settings)
+void	move_forward_backward(t_settings *set, float y, float x, float spd)
 {
-	float new_loc_y;
-	float new_loc_x;
-	
-	new_loc_y = settings->location_y;
-	new_loc_x = settings->location_x;
-	new_loc_y -= sin(settings->orientation) * CBSZ / 10;
-	new_loc_x += cos(settings->orientation) * CBSZ / 10;
-	check_location (settings, new_loc_y, new_loc_x);
+	y -= sin(set->orientation) * spd;
+	x += cos(set->orientation) * spd;
+	check_location(set, y, x);
 }
 
-void	move_backward(t_settings *settings)
+void	move_left_right(t_settings *set, float y, float x, float spd)
 {
-	float new_loc_y;
-	float new_loc_x;
-	
-	new_loc_y = settings->location_y;
-	new_loc_x = settings->location_x;
-	new_loc_y += sin(settings->orientation) * CBSZ / 10;
-	new_loc_x -= cos(settings->orientation) * CBSZ / 10;
-	check_location (settings, new_loc_y, new_loc_x);
+	y -= cos(set->orientation) * spd;
+	x -= sin(set->orientation) * spd;
+	check_location(set, y, x);
 }
 
-void	move_left(t_settings *settings)
+void	turn(t_settings *set, float spd)
 {
-	float new_loc_y;
-	float new_loc_x;
-	
-	new_loc_y = settings->location_y;
-	new_loc_x = settings->location_x;
-	new_loc_y -= cos(settings->orientation) * CBSZ / 12;
-	new_loc_x -= sin(settings->orientation) * CBSZ / 12;
-	check_location (settings, new_loc_y, new_loc_x);
-}
-
-void	move_right(t_settings *settings)
-{
-	float new_loc_y;
-	float new_loc_x;	
-	
-	new_loc_y = settings->location_y;
-	new_loc_x = settings->location_x;
-	new_loc_y += cos(settings->orientation) * CBSZ / 12;
-	new_loc_x += sin(settings->orientation) * CBSZ / 12;
-	check_location (settings, new_loc_y, new_loc_x);
-}
-
-void	turn(t_settings *settings)
-{
-	if (settings->actions->turn_right == 1)
-		settings->orientation -= M_PI / 70;
-	else if (settings->actions->turn_left == 1)
-		settings->orientation += M_PI / 70;
-	if (settings->orientation > M_PI * 2)
-		settings->orientation = 0;
-	else if (settings->orientation < 0)
-		settings->orientation = M_PI * 2;
+	set->orientation += spd;
+	if (set->orientation > M_PI * 2)
+		set->orientation = 0;
+	else if (set->orientation < 0)
+		set->orientation = M_PI * 2;
 }
