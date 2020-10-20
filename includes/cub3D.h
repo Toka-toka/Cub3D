@@ -144,7 +144,7 @@ typedef struct		s_list
 
 int		main(int argc, char** argv);
 void	read_settings(int fd, t_settings *settings);
-int		error(char *err);
+int		error(char *err, t_settings *settings);
 void	free_char_arr(void **arr);
 void	init_window(t_settings *settings);
 int     key_pressed(int keycode, t_settings *settings);
@@ -160,5 +160,6 @@ void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color);
 void	load_textures(t_settings *settings, t_xpm *xpm, char **line, int side);
 void	new_sprite(int x, int y, t_settings *settings);
 void	sprite_sort(t_settings *settings);
+void	cuba_libre(t_settings *set);
 
 #endif

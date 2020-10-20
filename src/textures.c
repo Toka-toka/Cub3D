@@ -6,7 +6,7 @@ void		make_xpm_revers(t_xpm *xpm, int *array, int side)
 	int ii;
 	int iii;
 
-	xpm->addr = (int**)malloc(xpm->height * sizeof(int *)); //TODO: не защищены маллоки
+	xpm->addr = (int**)malloc((xpm->height + 1) * sizeof(int *)); //TODO: не защищены маллоки
 	i = 0;
 	while (i < xpm->height)
 	{
@@ -26,7 +26,7 @@ void		make_xpm_revers(t_xpm *xpm, int *array, int side)
 		}
 		ii++;
 	}
-//	free(array);
+	xpm->addr[xpm->height] = NULL;
 }
 
 void		make_xpm(t_xpm *xpm, int *array, int side)
@@ -35,7 +35,7 @@ void		make_xpm(t_xpm *xpm, int *array, int side)
 	int ii;
 	int iii;
 
-	xpm->addr = (int**)malloc(xpm->height * sizeof(int *));
+	xpm->addr = (int**)malloc((xpm->height + 1) * sizeof(int *));
 	i = 0;
 	while (i < xpm->height)
 	{
@@ -55,7 +55,7 @@ void		make_xpm(t_xpm *xpm, int *array, int side)
 		}
 		ii++;
 	}
-//	free(array);
+	xpm->addr[xpm->height] = NULL;
 }
 
 void		load_textures(t_settings *set, t_xpm *x, char **l, int side)
@@ -68,14 +68,14 @@ void		load_textures(t_settings *set, t_xpm *x, char **l, int side)
 	x->img = mlx_xpm_file_to_image(set->win->mlx, l[1], &x->width, &x->height);
 	free_char_arr((void**)l);
 	if (x->img == NULL)
-		error("Problem with textures");
+		error("Problem with textures", set);
 	array = (int*)mlx_get_data_addr(x->img, &bpp, &line_l, &en);
 	x->wid_scale = (float)x->width / (float)CBSZ;
 	if (array == NULL)
-		error("Problem with textures");
+		error("Problem with textures", set);
 	if (side == 1 || side == 0 || side == 4)
 		make_xpm(x, array, side);
 	else
 		make_xpm_revers(x, array, side);
-//	free(array);
+	mlx_destroy_image (set->win->mlx, x->img);
 }

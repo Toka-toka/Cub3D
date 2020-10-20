@@ -19,7 +19,7 @@ void	new_sprite(int y, int x, t_settings *set)
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		if (!(new = (t_sprite *)malloc(sizeof(t_sprite))))
-			error("Malloc problem(fn_new_sprite)");
+			error("Malloc problem(fn_new_sprite)", set);
 		new->x = x * CBSZ + CBSZ / 2;
 		new->y = y * CBSZ + CBSZ / 2;
 		new->next = NULL;
@@ -36,11 +36,14 @@ void	drow_sprite(t_settings *set, t_sprite *sprite)
 	float	size;
 	int		color;
 	float	xpm_scale;
+	float	scale_x;
+	float	scale_y;
 
 	i = 0;
 	ii = 0;
 	size = CBSZ / sprite->dist * 2000;
-	xpm_scale = size / 64;
+	scale_x = size / set->xpm[4].width;
+	scale_y = size / set->xpm[4].height;
 	start_x = set->resol_x / 2 - (set->resol_x / (M_PI / 3)) * sprite->angle - size / 2;
 	start_y = set->resol_y / 2 - size / 2;
 	while (ii < size && (ii + start_x) < set->resol_x)
@@ -50,7 +53,7 @@ void	drow_sprite(t_settings *set, t_sprite *sprite)
 			i = 0;
 			while (i < size && (i + start_y) < set->resol_y)
 			{
-				color = set->xpm[4].addr[(int)(i / xpm_scale)][(int)(ii / xpm_scale)];
+				color = set->xpm[4].addr[(int)(i / scale_y)][(int)(ii / scale_x)];
 				if (color != 0)
 					my_mlx_pixel_put(set, start_x + ii, start_y + i, color);
 				i++;

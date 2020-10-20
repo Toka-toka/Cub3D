@@ -11,7 +11,7 @@ static t_list	*new_list(char *line)
 	return (new);
 }
 
-void	colors_pars(char **line, int *color) // TODO: перевести цвет в инт по битам
+void	colors_pars(char **line, int *color, t_settings *settings) // TODO: перевести цвет в инт по битам
 {
 		int i;
 		int	ii;
@@ -19,11 +19,11 @@ void	colors_pars(char **line, int *color) // TODO: перевести цвет �
 
 		printf("color[%d] = %s\n", 0, line[1]);
 		if (line[1] == NULL || line[2] != NULL)
-			error("Too much \\ less parametrs for color of floor \\ ceiling\n");
+			error("Too much \\ less parametrs for color of floor \\ ceiling\n", settings);
 		new_line = ft_split(line[1], ',');
 		free_char_arr((void**)line);
 		if (new_line[0] == NULL || new_line[1] == NULL || new_line[2] == NULL || new_line[3] != NULL)
-			error("Too much \\ less parametrs for color of floor \\ ceiling\n");
+			error("Too much \\ less parametrs for color of floor \\ ceiling\n", settings);
 		i = 0;
 		while(new_line[i] != NULL)
 		{
@@ -31,7 +31,7 @@ void	colors_pars(char **line, int *color) // TODO: перевести цвет �
 			while(new_line[i][ii] != '\0')
 			{
 				if (new_line[i][ii] < '0' || new_line[i][ii] > '9')
-					error("Wront symbols in color of floor \\ ceiling\n");
+					error("Wront symbols in color of floor \\ ceiling\n", settings);
 				ii++;
 			}
 			i++;
@@ -42,7 +42,7 @@ void	colors_pars(char **line, int *color) // TODO: перевести цвет �
 			color[i] = ft_atoi(new_line[i]);
 			printf("color[%d] = %d\n", i, color[i]);
 			if (color[i] < 0 || color[i] > 255)
-				error("Incorrect color definition \\ ceiling\n");
+				error("Incorrect color definition \\ ceiling\n", settings);
 			i++;
 		}
 		i = 0;
@@ -61,24 +61,24 @@ void	resolution_pars(char **line, t_settings *settings)
 	int x;
 	int y;
 	
-    x = 5120;
-    y = 2880;
+//    x = 5120;
+//    y = 2880;
 	if (settings->resol_x != -1 && settings->resol_y != -1)
-		error("Double R\n");
+		error("Double R\n", settings);
 	if (line[3] != NULL || line[1] == NULL || line[2] == NULL)
-		error("Too much \\ less parametrs for R\n");
+		error("Too much \\ less parametrs for R\n", settings);
 	i = 0;
 	ii = 0;
 	while (line[1][i] != '\0')
 	{
 		if (line[1][i] < '0' || line[1][i] > '9')
-			error("Wrong simbols in R\n");
+			error("Wrong simbols in R\n", settings);
 		i++;
 	}
 	while (line[2][ii + 1] != '\0')
 	{
 		if  (line[2][ii] < '0' || line[2][ii] > '9')
-			error("Wrong simbols in R\n");
+			error("Wrong simbols in R\n", settings);
 		ii++;
 	}
 	mlx_get_screen_size(settings->win->mlx, &x, &y);
@@ -87,7 +87,7 @@ void	resolution_pars(char **line, t_settings *settings)
 	if ((settings->resol_y = ft_atoi(line[2])) > y || ii > 5)
 		settings->resol_y = y;
 	if (settings->resol_x == 0 || settings->resol_y == 0)
-		error("Wrong simbols in R\n");
+		error("Wrong simbols in R\n", settings);
 	free_char_arr((void**)line);
 }
 
@@ -106,11 +106,11 @@ void		pars_settings(char **line, t_settings *settings)
 	else if (ft_memcmp(line[0], "S", 2) == 0)
 		load_textures(settings, &settings->xpm[4], line, 4);
 	else if (ft_memcmp(line[0], "F", 2) == 0)
-		colors_pars(line, settings->color_f);
+		colors_pars(line, settings->color_f, settings);
 	else if (ft_memcmp(line[0], "C", 2) == 0)
-		colors_pars(line, settings->color_c);
+		colors_pars(line, settings->color_c, settings);
 	else
-		error("Invalid name or quantity of settings in file .cub\n");
+		error("Invalid name or quantity of settings in file .cub\n", settings);
 //	while(line[i] != NULL)
 //	{
 //		free(line[i]);
@@ -136,7 +136,7 @@ void	map_chek(char **map, int i, int ii, t_settings *settings) // TODO: огро
 		if (map[i][ii] == '0')
 		{
 			printf("Error here 1");
-			error("The map is not closed\n");
+			error("The map is not closed\n", settings);
 		}
 		while (map[i][ii] != '\0')
 		{
@@ -153,29 +153,29 @@ void	map_chek(char **map, int i, int ii, t_settings *settings) // TODO: огро
 				if (map[i + 1][ii] == '\0' || map[i + 1][ii] == ' ')
 				{
 					printf("Error here 2");
-					error("The map is not closed\n");
+					error("The map is not closed\n", settings);
 				}
 				if (map[i - 1][ii] == '\0' || map[i - 1][ii] == ' ')
 				{
 					printf("Error here 3");
-					error("The map is not closed\n");
+					error("The map is not closed\n", settings);
 				}
 				if (map[i][ii + 1] == '\0' || map[i][ii + 1] == ' ')
 				{
 					printf("Error here 4");
-					error("The map is not closed\n");
+					error("The map is not closed\n", settings);
 				}
 				if (map[i][ii - 1] == '\0' || map[i][ii - 1] == ' ')
 				{
 					printf("Error here 5");
-					error("The map is not closed\n");
+					error("The map is not closed\n", settings);
 				}
 				ii++;
 			}
 			else if (map[i][ii] == 'N' || map[i][ii] == 'S' || map[i][ii] == 'E' || map[i][ii] == 'W')
 			{
 				if (settings->plr->pov != 0)
-					error("Double camera plase\n");
+					error("Double camera plase\n", settings);
 				settings->plr->x = ii * CBSZ + CBSZ / 2;
 				settings->plr->y = i * CBSZ + CBSZ / 2;
 				if (map[i][ii] == 'N')
@@ -189,12 +189,12 @@ void	map_chek(char **map, int i, int ii, t_settings *settings) // TODO: огро
 				map[i][ii] = '0';
 				ii++;
 			}
-			else error("Invalid symbol in map\n");
+			else error("Invalid symbol in map\n", settings);
 		}
 		i++;
 	}
 	if (settings->plr->pov == 0)
-		error("No camera plase\n");
+		error("No camera plase\n", settings);
 }
 
 void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
@@ -213,7 +213,7 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 		if (head->content[head->len - 1] != '1' || head->content[0] == '0')
 		{
 			printf("Error here 6");				
-			error("The map is not closed\n");
+			error("The map is not closed\n", settings);
 		}
 		settings->map[i] = (char*)ft_calloc((len_max + 1), sizeof(char ));
 		settings->map[i] = ft_memcpy(settings->map[i], head->content, head->len);
@@ -231,7 +231,7 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 		if (settings->map[i - 1][len_max] == '1' || settings->map[i - 1][len_max] == ' ')
 			len_max++;
 		else
-			error("The last line of a map is invalid\n");
+			error("The last line of a map is invalid\n", settings);
 	}
 	settings->map[i] = NULL;
 	i = 0;
@@ -253,7 +253,7 @@ void	read_map(int fd, t_settings *settings, char *line)
 	i = 1;
 //	printf("%s\n", *line);
 	if ((head = new_list(line)) == NULL)
-		error("Malloc problem (fn_read_map)");
+		error("Malloc problem (fn_read_map)", settings);
 	len_max = ft_strlen(line);
 	head->len = len_max;
 	printf("head->len = %d\n", head->len);
@@ -276,7 +276,7 @@ void	read_map(int fd, t_settings *settings, char *line)
 	{
 //		printf("%s\n", *line);
 		if ((temp->next = new_list(line)) == NULL)
-			error("Malloc problem (fn_read_map)");
+			error("Malloc problem (fn_read_map)", settings);
 		temp = temp->next;
 		temp->len = ft_strlen(line);
 		len_max = len_max > temp->len ? len_max : temp->len;
@@ -326,7 +326,7 @@ void	read_settings(int fd, t_settings *settings)
 	{
 		free(line);
 		if (get_next_line(fd, &line) != 1)
-			error("There is no map in file .cub?!\n");
+			error("There is no map in file .cub?!\n", settings);
 	}
 	i = 0;
 	while (line[i] != '\0')
@@ -334,7 +334,7 @@ void	read_settings(int fd, t_settings *settings)
 		if (line[i] == '1' || line[i] == ' ')
 			i++;
 		else
-			error("Too many settings in file .cub");
+			error("Too many settings in file .cub", settings);
 	}
 	read_map(fd, settings, line);
 	close(fd);
