@@ -1,45 +1,10 @@
 # include "../includes/cub3D.h"
 
-void		error_print(char *error)
+int		error(char *error)
 {
-//	int i;
-	
-//	i = 0;
 	write(2, "Error\n", 6);
 	while (*error)
-		write(2, error++, 1);
-}
-
-int		error(int err) // TODO: передавать ошибки при вызове функций
-{
-	char	*error[24];
-
-	error[0] = "Invalid quantity of arguments\n";
-	error[1] = "Format of the 1-st argument is not '.cub'\n";
-	error[2] = "Second argument is not '––save'\n";
-	error[3] = "File can not open\n";
-	error[4] = "Malloc problem\n";
-	error[5] = "Some settings are missing\n";
-	error[6] = "Invalid name or quantity of settings in file .cub\n";
-	error[7] = "Too many settings in file .cub or invalid 1-st line of a map\n";
-	error[8] = "Double R\n";
-	error[9] = "Too much \\ less parametrs for R\n";
-	error[10] = "Wrong simbols in R\n";
-	error[11] = "There is no map in file .cub?!\n";
-	error[12] = "Something wrong whis list\n";
-	error[13] = "The map is not closed\n";
-	error[14] = "The last line of a map is invalid\n";
-	error[15] = "Invalid symbol in map\n";
-	error[16] = "Double camera plase\n";
-	error[17] = "No camera plase\n";
-	error[18] = "Wrong way to texture\n";
-	error[19] = "Double path\n";
-	error[20] = "Too much \\ less parametrs for color of floor \\ ceiling\n";
-	error[21] = "Wront symbols in color of floor \\ ceiling\n";
-	error[22] = "Incorrect color definition \\ ceiling\n";
-	error[23] = "Size of the textures is not 64x64, i can't init magic\n";
-
-	error_print(error[err]);
+		write(2, error++, 1); // Освободжение памяти ?
 	exit(-1);
 }
 
@@ -65,7 +30,7 @@ void	struct_clear(t_settings *settings)
     settings->path_we = NULL;
     settings->path_ea = NULL;
     settings->path_s = NULL;
-	settings->orientation_flag = 0;
+	settings->plr->pov = 0;
 	settings->actions->move_forward = 0;
 	settings->actions->move_backward = 0;
 	settings->actions->move_left = 0;
@@ -106,7 +71,6 @@ void	struct_printclear(t_settings *settings)
 		printf("map[%d] = %s\n", i, settings->map[i]);
 		i++;
 	}
-	printf("orientation_flag = %c\n", settings->orientation_flag);
 	free(settings->path_no);
 	free(settings->path_so);
 	free(settings->path_we);
@@ -124,8 +88,18 @@ int			init_mlx_magic(t_settings *settings, int resol_x, int resol_y, char *name)
 	settings->win->img = mlx_new_image(settings->win->mlx, resol_x, resol_y);
 	settings->win->addr = mlx_get_data_addr(settings->win->img, &settings->win->bpp, &settings->win->line_l, &settings->win->en);
 	settings->win->constant = (float)settings->resol_x / 2 / tan(M_PI / 3);
-	settings->rays = (float *)malloc(sizeof(float) * resol_x);
+	settings->ray->all_dist = (float *)malloc(sizeof(float) * resol_x);
+	settings->ray->step = M_PI / 3 / settings->resol_x;
 	free(name);
+	return(0);
+}
+
+int		exit_game(int key, t_settings *settings)
+{
+	printf("Good bye!");
+	//mlx_destroy_image(settings->win->mlx, settings->win->img);
+	//mlx_destroy_window(settings->win->mlx, settings->win->win);
+	exit(1);
 	return(0);
 }
 
@@ -133,40 +107,41 @@ int			main(int argc, char** argv)
 {
 	int		i;
 	int		fd;
+
+	int value;
 	t_settings settings;
 	t_win		win;
 	t_actions	actions;
-	t_xpm xpm;
+	t_player plr;
+	t_ray ray;
 
 	settings.sprite = NULL;
-	settings.xpm = &xpm; // TODO: убрать отсюда
-	xpm.addr = NULL;
 	settings.win = &win;
 	settings.actions = &actions;
+	settings.plr = &plr;
+	settings.ray = &ray;
 	settings.win->mlx = mlx_init();
 	if (argc < 2 || argc > 3) // TODO: перенести в отделную функцию
-		error(0);
+		error("Invalid quantity of arguments\n");
 	if ((i = ft_strlen(argv[1])) < 4)
-		error(1);
+		error("1-st argument is not '.cub'\n");
 	i -= 4;
 	if ((ft_strncmp(argv[1] + i, ".cub", 5)) != 0)
-		error(1);
+		error("1-st argument is not '.cub'\n");
 	if (argc == 3 && (ft_strncmp(argv[2], "--save", 7) != 0))
-		error(2);
+		error("Second argument is not '––save'\n");
 	if((fd = open(argv[1], O_APPEND)) == -1)
-		error(3);
+		error("File cannot be opened\n");
 	settings.save_flag = argc == 3 ? '1' : '0';
 	struct_clear(&settings);
 	read_settings(fd, &settings);
 	argv[1][i] = '\0';
 	init_mlx_magic(&settings, settings.resol_x, settings.resol_y, argv[1]);
-//	struct_printclear(&settings); // TODO: настроить очистку памяти при выходе
-	actions_call (&settings);
-	mlx_put_image_to_window(settings.win->mlx, settings.win->win, settings.win->img, 0, 0);
+	mlx_hook(settings.win->win, 17, 1L << 17, exit_game, &settings);
 	mlx_hook(settings.win->win, 2, 1L << 0, key_pressed, &settings);
 	mlx_hook(settings.win->win, 3, 1L << 1, key_released, &settings);
 	mlx_loop_hook(settings.win->mlx, actions_call, &settings);
 	mlx_loop(settings.win->mlx);
-	mlx_clear_window(win.mlx, win.win); // TODO: должна работать только при выходе
-	return (0);
+//	mlx_clear_window(win.mlx, win.win); // TODO: должна работать только при выходе
+	return(0);
 }

@@ -18,6 +18,7 @@
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <math.h>
+# include <limits.h>
 //# include <stdio.h>
 
 #define _USE_MATH_DEFINES
@@ -47,16 +48,29 @@
 # define RIGHT 124 //65363
 # define ESC 53 //65307
 */
+
+typedef struct	s_ray
+{
+    float       step;
+    float       angle;
+    float       tg;
+    float       x_step;
+    float       y_step;
+    int         x_midl;
+    int         y_midl;
+    float       dist;
+	int         side;
+    int         plase;
+    float       *all_dist;
+}				  t_ray;
+
 typedef struct	s_xpm
 {
     void		*img; // нужна
     int         width;
+    float       wid_scale;
     int         height;
-	int 		***addr;
-    int         **addr_no;
-	int			line_l; // нужна
-	int			bpp; // нужна
-	int			en; // нужна
+	int 		**addr;
 }				  t_xpm;
 
 typedef struct	s_win
@@ -88,9 +102,15 @@ typedef struct		s_sprite
     float           angle;
     float           dist;
     int 		    **addr;
-    int             color;
 	struct s_sprite	*next;
 }					t_sprite;
+
+typedef	struct		s_player
+{
+    float           x;
+    float           y;
+    float           pov;
+}					t_player;
 
 typedef	struct		s_settings
 {
@@ -107,15 +127,12 @@ typedef	struct		s_settings
     char            **map;
     int             max_x;
     int             max_y;
-    char            orientation_flag;
-    float           orientation;
-    float           location_x;
-    float           location_y;
-    float           *rays;
     t_win		    *win;
     t_actions      	*actions;
-    t_xpm           *xpm;
+    t_xpm           xpm[5];
     t_sprite        *sprite;
+    t_player        *plr;
+    t_ray           *ray;
 }					t_settings;
 
 typedef struct		s_list
@@ -127,7 +144,7 @@ typedef struct		s_list
 
 int		main(int argc, char** argv);
 void	read_settings(int fd, t_settings *settings);
-int		error(int err);
+int		error(char *err);
 void	free_char_arr(void **arr);
 void	init_window(t_settings *settings);
 int     key_pressed(int keycode, t_settings *settings);
@@ -137,8 +154,8 @@ void	move_forward_backward(t_settings *settings, float new_loc_y, float new_loc_
 void	move_left_right(t_settings *settings, float new_loc_y, float new_loc_x, float speed);
 void	turn(t_settings *set, float spd);
 void	map_hero_draw(t_settings *settings);
-void	ray_emission(t_settings *settings);
-void	column_draw(float distanse, t_settings *settings, int plase, int x);
+void	ray_emission(t_settings *set, float	view_start, int i);
+void    column_draw(t_settings *settings, float distanse, int side, int plase);
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color);
 void	load_textures(t_settings *settings, t_xpm *xpm, char **line, int side);
 void	new_sprite(int x, int y, t_settings *settings);

@@ -1,10 +1,5 @@
 # include "../includes/cub3D.h"
 
-int remains_by_bits (int value, int base)
-{
-	return(value & (base - 1));
-}
-
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color)
 {
     char    *pixel;
@@ -49,7 +44,7 @@ void	pixel_hero(t_settings *settings, int color)
 		x = 0;
 		while (x < 8)
 		{		
-			my_mlx_pixel_put(settings, settings->location_x + x - 4, settings->location_y + y - 4, 0xff0000);
+			my_mlx_pixel_put(settings, settings->plr->x + x - 4, settings->plr->y + y - 4, 0xff0000);
 			x++;
 		}
 		y++;
@@ -93,7 +88,7 @@ void	map_hero_draw(t_settings *settings)
 	pixel_hero (settings, color);
 }
 
-void column_draw(float distanse, t_settings *settings, int plase, int side)
+void column_draw(t_settings *settings, float distanse, int side, int plase)
 {
 
 	static int x;
@@ -106,8 +101,8 @@ void column_draw(float distanse, t_settings *settings, int plase, int side)
 
 	y = 0;
 	column_h = CBSZ / distanse * settings->win->constant * 3;
-	xpm_scale = column_h / settings->xpm->height; // TODO: сделать для каждой текстуры! Иначе берет просто по последней
-	plase = remains_by_bits (plase, CBSZ);
+	xpm_scale = column_h / settings->xpm[side].height; // TODO: сделать для каждой текстуры! Иначе берет просто по последней
+//	plase = remains_by_bits (plase, CBSZ);
 	if ((int)column_h >= settings->resol_y)
 	{
 		floor_h = 0;
@@ -127,9 +122,10 @@ void column_draw(float distanse, t_settings *settings, int plase, int side)
 		floor_h--;
 		y++;
 	}
+	plase = plase * settings->xpm[side].wid_scale;
 	while (column_y < column_h)
 	{
-		my_mlx_pixel_put(settings, x, y, settings->xpm->addr[side][(int) (column_y / xpm_scale)][plase]);
+		my_mlx_pixel_put(settings, x, y, settings->xpm[side].addr[(int) (column_y / xpm_scale)][plase]);
 		column_y++;
 		y++;
 	}
