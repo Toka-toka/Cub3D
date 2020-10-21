@@ -41,7 +41,7 @@ void	drow_sprite(t_settings *set, t_sprite *sprite)
 
 	i = 0;
 	ii = 0;
-	size = CBSZ / sprite->dist * 2000;
+	size = CBSZ / sprite->dist * set->xpm[4].width; //* 500;
 	scale_x = size / set->xpm[4].width;
 	scale_y = size / set->xpm[4].height;
 	start_x = set->resol_x / 2 - (set->resol_x / (M_PI / 3)) * sprite->angle - size / 2;

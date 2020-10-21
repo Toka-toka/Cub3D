@@ -11,13 +11,12 @@ static t_list	*new_list(char *line)
 	return (new);
 }
 
-void	colors_pars(char **line, int *color, t_settings *settings) // TODO: перевести цвет в инт по битам
+void	colors_pars(char **line, int *color, t_settings *settings)
 {
 		int i;
 		int	ii;
 		char **new_line;
 
-		printf("color[%d] = %s\n", 0, line[1]);
 		if (line[1] == NULL || line[2] != NULL)
 			error("Too much \\ less parametrs for color of floor \\ ceiling\n", settings);
 		new_line = ft_split(line[1], ',');
@@ -40,15 +39,8 @@ void	colors_pars(char **line, int *color, t_settings *settings) // TODO: пер�
 		while (i < 3)
 		{
 			color[i] = ft_atoi(new_line[i]);
-			printf("color[%d] = %d\n", i, color[i]);
 			if (color[i] < 0 || color[i] > 255)
 				error("Incorrect color definition \\ ceiling\n", settings);
-			i++;
-		}
-		i = 0;
-		while (new_line[i] != NULL)
-		{
-			printf("color[%d] = %s", i, new_line[i]);
 			i++;
 		}
 		free_char_arr((void**)new_line);
@@ -87,7 +79,7 @@ void	resolution_pars(char **line, t_settings *settings)
 	if ((settings->resol_y = ft_atoi(line[2])) > y || ii > 5)
 		settings->resol_y = y;
 	if (settings->resol_x == 0 || settings->resol_y == 0)
-		error("Wrong simbols in R\n", settings);
+		error("R_x or R_y = 0\n", settings);
 	free_char_arr((void**)line);
 }
 
@@ -111,136 +103,6 @@ void		pars_settings(char **line, t_settings *settings)
 		colors_pars(line, settings->color_c, settings);
 	else
 		error("Invalid name or quantity of settings in file .cub\n", settings);
-//	while(line[i] != NULL)
-//	{
-//		free(line[i]);
-//		i++;
-//	}
-//	free(line[0]);
-//	free(**line);
-}
-
-/*	int		iii; 
-	static	t_list	*head;
-	t_list			*temp;
-	char	**split;
-	char	color[12]; */
-
-void	map_chek(char **map, int i, int ii, t_settings *settings) // TODO: огромная функция!!!))
-{
-	while(map[i + 1] != NULL)
-	{
-		ii = 0;
-		while (map[i][ii] == ' ')
-			ii++;
-		if (map[i][ii] == '0')
-		{
-			printf("Error here 1");
-			error("The map is not closed\n", settings);
-		}
-		while (map[i][ii] != '\0')
-		{
-			if (map[i][ii] == '1' || map[i][ii] == ' ')
-				ii++;
-			else if (map[i][ii] == '2')
-			{
-				new_sprite(i, ii, settings);
-//				map[i][ii] = '0';
-				ii++;
-			}
-			else if (map[i][ii] == '0') 
-			{
-				if (map[i + 1][ii] == '\0' || map[i + 1][ii] == ' ')
-				{
-					printf("Error here 2");
-					error("The map is not closed\n", settings);
-				}
-				if (map[i - 1][ii] == '\0' || map[i - 1][ii] == ' ')
-				{
-					printf("Error here 3");
-					error("The map is not closed\n", settings);
-				}
-				if (map[i][ii + 1] == '\0' || map[i][ii + 1] == ' ')
-				{
-					printf("Error here 4");
-					error("The map is not closed\n", settings);
-				}
-				if (map[i][ii - 1] == '\0' || map[i][ii - 1] == ' ')
-				{
-					printf("Error here 5");
-					error("The map is not closed\n", settings);
-				}
-				ii++;
-			}
-			else if (map[i][ii] == 'N' || map[i][ii] == 'S' || map[i][ii] == 'E' || map[i][ii] == 'W')
-			{
-				if (settings->plr->pov != 0)
-					error("Double camera plase\n", settings);
-				settings->plr->x = ii * CBSZ + CBSZ / 2;
-				settings->plr->y = i * CBSZ + CBSZ / 2;
-				if (map[i][ii] == 'N')
-					settings->plr->pov = M_PI / 2;
-				if (map[i][ii] == 'S')
-					settings->plr->pov = M_PI * 3 / 2;
-				if (map[i][ii] == 'E')
-					settings->plr->pov = 2 * M_PI;
-				if (map[i][ii] == 'W')
-					settings->plr->pov = M_PI;
-				map[i][ii] = '0';
-				ii++;
-			}
-			else error("Invalid symbol in map\n", settings);
-		}
-		i++;
-	}
-	if (settings->plr->pov == 0)
-		error("No camera plase\n", settings);
-}
-
-void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
-{
-	int i;
-
-
-	t_list *temp;
-	printf("lists = %d", lists);
-	settings->map = (char**)malloc((lists + 1) * sizeof(char *));
-	i = 0;
-	while (i < lists)
-	{
-		printf("i = %d, list = %d\n", i, lists);
-		printf("This line = %s\n", head->content);
-		if (head->content[head->len - 1] != '1' || head->content[0] == '0')
-		{
-			printf("Error here 6");				
-			error("The map is not closed\n", settings);
-		}
-		settings->map[i] = (char*)ft_calloc((len_max + 1), sizeof(char ));
-		settings->map[i] = ft_memcpy(settings->map[i], head->content, head->len);
-		temp = head;
-		head = head->next;
-		free(temp->content);
-		free(temp);
-		i++;
-	}
-	settings->max_x = len_max - 1;
-	settings->max_y = lists - 1; // TODO: проверить значения
-	len_max = 0;
-	while (settings->map[i - 1][len_max] != '\0')
-	{
-		if (settings->map[i - 1][len_max] == '1' || settings->map[i - 1][len_max] == ' ')
-			len_max++;
-		else
-			error("The last line of a map is invalid\n", settings);
-	}
-	settings->map[i] = NULL;
-	i = 0;
-	while (settings->map[i] != NULL)
-	{
-		printf("\nmap[%d] = %s", i, settings->map[i]);
-		i++;
-	}
-	map_chek(settings->map, 1, 0, settings);
 }
 
 void	read_map(int fd, t_settings *settings, char *line)
@@ -251,57 +113,23 @@ void	read_map(int fd, t_settings *settings, char *line)
 	int		len_max;
 
 	i = 1;
-//	printf("%s\n", *line);
 	if ((head = new_list(line)) == NULL)
 		error("Malloc problem (fn_read_map)", settings);
 	len_max = ft_strlen(line);
 	head->len = len_max;
-	printf("head->len = %d\n", head->len);
-//	free(*line);
 	temp = head;
-//	temp->next = new_list(line);
-//	temp = temp->next;
-//	get_next_line(fd, &line1);
-//	temp->next = new_list(line);
-//	temp = temp->next;
-//	printf("%s\n", temp->content);
-//	printf("%d\n", fd);
-//	printf("%s\n", line);
-//	printf("%d\n", get_next_line(fd, &line));
-//	temp->next = new_list(line);
-	//	error(12);
-//	temp = temp->next;
-//	printf("%s\n", temp->content);
 	while (get_next_line(fd, &line) == 1)
 	{
-//		printf("%s\n", *line);
 		if ((temp->next = new_list(line)) == NULL)
 			error("Malloc problem (fn_read_map)", settings);
 		temp = temp->next;
 		temp->len = ft_strlen(line);
 		len_max = len_max > temp->len ? len_max : temp->len;
 		i++;
-//		free(*line);
 	}
 	temp->next = new_list(line);
 	temp = temp->next;
 	temp->len = ft_strlen(line);
-	printf("len_max = %d\ni = %d\n", len_max, i);
-//	printf("%s\n", *line);
-//	if ((temp->next = new_list(*line)) == NULL)
-//		error(12);
-//	free(*line);
-	temp = head;
-	while (temp->next != NULL)
-	{
-		if (temp->content[0] == '\0')
-			printf("Empty line\n");
-		printf("%s\n", temp->content);
-		printf("%d\n", temp->len);
-		temp = temp->next;
-	}
-	printf("%s\n", temp->content);
-	printf("%d\n", temp->len);
 	close(fd);
 	pars_map(settings, len_max, i, head);
 }
@@ -321,7 +149,6 @@ void	read_settings(int fd, t_settings *settings)
 		}
 		free(line);
 	}
-	printf("%d\n", i);
 	while (line[0] == '\0')
 	{
 		free(line);

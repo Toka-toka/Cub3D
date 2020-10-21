@@ -161,5 +161,6 @@ void	load_textures(t_settings *settings, t_xpm *xpm, char **line, int side);
 void	new_sprite(int x, int y, t_settings *settings);
 void	sprite_sort(t_settings *settings);
 void	cuba_libre(t_settings *set);
+void	pars_map(t_settings *settings, int len_max, int lists, t_list *head);
 
 #endif

@@ -24,7 +24,6 @@ int		error(char *error, t_settings *set)
 	while (*error)
 		write(2, error++, 1);
 	cuba_libre(set);
-// функция освобождения памяти!
 	exit(-1);
 }
 
@@ -74,7 +73,7 @@ int		init_mlx_magic(t_win *win, int resol_x, int resol_y, char *name)
 
 int		exit_game(int key, t_settings *set)
 {
-	printf("Good bye!");
+	write(1, "Good bye!\n", 10);
 	exit(0);
 	return (0);
 }
