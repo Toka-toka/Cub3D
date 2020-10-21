@@ -35,7 +35,6 @@ void	drow_sprite(t_settings *set, t_sprite *sprite)
 	int		ii;
 	float	size;
 	int		color;
-	float	xpm_scale;
 	float	scale_x;
 	float	scale_y;
 

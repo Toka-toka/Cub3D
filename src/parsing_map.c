@@ -1,5 +1,16 @@
 #include "../includes/cub3D.h"
 
+t_list	*new_list(char *line)
+{
+	t_list	*new;
+
+	if (!(new = (t_list *)malloc(sizeof(t_list))))
+		return (NULL);
+	new->content = line;
+	new->next = NULL;
+	return (new);
+}
+
 void	space_surround(t_settings *set, int i, int ii)
 {
 	if (set->map[i + 1] != NULL)
@@ -66,7 +77,7 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 
 	settings->map = (char**)malloc((lists + 1) * sizeof(char *));
 	i = 0;
-	while (i < lists)
+	while (i <= lists)
 	{
 		if (head->content[head->len - 1] == '0' || head->content[0] == '0')
 			error("The map is not closed\n", settings);
@@ -81,15 +92,16 @@ void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
 		i++;
 	}
 	settings->max_x = len_max - 1;
-	settings->max_y = lists - 1;
+	settings->max_y = lists;
+	settings->map[i] = NULL;
 	len_max = 0;
 	while (settings->map[i - 1][len_max] != '\0')
 	{
-		if (settings->map[i - 1][len_max] == '1' || settings->map[i - 1][len_max] == ' ')
+		if (settings->map[i -1][len_max] == '1' || settings->map[i -1][len_max] == ' ')
 			len_max++;
 		else
 			error("The last line of a map is invalid\n", settings);
 	}
-	settings->map[i] = NULL;
+//	settings->map[i] = NULL;
 	map_chek(settings->map, 1, 0, settings);
 }

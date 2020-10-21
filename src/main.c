@@ -8,10 +8,21 @@ void	cuba_libre(t_settings *set)
 		exit (-1);
 	i = 0;
 	if (set->map != NULL)
-		free_char_arr((void **)set->map);
-	while (i < 5 && set->xpm[i].addr != NULL)
 	{
-		free_char_arr((void **)set->xpm[i].addr);
+		while(set->map[i] != NULL)
+		{
+			printf("%s\n", set->map[i]);
+//			free(set->map[i]);
+			i++;
+		}
+//		free_char_arr((void **)set->map);
+	}
+	printf(NULL);
+	i = 0;
+	while (i < 5)
+	{
+		if (set->xpm[i].addr != NULL)
+			free_char_arr((void **)set->xpm[i].addr);
 		i++;
 	}
 	if (set->ray->all_dist != NULL)
@@ -46,7 +57,9 @@ void	init_struct(t_settings *set)
 	static t_actions	actions;
 	static t_player		plr;
 	static t_ray		ray;
+	int					i;
 
+	i = 0;
 	set->win = &win;
 	set->sprite = NULL;
 	set->actions = &actions;
@@ -54,6 +67,8 @@ void	init_struct(t_settings *set)
 	set->ray = &ray;
 	set->resol_x = -1;
 	set->resol_y = -1;
+	while(5 > i++)
+		set->xpm[i].addr = NULL;
 	if ((set->win->mlx = mlx_init()) == NULL)
 		error("Mxl init problem", NULL);
 }

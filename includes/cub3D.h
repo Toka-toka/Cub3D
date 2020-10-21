@@ -157,10 +157,11 @@ void	map_hero_draw(t_settings *settings);
 void	ray_emission(t_settings *set, float	view_start, int i);
 void    column_draw(t_settings *settings, float distanse, int side, int plase);
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color);
-void	load_textures(t_settings *settings, t_xpm *xpm, char **line, int side);
+void	load_textures(t_settings *settings, t_xpm *xpm, char *line, int side);
 void	new_sprite(int x, int y, t_settings *settings);
 void	sprite_sort(t_settings *settings);
 void	cuba_libre(t_settings *set);
 void	pars_map(t_settings *settings, int len_max, int lists, t_list *head);
+t_list	*new_list(char *line);
 
 #endif

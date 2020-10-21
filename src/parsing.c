@@ -1,114 +1,98 @@
-# include "../includes/cub3D.h"
+#include "../includes/cub3D.h"
 
-static t_list	*new_list(char *line)
+void	colors_pars(char **l, int *color, t_settings *settings)
 {
-	t_list	*new;
+	int		i;
+	int		ii;
 
-	if (!(new = (t_list *)malloc(sizeof(t_list))))
-		return (NULL);
-	new->content = line;
-	new->next = NULL;
-	return (new);
-}
-
-void	colors_pars(char **line, int *color, t_settings *settings)
-{
-		int i;
-		int	ii;
-		char **new_line;
-
-		if (line[1] == NULL || line[2] != NULL)
-			error("Too much \\ less parametrs for color of floor \\ ceiling\n", settings);
-		new_line = ft_split(line[1], ',');
-		free_char_arr((void**)line);
-		if (new_line[0] == NULL || new_line[1] == NULL || new_line[2] == NULL || new_line[3] != NULL)
-			error("Too much \\ less parametrs for color of floor \\ ceiling\n", settings);
-		i = 0;
-		while(new_line[i] != NULL)
+	if (l[0] == NULL || l[1] == NULL || l[2] == NULL || l[3] != NULL)
+		error("Wrong parametrs for color of floor \\ ceiling\n", settings);
+	i = 0;
+	while (i < 3)
+	{
+		ii = 0;
+		while (l[i][ii] != '\0')
 		{
-			ii = 0;
-			while(new_line[i][ii] != '\0')
-			{
-				if (new_line[i][ii] < '0' || new_line[i][ii] > '9')
-					error("Wront symbols in color of floor \\ ceiling\n", settings);
-				ii++;
-			}
-			i++;
+			if (l[i][ii] < '0' || l[i][ii] > '9')
+				error("Wront symbols in color of floor \\ ceiling\n", settings);
+			ii++;
 		}
-		i = 0;
-		while (i < 3)
-		{
-			color[i] = ft_atoi(new_line[i]);
-			if (color[i] < 0 || color[i] > 255)
-				error("Incorrect color definition \\ ceiling\n", settings);
-			i++;
-		}
-		free_char_arr((void**)new_line);
+		color[i] = ft_atoi(l[i]);
+		if (color[i] < 0 || color[i] > 255)
+			error("Incorrect color definition \\ ceiling\n", settings);
+		i++;
+	}
+	color[0] = 0 << 24 | color[0] << 16 | color[1] << 8 | color[2];
 }
 
 void	resolution_pars(char **line, t_settings *settings)
 {
-	int i;
-	int ii;
-	int x;
-	int y;
-	
-//    x = 5120;
-//    y = 2880;
+	int		i;
+	int		ii;
+	int		x;
+	int		y;
+
 	if (settings->resol_x != -1 && settings->resol_y != -1)
 		error("Double R\n", settings);
-	if (line[3] != NULL || line[1] == NULL || line[2] == NULL)
+	if (line[0] == NULL || line[1] == NULL || line[2] != NULL)
 		error("Too much \\ less parametrs for R\n", settings);
 	i = 0;
 	ii = 0;
-	while (line[1][i] != '\0')
-	{
-		if (line[1][i] < '0' || line[1][i] > '9')
+	while (line[0][i] != '\0')
+		if (line[0][i] < '0' || line[0][i++] > '9')
 			error("Wrong simbols in R\n", settings);
-		i++;
-	}
-	while (line[2][ii + 1] != '\0')
-	{
-		if  (line[2][ii] < '0' || line[2][ii] > '9')
+	while (line[1][ii] != '\0')
+		if (line[1][ii] < '0' || line[1][ii++] > '9')
 			error("Wrong simbols in R\n", settings);
-		ii++;
-	}
-	mlx_get_screen_size(settings->win->mlx, &x, &y);
-	if ((settings->resol_x = ft_atoi(line[1])) > x || i > 5)
-		settings->resol_x = x;
-	if ((settings->resol_y = ft_atoi(line[2])) > y || ii > 5)
-		settings->resol_y = y;
-	if (settings->resol_x == 0 || settings->resol_y == 0)
+	if (line[0][0] == '0' || line[1][0] == '0')
 		error("R_x or R_y = 0\n", settings);
+	mlx_get_screen_size(settings->win->mlx, &x, &y);
+	if ((settings->resol_x = ft_atoi(line[0])) > x || i > 5)
+		settings->resol_x = x;
+	if ((settings->resol_y = ft_atoi(line[1])) > y || ii > 5)
+		settings->resol_y = y;
 	free_char_arr((void**)line);
 }
 
-void		pars_settings(char **line, t_settings *settings)
+void	pars_settings(t_settings *settings, char *line)
 {
-	if (ft_memcmp(line[0], "R", 2) == 0)
-		resolution_pars(line, settings);
-	else if (ft_memcmp(line[0], "EA", 3) == 0)
-		load_textures(settings, &settings->xpm[0], line, 0);
-	else if (ft_memcmp(line[0], "NO", 3) == 0)
-		load_textures(settings, &settings->xpm[1], line, 1);
-	else if (ft_memcmp(line[0], "WE", 3) == 0)
-		load_textures(settings, &settings->xpm[2], line, 2);
-	else if (ft_memcmp(line[0], "SO", 3) == 0)
-		load_textures(settings, &settings->xpm[3], line, 3);
-	else if (ft_memcmp(line[0], "S", 2) == 0)
-		load_textures(settings, &settings->xpm[4], line, 4);
-	else if (ft_memcmp(line[0], "F", 2) == 0)
-		colors_pars(line, settings->color_f, settings);
-	else if (ft_memcmp(line[0], "C", 2) == 0)
-		colors_pars(line, settings->color_c, settings);
+	int		i;
+	char	symbol1;
+	char	symbol2;
+
+	i = 0;
+	while (*line == ' ')
+		line++;
+	symbol1 = line[0];
+	line[0] = ' ';
+	symbol2 = line[1];
+	line[1] = ' ';
+	while (line[i] == ' ')
+		i++;
+	if (symbol1 == 'R')
+		resolution_pars(ft_split(line + i, ' '), settings);
+	else if (symbol1 == 'E' && symbol2 == 'A')
+		load_textures(settings, &settings->xpm[0], line + i, 0);
+	else if (symbol1 == 'N' && symbol2 == 'O')
+		load_textures(settings, &settings->xpm[1], line + i, 1);
+	else if (symbol1 == 'W' && symbol2 == 'E')
+		load_textures(settings, &settings->xpm[2], line + i, 2);
+	else if (symbol1 == 'S' && symbol2 == 'O')
+		load_textures(settings, &settings->xpm[3], line + i, 3);
+	else if (symbol1 == 'S')
+		load_textures(settings, &settings->xpm[4], line + i, 4);
+	else if (symbol1 == 'F')
+		colors_pars(ft_split(line + i, ','), settings->color_f, settings);
+	else if (symbol1 == 'C')
+		colors_pars(ft_split(line + i, ','), settings->color_c, settings);
 	else
 		error("Invalid name or quantity of settings in file .cub\n", settings);
 }
 
 void	read_map(int fd, t_settings *settings, char *line)
 {
-	t_list *head;
-	t_list *temp;
+	t_list	*head;
+	t_list	*temp;
 	int		i;
 	int		len_max;
 
@@ -136,15 +120,15 @@ void	read_map(int fd, t_settings *settings, char *line)
 
 void	read_settings(int fd, t_settings *settings)
 {
-    char    *line;
-    int     i;
-	
+	char	*line;
+	int		i;
+
 	i = 0;
-    while (get_next_line(fd, &line) == 1 && i < 8)
+	while (get_next_line(fd, &line) == 1 && i < 8)
 	{
 		if (line[0] != '\0')
 		{
-			pars_settings(ft_split(line, ' '), settings);
+			pars_settings(settings, line);
 			i++;
 		}
 		free(line);

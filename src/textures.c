@@ -58,21 +58,28 @@ void		make_xpm(t_xpm *xpm, int *array, int side)
 	xpm->addr[xpm->height] = NULL;
 }
 
-void		load_textures(t_settings *set, t_xpm *x, char **l, int side)
+void		load_textures(t_settings *set, t_xpm *x, char *l, int side)
 {
 	int *array;
 	int	line_l;
 	int	bpp;
 	int	en;
 
-	x->img = mlx_xpm_file_to_image(set->win->mlx, l[1], &x->width, &x->height);
-	free_char_arr((void**)l);
+	while (*l == ' ')
+		l++;
+	x->img = mlx_xpm_file_to_image(set->win->mlx, l, &x->width, &x->height);
 	if (x->img == NULL)
+	{
+		set->xpm[side].addr = NULL;
 		error("Problem with textures", set);
+	}
 	array = (int*)mlx_get_data_addr(x->img, &bpp, &line_l, &en);
 	x->wid_scale = (float)x->width / (float)CBSZ;
 	if (array == NULL)
+	{
+		set->xpm[side].addr = NULL;
 		error("Problem with textures", set);
+	}
 	if (side == 1 || side == 0 || side == 4)
 		make_xpm(x, array, side);
 	else

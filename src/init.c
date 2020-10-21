@@ -118,7 +118,7 @@ void column_draw(t_settings *settings, float distanse, int side, int plase)
 	}
 	while (floor_h > 0)
 	{
-		my_mlx_pixel_put(settings, x, y, 0x87ceeb);
+		my_mlx_pixel_put(settings, x, y, settings->color_f[0]);
 		floor_h--;
 		y++;
 	}
@@ -131,7 +131,7 @@ void column_draw(t_settings *settings, float distanse, int side, int plase)
 	}
 	while (ceiling_h > 0)
 	{
-		my_mlx_pixel_put(settings, x, y, 0xba8f65);
+		my_mlx_pixel_put(settings, x, y, settings->color_c[0]);
 		y++;
 		ceiling_h--;
 	}
