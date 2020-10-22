@@ -3,22 +3,22 @@
 void	cuba_libre(t_settings *set)
 {
 	int i;
+	t_sprite	*ptr;
 	
 	if (set == NULL)
 		exit (-1);
 	i = 0;
 	if (set->map != NULL)
-	{
-		while(set->map[i] != NULL)
-		{
-			printf("%s\n", set->map[i]);
-//			free(set->map[i]);
-			i++;
-		}
-//		free_char_arr((void **)set->map);
-	}
-	printf(NULL);
+		free_char_arr((void **)set->map);
+//	printf(NULL);
+	free(set->win->mlx);
 	i = 0;
+	while (set->sprite != NULL)
+	{
+		ptr = set->sprite;
+		set->sprite = set->sprite->next;
+		free(ptr);
+	}
 	while (i < 5)
 	{
 		if (set->xpm[i].addr != NULL)
@@ -59,10 +59,11 @@ void	init_struct(t_settings *set)
 	static t_ray		ray;
 	int					i;
 
-	i = 0;
+	i = -1;
 	set->win = &win;
 	set->sprite = NULL;
 	set->actions = &actions;
+	set->map = NULL;
 	set->plr = &plr;
 	set->ray = &ray;
 	set->resol_x = -1;
@@ -122,6 +123,8 @@ int		main(int argc, char **argv)
 	read_settings(check_agr(&set, argc, argv), &set);
 	init_mlx_magic(set.win, set.resol_x, set.resol_y, argv[1]);
 	set.ray->all_dist = (float *)malloc(sizeof(float) * set.resol_x);
+	if (set.ray->all_dist == NULL)
+		error("Malloc problem (main", &set);
 	set.ray->step = M_PI / 3 / set.resol_x;
 	mlx_hook(set.win->win, 17, 1L << 17, exit_game, &set);
 	mlx_hook(set.win->win, 2, 1L << 0, key_pressed, &set);

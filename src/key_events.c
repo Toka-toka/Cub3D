@@ -64,7 +64,7 @@ int	actions_call(t_settings *set)
 	if (set->actions->turn_right == 1)
 		turn(set, -M_PI / 90);
 	ray_emission(set, set->plr->pov + M_PI / 6, 0);
-	sprite_sort(set);
+	sprite_finder(set);
 	mlx_put_image_to_window(set->win->mlx, set->win->win, set->win->img, 0, 0);
 	return (0);
 }

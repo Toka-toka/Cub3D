@@ -102,6 +102,8 @@ typedef struct		s_sprite
     float           angle;
     float           dist;
     int 		    **addr;
+    float           wid_scale;
+    float           hei_scale;
 	struct s_sprite	*next;
 }					t_sprite;
 
@@ -159,7 +161,7 @@ void    column_draw(t_settings *settings, float distanse, int side, int plase);
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color);
 void	load_textures(t_settings *settings, t_xpm *xpm, char *line, int side);
 void	new_sprite(int x, int y, t_settings *settings);
-void	sprite_sort(t_settings *settings);
+void	sprite_finder(t_settings *settings);
 void	cuba_libre(t_settings *set);
 void	pars_map(t_settings *settings, int len_max, int lists, t_list *head);
 t_list	*new_list(char *line);
