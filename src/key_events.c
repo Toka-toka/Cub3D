@@ -6,8 +6,7 @@ int	key_pressed(int keycode, t_settings *set)
 	{
 		mlx_destroy_image(set->win->mlx, set->win->img);
 		mlx_destroy_window(set->win->mlx, set->win->win);
-		cuba_libre(set);
-		exit(0);
+		exit_game(keycode, set);
 	}
 	if (keycode == W || keycode == UP)
 		set->actions->move_forward = 1;
@@ -26,11 +25,6 @@ int	key_pressed(int keycode, t_settings *set)
 
 int	key_released(int keycode, t_settings *set)
 {
-	if (keycode == ESC)
-	{
-		mlx_destroy_window(set->win->mlx, set->win->win);
-		exit(1);
-	}
 	if (keycode == W || keycode == UP)
 		set->actions->move_forward = 0;
 	if (keycode == S || keycode == DOWN)

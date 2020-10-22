@@ -5,30 +5,22 @@ void	new_sprite(int y, int x, t_settings *set)
 	t_sprite	*tmp;
 	t_sprite	*new;
 
-	tmp = set->sprite;
-	if (tmp == NULL)
-	{
-		tmp = (t_sprite *)malloc(sizeof(t_sprite));
-		tmp->x = x * CBSZ + CBSZ / 2;
-		tmp->y = y * CBSZ + CBSZ / 2;
-		tmp->next = NULL;
-		tmp->wid_scale = set->resol_x / (float)1920 * set->xpm[4].width;
-		tmp->hei_scale = set->resol_y / (float)1080 * set->xpm[4].height;
-		set->sprite = tmp;
-	}
+	if (!(new = (t_sprite *)malloc(sizeof(t_sprite))))
+		error("Malloc problem(fn_new_sprite)", set);
+	if (set->sprite == NULL)
+		set->sprite = new;
 	else
 	{
+		tmp = set->sprite;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
-		if (!(new = (t_sprite *)malloc(sizeof(t_sprite))))
-			error("Malloc problem(fn_new_sprite)", set);
-		new->x = x * CBSZ + CBSZ / 2;
-		new->y = y * CBSZ + CBSZ / 2;
-		new->wid_scale = set->resol_x / (float)1920 * set->xpm[4].width;
-		new->hei_scale = set->resol_y / (float)1080 * set->xpm[4].height;
-		new->next = NULL;
 		tmp->next = new;
 	}
+	new->x = x * CBSZ + CBSZ / 2;
+	new->y = y * CBSZ + CBSZ / 2;
+	new->next = NULL;
+	new->wid_scale = set->resol_x / (float)1920 * set->xpm[4].width;
+	new->hei_scale = set->resol_y / (float)1080 * set->xpm[4].height;
 }
 
 void	drow_sprite(t_settings *set, t_sprite *sprite, int i, int ii)
@@ -50,7 +42,8 @@ void	drow_sprite(t_settings *set, t_sprite *sprite, int i, int ii)
 			i = 0;
 			while (i < scale_y && (i + start_y) < set->resol_y)
 			{
-				color = set->xpm[4].addr[(int)(i * (float)set->xpm[4].height / scale_y)][(int)(ii * (float)set->xpm[4].width / scale_x)];
+				color = set->xpm[4].addr[(int)(i * (float)set->xpm[4].height / scale_y)]
+				[(int)(ii * (float)set->xpm[4].width / scale_x)];
 				if (color != 0)
 					my_mlx_pixel_put(set, start_x + ii, start_y + i, color);
 				i++;
@@ -106,6 +99,8 @@ void	sprite_finder(t_settings *set)
 			tmp->dist = sqrt(pow(set->plr->x - tmp->x, 2) +
 			pow(set->plr->y - tmp->y, 2));
 		else
+			tmp->dist = -1;
+		if (tmp->dist < CBSZ / 5)
 			tmp->dist = -1;
 		tmp = tmp->next;
 	}

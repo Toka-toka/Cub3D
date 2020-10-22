@@ -22,7 +22,7 @@ void	cuba_libre(t_settings *set)
 	while (i < 5)
 	{
 		if (set->xpm[i].addr != NULL)
-			free_char_arr((void **)set->xpm[i].addr);
+//			free_char_arr((void **)set->xpm[i].addr);
 		i++;
 	}
 	if (set->ray->all_dist != NULL)
@@ -90,6 +90,7 @@ int		init_mlx_magic(t_win *win, int resol_x, int resol_y, char *name)
 int		exit_game(int key, t_settings *set)
 {
 	write(1, "Good bye!\n", 10);
+	cuba_libre(set);
 	exit(0);
 	return (0);
 }

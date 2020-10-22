@@ -1,4 +1,4 @@
-R 500 500
+R 10000000 20000000
 NO ./textures/NO.xpm
 S ./textures/6.xpm
 SO ./textures/SO.xpm
