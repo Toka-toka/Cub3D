@@ -96,7 +96,7 @@ void	ray_emission(t_settings *set, float view_start, int i)
 		cross_vert(set, 0, 0, 2);
 		set->ray->all_dist[i] = set->ray->dist;
 		set->ray->dist *= cos(set->ray->angle - set->plr->pov);
-		column_draw(set, set->ray->dist, set->ray->side, (int)set->ray->plase);
+		column_draw(set, set->ray, i, 0);
 		set->ray->angle -= set->ray->step;
 		i++;
 	}

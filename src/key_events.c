@@ -4,6 +4,7 @@ int	key_pressed(int keycode, t_settings *set)
 {
 	if (keycode == ESC)
 	{
+
 		mlx_destroy_image(set->win->mlx, set->win->img);
 		mlx_destroy_window(set->win->mlx, set->win->win);
 		exit_game(keycode, set);
@@ -42,9 +43,6 @@ int	key_released(int keycode, t_settings *set)
 
 int	actions_call(t_settings *set)
 {
-	
-	mlx_do_sync(set->win->mlx);
-	mlx_clear_window(set->win->mlx, set->win->win);
 	if (set->actions->move_forward == 1)
 		move_forward_backward(set, set->plr->y, set->plr->x, SPEED);
 	if (set->actions->move_backward == 1)
@@ -57,6 +55,7 @@ int	actions_call(t_settings *set)
 		turn(set, M_PI / 90);
 	if (set->actions->turn_right == 1)
 		turn(set, -M_PI / 90);
+	mlx_do_sync(set->win->mlx);
 	ray_emission(set, set->plr->pov + M_PI / 6, 0);
 	sprite_finder(set);
 	mlx_put_image_to_window(set->win->mlx, set->win->win, set->win->img, 0, 0);

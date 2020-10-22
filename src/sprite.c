@@ -27,7 +27,6 @@ void	drow_sprite(t_settings *set, t_sprite *sprite, int i, int ii)
 {
 	int		start_x;
 	int		start_y;
-	int		color;
 	float	scale_x;
 	float	scale_y;
 
@@ -42,10 +41,10 @@ void	drow_sprite(t_settings *set, t_sprite *sprite, int i, int ii)
 			i = 0;
 			while (i < scale_y && (i + start_y) < set->resol_y)
 			{
-				color = set->xpm[4].addr[(int)(i * (float)set->xpm[4].height / scale_y)]
+				sprite->color = set->xpm[4].addr[(int)(i * (float)set->xpm[4].height / scale_y)]
 				[(int)(ii * (float)set->xpm[4].width / scale_x)];
-				if (color != 0)
-					my_mlx_pixel_put(set, start_x + ii, start_y + i, color);
+				if (sprite->color != 0)
+					my_mlx_pixel_put(set, start_x + ii, start_y + i, sprite->color);
 				i++;
 			}
 		}

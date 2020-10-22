@@ -61,6 +61,11 @@ typedef struct	s_ray
     float       dist;
 	int         side;
     int         plase;
+    int         floor_h;
+	int			ceiling_h;
+	float		column_h;
+	int			column_y;
+	float		xpm_scale;
     float       *all_dist;
 }				  t_ray;
 
@@ -104,6 +109,7 @@ typedef struct		s_sprite
     int 		    **addr;
     float           wid_scale;
     float           hei_scale;
+    int             color;
 	struct s_sprite	*next;
 }					t_sprite;
 
@@ -157,7 +163,7 @@ void	move_left_right(t_settings *settings, float new_loc_y, float new_loc_x, flo
 void	turn(t_settings *set, float spd);
 void	map_hero_draw(t_settings *settings);
 void	ray_emission(t_settings *set, float	view_start, int i);
-void    column_draw(t_settings *settings, float distanse, int side, int plase);
+void	column_draw(t_settings *settings, t_ray *ray, int x, int y);
 void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color);
 void	load_textures(t_settings *settings, t_xpm *xpm, char *line, int side);
 void	new_sprite(int x, int y, t_settings *settings);
