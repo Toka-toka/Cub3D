@@ -12,17 +12,20 @@
 
 #include "../includes/cub3D.h"
 
-void		make_xpm_revers(t_xpm *xpm, int *array, int side)
+void		make_xpm_revers(t_settings *set, t_xpm *xpm, int *array, int side)
 {
 	int i;
 	int ii;
 	int iii;
 
-	xpm->addr = (int**)malloc((xpm->height + 1) * sizeof(int *)); //TODO: не защищены маллоки
+	xpm->addr = (int**)malloc((xpm->height + 1) * sizeof(int *));
+	if (xpm->addr == NULL)
+		error("Malloc problem (fn_make_xpm)", set);
 	i = 0;
 	while (i < xpm->height)
 	{
-		xpm->addr[i] = malloc(xpm->width * sizeof(int));
+		if (!(xpm->addr[i] = malloc(xpm->width * sizeof(int))))
+			error("Malloc problem (fn_make_xpm)", set);
 		i++;
 	}
 	i = 0;
@@ -31,27 +34,26 @@ void		make_xpm_revers(t_xpm *xpm, int *array, int side)
 	{
 		iii = xpm->width - 1;
 		while (iii >= 0)
-		{
-			xpm->addr[ii][iii] = array[i];
-			iii--;
-			i++;
-		}
+			xpm->addr[ii][iii--] = array[i++];
 		ii++;
 	}
 	xpm->addr[xpm->height] = NULL;
 }
 
-void		make_xpm(t_xpm *xpm, int *array, int side)
+void		make_xpm(t_settings *set, t_xpm *xpm, int *array, int side)
 {
 	int i;
 	int ii;
 	int iii;
 
 	xpm->addr = (int**)malloc((xpm->height + 1) * sizeof(int *));
+	if (xpm->addr == NULL)
+		error("Malloc problem (fn_make_xpm)", set);
 	i = 0;
 	while (i < xpm->height)
 	{
-		xpm->addr[i] = malloc(xpm->width * sizeof(int));
+		if (!(xpm->addr[i] = malloc(xpm->width * sizeof(int))))
+			error("Malloc problem (fn_make_xpm)", set);
 		i++;
 	}
 	i = 0;
@@ -60,11 +62,7 @@ void		make_xpm(t_xpm *xpm, int *array, int side)
 	{
 		iii = 0;
 		while (iii < xpm->width)
-		{
-			xpm->addr[ii][iii] = array[i];
-			iii++;
-			i++;
-		}
+			xpm->addr[ii][iii++] = array[i++];
 		ii++;
 	}
 	xpm->addr[xpm->height] = NULL;
@@ -93,8 +91,8 @@ void		load_textures(t_settings *set, t_xpm *x, char *l, int side)
 		error("Problem with textures", set);
 	}
 	if (side == 1 || side == 0 || side == 4)
-		make_xpm(x, array, side);
+		make_xpm(set, x, array, side);
 	else
-		make_xpm_revers(x, array, side);
-	mlx_destroy_image (set->win->mlx, x->img);
+		make_xpm_revers(set, x, array, side);
+	mlx_destroy_image(set->win->mlx, x->img);
 }

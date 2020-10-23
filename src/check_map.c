@@ -12,17 +12,6 @@
 
 #include "../includes/cub3D.h"
 
-t_list	*new_list(char *line)
-{
-	t_list	*new;
-
-	if (!(new = (t_list *)malloc(sizeof(t_list))))
-		return (NULL);
-	new->content = line;
-	new->next = NULL;
-	return (new);
-}
-
 void	space_surround(t_settings *set, int i, int ii)
 {
 	if (set->map[i + 1] != NULL)
@@ -41,24 +30,24 @@ void	space_surround(t_settings *set, int i, int ii)
 	}
 }
 
-void	pars_plr(t_settings *settings, int i, int ii)
+void	pars_plr(t_settings *set, int i, int ii)
 {
-	if (settings->plr->pov != 0)
-		error("Double camera plase\n", settings);
-	settings->plr->x = ii * CBSZ + CBSZ / 2;
-	settings->plr->y = i * CBSZ + CBSZ / 2;
-	if (settings->map[i][ii] == 'N')
-		settings->plr->pov = M_PI / 2;
-	if (settings->map[i][ii] == 'S')
-		settings->plr->pov = M_PI * 3 / 2;
-	if (settings->map[i][ii] == 'E')
-		settings->plr->pov = 2 * M_PI;
-	if (settings->map[i][ii] == 'W')
-		settings->plr->pov = M_PI;
-	settings->map[i][ii] = '0';
+	if (set->plr->pov != 0)
+		error("Double camera plase\n", set);
+	set->plr->x = ii * CBSZ + CBSZ / 2;
+	set->plr->y = i * CBSZ + CBSZ / 2;
+	if (set->map[i][ii] == 'N')
+		set->plr->pov = M_PI / 2;
+	if (set->map[i][ii] == 'S')
+		set->plr->pov = M_PI * 3 / 2;
+	if (set->map[i][ii] == 'E')
+		set->plr->pov = 2 * M_PI;
+	if (set->map[i][ii] == 'W')
+		set->plr->pov = M_PI;
+	set->map[i][ii] = '0';
 }
 
-void	map_chek(char **map, int i, int ii, t_settings *settings)
+void	map_chek(char **map, int i, int ii, t_settings *set)
 {
 	while (map[i] != NULL)
 	{
@@ -68,52 +57,81 @@ void	map_chek(char **map, int i, int ii, t_settings *settings)
 			if (map[i][ii] == '1' || map[i][ii] == '0')
 				ii++;
 			else if (map[i][ii] == '2')
-				new_sprite(i, ii++, settings);
+				new_sprite(i, ii++, set);
 			else if (map[i][ii] == ' ')
-				space_surround(settings, i, ii++);
+				space_surround(set, i, ii++);
 			else if (ft_strchr("NSEW", map[i][ii]))
-				pars_plr(settings, i, ii++);
+				pars_plr(set, i, ii++);
 			else
-				error("Invalid symbol in map\n", settings);
+				error("Invalid symbol in map\n", set);
 		}
 		i++;
 	}
-	if (settings->plr->pov == 0)
-		error("No camera plase\n", settings);
+	if (set->plr->pov == 0)
+		error("No camera plase\n", set);
 }
 
-void	pars_map(t_settings *settings, int len_max, int lists, t_list *head)
+void	pars_map(t_settings *set, int len_max, int lists, t_list *head)
 {
 	int		i;
 	t_list	*temp;
 
-	settings->map = (char**)malloc((lists + 1) * sizeof(char *));
+	set->map = (char**)malloc((lists + 1) * sizeof(char *));
 	i = 0;
 	while (i <= lists)
 	{
-		if (head->content[head->len - 1] == '0' || head->content[0] == '0')
-			error("The map is not closed\n", settings);
+		if ((head->content[head->len - 1] != '1' && head->content[head->len - 1] != ' ') ||
+			(head->content[0] != ' ' && head->content[0] != '1'))
+			error("The map is not closed\n", set);
 		if (head->content[0] == '\0')
-			error("Empty line in map\n", settings);
-		settings->map[i] = (char*)ft_calloc((len_max + 1), sizeof(char ));
-		settings->map[i] = ft_memcpy(settings->map[i], head->content, head->len);
+			error("Empty line in map\n", set);
+		set->map[i] = (char*)ft_calloc((len_max + 1), sizeof(char ));
+		set->map[i] = ft_memcpy(set->map[i], head->content, head->len);
 		temp = head;
 		head = head->next;
 		free(temp->content);
 		free(temp);
 		i++;
 	}
-	settings->max_x = len_max - 1;
-	settings->max_y = lists;
-	settings->map[i] = NULL;
+	set->max_x = len_max - 1;
+	set->max_y = lists;
+	set->map[i] = NULL;
 	len_max = 0;
-	while (settings->map[i - 1][len_max] != '\0')
+	while (set->map[i - 1][len_max] != '\0')
 	{
-		if (settings->map[i -1][len_max] == '1' || settings->map[i -1][len_max] == ' ')
+		if (set->map[i - 1][len_max] == '1' || set->map[i - 1][len_max] == ' ')
 			len_max++;
 		else
-			error("The last line of a map is invalid\n", settings);
+			error("The last line of a map is invalid\n", set);
 	}
-//	settings->map[i] = NULL;
-	map_chek(settings->map, 1, 0, settings);
+	map_chek(set->map, 1, 0, set);
+}
+
+void	read_map(int fd, t_settings *settings, char *line)
+{
+	t_list	*head;
+	t_list	*temp;
+	int		i;
+	int		len_max;
+
+	i = 1;
+	if ((head = new_list((void *)line)) == NULL)
+		error("Malloc problem (fn_read_map)", settings);
+	len_max = ft_strlen(line);
+	head->len = len_max;
+	temp = head;
+	while (get_next_line(fd, &line) == 1)
+	{
+		if ((temp->next = new_list((void *)line)) == NULL)
+			error("Malloc problem (fn_read_map)", settings);
+		temp = temp->next;
+		temp->len = ft_strlen(line);
+		len_max = len_max > temp->len ? len_max : temp->len;
+		i++;
+	}
+	temp->next = new_list((void *)line);
+	temp = temp->next;
+	temp->len = ft_strlen(line);
+	close(fd);
+	pars_map(settings, len_max, i, head);
 }

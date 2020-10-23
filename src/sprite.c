@@ -111,8 +111,13 @@ void	sprite_finder(t_settings *set)
 			pow(set->plr->y - tmp->y, 2));
 		else
 			tmp->dist = -1;
-		if (tmp->dist < CBSZ / 5)
+		if (tmp->dist > 0 && tmp->dist < CBSZ / 5)
+		{
 			tmp->dist = -1;
+			tmp->x = 0;
+			tmp->y = 0;
+			set->plr->sprite++;
+		}
 		tmp = tmp->next;
 	}
 	sprite_sort(set);

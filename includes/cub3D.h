@@ -118,6 +118,7 @@ typedef	struct		s_player
     float           x;
     float           y;
     float           pov;
+    int             sprite;
 }					t_player;
 
 typedef	struct		s_settings
@@ -133,6 +134,7 @@ typedef	struct		s_settings
     int             color_f[3];
     int             color_c[3];
     char            **map;
+    int             map_width;
     int             max_x;
     int             max_y;
     t_win		    *win;
@@ -142,13 +144,6 @@ typedef	struct		s_settings
     t_player        *plr;
     t_ray           *ray;
 }					t_settings;
-
-typedef struct		s_list
-{
-	char			*content;
-    int			    len;
-	struct s_list	*next;
-}					t_list;
 
 int		main(int argc, char** argv);
 void	read_settings(int fd, t_settings *settings);
@@ -169,8 +164,7 @@ void	load_textures(t_settings *settings, t_xpm *xpm, char *line, int side);
 void	new_sprite(int x, int y, t_settings *settings);
 void	sprite_finder(t_settings *settings);
 void	cuba_libre(t_settings *set);
-void	pars_map(t_settings *settings, int len_max, int lists, t_list *head);
-t_list	*new_list(char *line);
+void	read_map(int fd, t_settings *settings, char *line);
 int     exit_game(int key, t_settings *set);
 
 #endif

@@ -29,21 +29,27 @@ void	init_struct(t_settings *set)
 	set->ray = &ray;
 	set->resol_x = -1;
 	set->resol_y = -1;
-	while(5 > i++)
+	set->sprite = 0;
+	while (5 > i++)
 		set->xpm[i].addr = NULL;
 	if ((set->win->mlx = mlx_init()) == NULL)
 		error("Mxl init problem", NULL);
 }
 
-int		init_mlx_magic(t_win *win, int resol_x, int resol_y, char *name)
+int		init_mlx_magic(t_settings *set, t_win *win, char *name)
 {
-	name = ft_strjoin("Cub3d:", name);
-	win->win = mlx_new_window(win->mlx, resol_x, resol_y, name);
+	if (!(name = ft_strjoin("Cub3d:", name)))
+		error("Malloc problem (init_mlx_magic)", set);
+	win->win = mlx_new_window(win->mlx, set->resol_x, set->resol_y, name);
 	if (win->mlx == NULL || win->win == NULL)
 		error("Mxl init problem", NULL);
-	win->img = mlx_new_image(win->mlx, resol_x, resol_y);
+	win->img = mlx_new_image(win->mlx, set->resol_x, set->resol_y);
 	win->addr = mlx_get_data_addr(win->img, &win->bpp, &win->line_l, &win->en);
-	win->constant = (float)resol_x / 2 / tan(M_PI / 3);
+	win->constant = (float)set->resol_x / 2 / tan(M_PI / 3);
+	set->ray->all_dist = (float *)malloc(sizeof(float) * set->resol_x);
+	if (set->ray->all_dist == NULL)
+		error("Malloc problem (init_mlx_magic)", set);
+	set->ray->step = M_PI / 3 / set->resol_x;
 	free(name);
 	return (0);
 }
@@ -65,7 +71,7 @@ int		check_agr(t_settings *set, int argc, char **argv)
 	if ((fd = open(argv[1], O_APPEND)) == -1)
 		error("File cannot be opened\n", set);
 	argv[1][i] = '\0';
-	set->save_flag = argc == 3 ? '1' : '0';
+	set->save_flag = argc == 3 ? 1 : 0;
 	return (fd);
 }
 
@@ -75,11 +81,13 @@ int		main(int argc, char **argv)
 
 	init_struct(&set);
 	read_settings(check_agr(&set, argc, argv), &set);
-	init_mlx_magic(set.win, set.resol_x, set.resol_y, argv[1]);
-	set.ray->all_dist = (float *)malloc(sizeof(float) * set.resol_x);
-	if (set.ray->all_dist == NULL)
-		error("Malloc problem (main", &set);
-	set.ray->step = M_PI / 3 / set.resol_x;
+	init_mlx_magic(&set, set.win, argv[1]);
+	if (set.save_flag == 1)
+	{
+		printf("make a picture");
+		actions_call(&set);
+		exit_game(0, &set);
+	}
 	mlx_hook(set.win->win, 17, 1L << 17, exit_game, &set);
 	mlx_hook(set.win->win, 2, 1L << 0, key_pressed, &set);
 	mlx_hook(set.win->win, 3, 1L << 1, key_released, &set);

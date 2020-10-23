@@ -66,68 +66,42 @@ void	resolution_pars(char **line, t_settings *settings)
 	free_char_arr((void**)line);
 }
 
-void	pars_settings(t_settings *settings, char *line)
+void	pars_settings(t_settings *settings, char *line, char sym1, char sym2)
 {
-	int		i;
-	char	symbol1;
-	char	symbol2;
+	if (sym1 == 'R')
+		resolution_pars(ft_split(line, ' '), settings);
+	else if (sym1 == 'E' && sym2 == 'A')
+		load_textures(settings, &settings->xpm[0], line, 0);
+	else if (sym1 == 'N' && sym2 == 'O')
+		load_textures(settings, &settings->xpm[1], line, 1);
+	else if (sym1 == 'W' && sym2 == 'E')
+		load_textures(settings, &settings->xpm[2], line, 2);
+	else if (sym1 == 'S' && sym2 == 'O')
+		load_textures(settings, &settings->xpm[3], line, 3);
+	else if (sym1 == 'S')
+		load_textures(settings, &settings->xpm[4], line, 4);
+	else if (sym1 == 'F')
+		colors_pars(ft_split(line, ','), settings->color_f, settings);
+	else if (sym1 == 'C')
+		colors_pars(ft_split(line, ','), settings->color_c, settings);
+	else
+		error("Invalid name or quantity of settings in file .cub\n", settings);
+}
 
-	i = 0;
+void	skip_spaces(t_settings *settings, char *line, int i)
+{
+	char symbol1;
+	char symbol2;
+
 	while (*line == ' ')
 		line++;
 	symbol1 = line[0];
 	line[0] = ' ';
 	symbol2 = line[1];
 	line[1] = ' ';
-	while (line[i] == ' ')
-		i++;
-	if (symbol1 == 'R')
-		resolution_pars(ft_split(line + i, ' '), settings);
-	else if (symbol1 == 'E' && symbol2 == 'A')
-		load_textures(settings, &settings->xpm[0], line + i, 0);
-	else if (symbol1 == 'N' && symbol2 == 'O')
-		load_textures(settings, &settings->xpm[1], line + i, 1);
-	else if (symbol1 == 'W' && symbol2 == 'E')
-		load_textures(settings, &settings->xpm[2], line + i, 2);
-	else if (symbol1 == 'S' && symbol2 == 'O')
-		load_textures(settings, &settings->xpm[3], line + i, 3);
-	else if (symbol1 == 'S')
-		load_textures(settings, &settings->xpm[4], line + i, 4);
-	else if (symbol1 == 'F')
-		colors_pars(ft_split(line + i, ','), settings->color_f, settings);
-	else if (symbol1 == 'C')
-		colors_pars(ft_split(line + i, ','), settings->color_c, settings);
-	else
-		error("Invalid name or quantity of settings in file .cub\n", settings);
-}
-
-void	read_map(int fd, t_settings *settings, char *line)
-{
-	t_list	*head;
-	t_list	*temp;
-	int		i;
-	int		len_max;
-
-	i = 1;
-	if ((head = new_list(line)) == NULL)
-		error("Malloc problem (fn_read_map)", settings);
-	len_max = ft_strlen(line);
-	head->len = len_max;
-	temp = head;
-	while (get_next_line(fd, &line) == 1)
-	{
-		if ((temp->next = new_list(line)) == NULL)
-			error("Malloc problem (fn_read_map)", settings);
-		temp = temp->next;
-		temp->len = ft_strlen(line);
-		len_max = len_max > temp->len ? len_max : temp->len;
-		i++;
-	}
-	temp->next = new_list(line);
-	temp = temp->next;
-	temp->len = ft_strlen(line);
-	close(fd);
-	pars_map(settings, len_max, i, head);
+	while (*line == ' ')
+		line++;
+	pars_settings(settings, line, symbol1, symbol2);
 }
 
 void	read_settings(int fd, t_settings *settings)
@@ -139,10 +113,7 @@ void	read_settings(int fd, t_settings *settings)
 	while (get_next_line(fd, &line) == 1 && i < 8)
 	{
 		if (line[0] != '\0')
-		{
-			pars_settings(settings, line);
-			i++;
-		}
+			skip_spaces(settings, line, i++);
 		free(line);
 	}
 	while (line[0] == '\0')
@@ -160,5 +131,4 @@ void	read_settings(int fd, t_settings *settings)
 			error("Too many settings in file .cub", settings);
 	}
 	read_map(fd, settings, line);
-	close(fd);
 }

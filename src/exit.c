@@ -14,15 +14,14 @@
 
 void	cuba_libre(t_settings *set)
 {
-	int i;
+	int			i;
 	t_sprite	*ptr;
-	
+
 	if (set == NULL)
-		exit (-1);
+		exit(-1);
 	i = 0;
 	if (set->map != NULL)
 		free_char_arr((void **)set->map);
-//	printf(NULL);
 	free(set->win->mlx);
 	i = 0;
 	while (set->sprite != NULL)
@@ -34,7 +33,7 @@ void	cuba_libre(t_settings *set)
 	while (i < 5)
 	{
 		if (set->xpm[i].addr != NULL)
-//			free_char_arr((void **)set->xpm[i].addr);
+			free_char_arr((void **)set->xpm[i].addr);
 		i++;
 	}
 	if (set->ray->all_dist != NULL)
