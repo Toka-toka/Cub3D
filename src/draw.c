@@ -22,6 +22,10 @@ void	my_mlx_pixel_put(t_settings *settings, int x, int y, int color)
 		(y * settings->win->line_l + x * (settings->win->bpp / 8));
 		*(unsigned int*)pixel = color;
 	}
+	else
+	{
+		write(1, "im here", 7);
+	}
 }
 
 void	column_scale(t_settings *settings, t_ray *ray)

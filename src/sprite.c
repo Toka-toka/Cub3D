@@ -48,11 +48,15 @@ void	drow_sprite(t_settings *set, t_sprite *sprite, int i, int ii)
 	start_y = set->resol_y / 2 - scale_y / 2;
 	while (ii < scale_x && (ii + start_x) < set->resol_x)
 	{
-		if (set->ray->all_dist[start_x + ii] > sprite->dist)
+		if ((start_x + ii) >= 0 && (start_x + ii) < set->resol_x && set->ray->all_dist[start_x + ii] > sprite->dist)
 		{
 			i = 0;
-			while (i < scale_y && (i + start_y) < set->resol_y)
+			while (i < scale_y && (i + start_y) < set->resol_y && (i + start_y) >= 0)
 			{
+				if ((int)(i * (float)set->xpm[4].height / scale_y) > 499 || (int)(i * (float)set->xpm[4].height / scale_y) < 0)
+					write(1, "in=m here", 6);
+				if ((int)(ii * (float)set->xpm[4].width / scale_x) > 499 || (int)(ii * (float)set->xpm[4].width / scale_x) < 0)
+					write(1, "in=m here", 6);
 				sprite->color = set->xpm[4].addr[(int)(i * (float)set->xpm[4].height / scale_y)]
 				[(int)(ii * (float)set->xpm[4].width / scale_x)];
 				if (sprite->color != 0)

@@ -1,9 +1,9 @@
 R 100000 1000000
-NO ./textures/NO.xpm
+NO ./textures/wall42_1.xpm
 S ./textures/S.xpm
-SO ./textures/SO.xpm
-WE ./textures/WE.xpm
-EA ./textures/EA.xpm
+SO ./textures/wall42_2.xpm
+WE ./textures/wall42_3.xpm
+EA ./textures/wall42_4.xpm
 F 20,50,100
 C 0,0,0
 

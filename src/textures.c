@@ -12,7 +12,7 @@
 
 #include "../includes/cub3D.h"
 
-void		make_xpm_revers(t_settings *set, t_xpm *xpm, int *array, int side)
+void		make_xpm_revers(t_settings *set, t_xpm *xpm, int *array)
 {
 	int i;
 	int ii;
@@ -30,7 +30,7 @@ void		make_xpm_revers(t_settings *set, t_xpm *xpm, int *array, int side)
 	}
 	i = 0;
 	ii = 0;
-	while (i < (xpm->width - 1) * (xpm->height - 1))
+	while (ii < xpm->height)
 	{
 		iii = xpm->width - 1;
 		while (iii >= 0)
@@ -40,7 +40,7 @@ void		make_xpm_revers(t_settings *set, t_xpm *xpm, int *array, int side)
 	xpm->addr[xpm->height] = NULL;
 }
 
-void		make_xpm(t_settings *set, t_xpm *xpm, int *array, int side)
+void		make_xpm(t_settings *set, t_xpm *xpm, int *array)
 {
 	int i;
 	int ii;
@@ -58,7 +58,7 @@ void		make_xpm(t_settings *set, t_xpm *xpm, int *array, int side)
 	}
 	i = 0;
 	ii = 0;
-	while (i < (xpm->width - 1) * (xpm->height - 1))
+	while (ii < xpm->height)
 	{
 		iii = 0;
 		while (iii < xpm->width)
@@ -91,8 +91,8 @@ void		load_textures(t_settings *set, t_xpm *x, char *l, int side)
 		error("Problem with textures", set);
 	}
 	if (side == 1 || side == 0 || side == 4)
-		make_xpm(set, x, array, side);
+		make_xpm(set, x, array);
 	else
-		make_xpm_revers(set, x, array, side);
+		make_xpm_revers(set, x, array);
 	mlx_destroy_image(set->win->mlx, x->img);
 }

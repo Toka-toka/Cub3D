@@ -101,7 +101,7 @@ void	ray_emission(t_settings *set, float view_start, int i)
 	set->ray->angle = view_start;
 	set->ray->x_midl = (int)(set->plr->x / CBSZ) * CBSZ;
 	set->ray->y_midl = (int)(set->plr->y / CBSZ) * CBSZ;
-	while (i <= set->resol_x)
+	while (i < set->resol_x)
 	{
 		set->ray->tg = tan(set->ray->angle);
 		cross_horiz(set, 0, 0);

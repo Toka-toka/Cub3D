@@ -88,7 +88,7 @@ void	pars_settings(t_settings *settings, char *line, char sym1, char sym2)
 		error("Invalid name or quantity of settings in file .cub\n", settings);
 }
 
-void	skip_spaces(t_settings *settings, char *line, int i)
+void	skip_spaces(t_settings *settings, char *line, int *i)
 {
 	char symbol1;
 	char symbol2;
@@ -102,6 +102,8 @@ void	skip_spaces(t_settings *settings, char *line, int i)
 	while (*line == ' ')
 		line++;
 	pars_settings(settings, line, symbol1, symbol2);
+	*i = *i + 1;
+
 }
 
 void	read_settings(int fd, t_settings *settings)
@@ -113,7 +115,7 @@ void	read_settings(int fd, t_settings *settings)
 	while (get_next_line(fd, &line) == 1 && i < 8)
 	{
 		if (line[0] != '\0')
-			skip_spaces(settings, line, i++);
+			skip_spaces(settings, line, &i);
 		free(line);
 	}
 	while (line[0] == '\0')

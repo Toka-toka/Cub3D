@@ -70,7 +70,7 @@ int	actions_call(t_settings *set)
 		turn(set, -M_PI / 90);
 	mlx_do_sync(set->win->mlx);
 	ray_emission(set, set->plr->pov + M_PI / 6, 0);
-	sprite_finder(set);
+//	sprite_finder(set);
 	mlx_put_image_to_window(set->win->mlx, set->win->win, set->win->img, 0, 0);
 	message = ft_strjoin("Sptire collected: ", ft_itoa(set->plr->sprite));
 	mlx_string_put(set->win->mlx, set->win->win, 100, 100, 0xfffafa, message);
