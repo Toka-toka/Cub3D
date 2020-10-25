@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../includes/cub3d.h"
 
 void		space_surround(t_settings *set, int i, int ii)
 {
@@ -74,7 +74,7 @@ void		pars_map(t_settings *set, int len_max, int lists, t_list *h)
 		free(temp);
 		i++;
 	}
-	set->max_x = len_max - 1;
+	set->max_x = len_max;
 	set->max_y = lists - 1;
 	set->map[i] = NULL;
 	len_max = 0;
@@ -103,7 +103,7 @@ t_list		*new_map_list(t_settings *set, char *line)
 	if (line[new->len - 1] != '1' && line[new->len - 1] != ' ')
 		error("Map isnt close", set);
 	if (new->len > set->max_x)
-		set->max_x = new->len - 1;
+		set->max_x = new->len;
 	new->content = line;
 	new->next = NULL;
 	return (new);

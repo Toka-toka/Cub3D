@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../includes/cub3d.h"
 
 void	pars_plr(t_settings *set, int i, int ii)
 {
@@ -42,8 +42,8 @@ void	init_struct(t_settings *set)
 	set->map = NULL;
 	set->plr = &plr;
 	set->ray = &ray;
-	set->resol_x = -1;
-	set->resol_y = -1;
+	set->x = -1;
+	set->y = -1;
 	set->sprite = NULL;
 	set->max_x = 0;
 	set->max_y = 1;
@@ -60,18 +60,18 @@ int		init_mlx_magic(t_settings *set, t_win *win, char *name)
 	set->actions = &actions;
 	if (!(name = ft_strjoin("Cub3d:", name)))
 		error("Malloc problem (init_mlx_magic)", set);
-	win->win = mlx_new_window(win->mlx, set->resol_x, set->resol_y, name);
+	win->win = mlx_new_window(win->mlx, set->x, set->y, name);
 	if (win->mlx == NULL || win->win == NULL)
 		error("Mxl init problem", NULL);
-	win->img = mlx_new_image(win->mlx, set->resol_x, set->resol_y);
+	win->img = mlx_new_image(win->mlx, set->x, set->y);
 	win->addr = mlx_get_data_addr(win->img, &win->bpp, &win->line_l, &win->en);
 	if (win->img == NULL || win->addr == NULL)
 		error("Mxl init problem", NULL);
-	win->constant = (float)set->resol_x / 2 / tan(M_PI / 3);
-	set->ray->all_dist = (float *)malloc(sizeof(float) * set->resol_x);
+	win->constant = (float)set->x / 2 / tan(M_PI / 3);
+	set->ray->all_dist = (float *)malloc(sizeof(float) * set->x);
 	if (set->ray->all_dist == NULL)
 		error("Malloc problem (init_mlx_magic)", set);
-	set->ray->step = M_PI / 3 / set->resol_x;
+	set->ray->step = M_PI / 3 / set->x;
 	free(name);
 	return (0);
 }

@@ -18,7 +18,7 @@ NAME = cub3D
 
 INCLIB=../../../../lib
 
-HEADER = includes/cub3D.h
+HEADER = includes/cub3d.h
 
 SRC = src/*.c
 

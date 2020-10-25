@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../includes/cub3d.h"
 
 void	new_sprite(int y, int x, t_settings *set)
 {
@@ -31,32 +31,43 @@ void	new_sprite(int y, int x, t_settings *set)
 	new->x = x * CBSZ + CBSZ / 2;
 	new->y = y * CBSZ + CBSZ / 2;
 	new->next = NULL;
-	new->wid_scale = set->resol_x / (float)1920 * set->xpm[4].width;
-	new->hei_scale = set->resol_y / (float)1080 * set->xpm[4].height;
+	new->wid_scale = set->x / (float)1920 * set->xpm[4].width;
+	new->hei_scale = set->y / (float)1080 * set->xpm[4].height;
+	if (new->wid_scale > set->x || new->hei_scale > set->y)
+	{
+		new->wid_scale = new->wid_scale * 500 / new->wid_scale;
+		new->hei_scale = new->wid_scale * 500 / new->wid_scale;
+	}
+}
+
+int		get_color(t_settings *set, float h, float w)
+{
+	return (set->xpm[4].addr[(int)((float)set->xpm[4].height * h)]
+	[(int)((float)set->xpm[4].width * w)]);
 }
 
 void	drow_sprite(t_settings *set, t_sprite *sprite, int i, int ii)
 {
-	int		start_x;
-	int		start_y;
-	float	scale_x;
-	float	scale_y;
+	int		x;
+	int		y;
+	float	w;
+	float	h;
 
-	scale_x = CBSZ / sprite->dist * sprite->wid_scale;
-	scale_y = CBSZ / sprite->dist * sprite->hei_scale;
-	start_x = set->resol_x / 2 - (set->resol_x / (M_PI / 3)) * sprite->angle - scale_x / 2;
-	start_y = set->resol_y / 2 - scale_y / 2;
-	while (ii < scale_x && (ii + start_x) < set->resol_x)
+	w = (float)CBSZ / sprite->dist * sprite->wid_scale;
+	h = (float)CBSZ / sprite->dist * sprite->hei_scale;
+	x = set->x / 2 - (set->x / (M_PI / 3)) * sprite->angle - w / 2;
+	y = set->y / 2 - h / 2;
+	while (ii < w && (ii + x) < set->x)
 	{
-		if ((start_x + ii) >= 0 && (start_x + ii) < set->resol_x && set->ray->all_dist[start_x + ii] > sprite->dist)
+		if ((x + ii) >= 0 && (x + ii) < set->x &&
+			set->ray->all_dist[x + ii] > sprite->dist)
 		{
 			i = 0;
-			while (i < scale_y && (i + start_y) < set->resol_y && (i + start_y) >= 0)
+			while (i < h)
 			{
-				sprite->color = set->xpm[4].addr[(int)(i * (float)set->xpm[4].height / scale_y)]
-				[(int)(ii * (float)set->xpm[4].width / scale_x)];
-				if (sprite->color != 0)
-					my_mlx_pixel_put(set, start_x + ii, start_y + i, sprite->color);
+				if ((sprite->color = get_color(set, (float)(i / h),
+					(float)(ii / w))))
+					pixel_put(set, x + ii, y + i, sprite->color);
 				i++;
 			}
 		}
@@ -106,12 +117,12 @@ void	sprite_finder(t_settings *set)
 		if (set->plr->pov > (M_PI * 2 - M_PI / 6) && set->plr->pov <= 7)
 			tmp->angle += 2 * M_PI;
 		tmp->angle -= set->plr->pov;
-		if (tmp->angle > -M_PI / 6 && tmp->angle < M_PI / 6)
+		if (tmp->angle > -M_PI / 4 && tmp->angle < M_PI / 4)
 			tmp->dist = sqrt(pow(set->plr->x - tmp->x, 2) +
 			pow(set->plr->y - tmp->y, 2));
 		else
 			tmp->dist = -1;
-		if (tmp->dist > 0 && tmp->dist < CBSZ / 10)
+		if (tmp->dist > 0 && tmp->dist < CBSZ / 7)
 			tmp->dist = -1;
 		tmp = tmp->next;
 	}

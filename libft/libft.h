@@ -22,13 +22,6 @@
 #  define BUFFER_SIZE 32
 # endif
 
-typedef struct		s_list
-{
-	char			*content;
-    int			    len;
-	struct s_list	*next;
-}					t_list;
-
 void	*ft_memset(void *str, int symbol, size_t n);
 void	ft_bzero(void *str, size_t n);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
@@ -65,6 +58,5 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 int		get_next_line(int fd, char **line);
-t_list	*new_list(void *content);
 
 #endif

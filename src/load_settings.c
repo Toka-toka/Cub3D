@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../includes/cub3d.h"
 
 void	colors_pars(char **l, int *color, t_settings *settings)
 {
@@ -45,7 +45,7 @@ void	resolution_pars(char **line, t_settings *settings)
 	int		x;
 	int		y;
 
-	if (settings->resol_x != -1 && settings->resol_y != -1)
+	if (settings->x != -1 && settings->y != -1)
 		error("Double R\n", settings);
 	if (line[0] == NULL || line[1] == NULL || line[2] != NULL)
 		error("Too much \\ less parametrs for R\n", settings);
@@ -60,10 +60,10 @@ void	resolution_pars(char **line, t_settings *settings)
 	if (line[0][0] == '0' || line[1][0] == '0')
 		error("R_x or R_y = 0\n", settings);
 	mlx_get_screen_size(settings->win->mlx, &x, &y);
-	if ((settings->resol_x = ft_atoi(line[0])) > x || i > 5)
-		settings->resol_x = x;
-	if ((settings->resol_y = ft_atoi(line[1])) > y || ii > 5)
-		settings->resol_y = y;
+	if ((settings->x = ft_atoi(line[0])) > x || i > 5)
+		settings->x = x;
+	if ((settings->y = ft_atoi(line[1])) > y || ii > 5)
+		settings->y = y;
 	free_char_arr((void**)line);
 }
 

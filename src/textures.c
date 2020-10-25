@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../includes/cub3d.h"
 
 void		make_xpm_revers(t_settings *set, t_xpm *xpm, int *array)
 {
