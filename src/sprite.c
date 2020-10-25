@@ -53,10 +53,6 @@ void	drow_sprite(t_settings *set, t_sprite *sprite, int i, int ii)
 			i = 0;
 			while (i < scale_y && (i + start_y) < set->resol_y && (i + start_y) >= 0)
 			{
-				if ((int)(i * (float)set->xpm[4].height / scale_y) > 499 || (int)(i * (float)set->xpm[4].height / scale_y) < 0)
-					write(1, "in=m here", 6);
-				if ((int)(ii * (float)set->xpm[4].width / scale_x) > 499 || (int)(ii * (float)set->xpm[4].width / scale_x) < 0)
-					write(1, "in=m here", 6);
 				sprite->color = set->xpm[4].addr[(int)(i * (float)set->xpm[4].height / scale_y)]
 				[(int)(ii * (float)set->xpm[4].width / scale_x)];
 				if (sprite->color != 0)
@@ -115,13 +111,8 @@ void	sprite_finder(t_settings *set)
 			pow(set->plr->y - tmp->y, 2));
 		else
 			tmp->dist = -1;
-		if (tmp->dist > 0 && tmp->dist < CBSZ / 5)
-		{
+		if (tmp->dist > 0 && tmp->dist < CBSZ / 10)
 			tmp->dist = -1;
-			tmp->x = 0;
-			tmp->y = 0;
-			set->plr->sprite++;
-		}
 		tmp = tmp->next;
 	}
 	sprite_sort(set);

@@ -12,10 +12,26 @@
 
 #include "../includes/cub3D.h"
 
+void	pars_plr(t_settings *set, int i, int ii)
+{
+	if (set->plr->pov != 0)
+		error("Double camera plase\n", set);
+	set->plr->x = ii * CBSZ + CBSZ / 2;
+	set->plr->y = i * CBSZ + CBSZ / 2;
+	if (set->map[i][ii] == 'N')
+		set->plr->pov = M_PI / 2;
+	if (set->map[i][ii] == 'S')
+		set->plr->pov = M_PI * 3 / 2;
+	if (set->map[i][ii] == 'E')
+		set->plr->pov = 2 * M_PI;
+	if (set->map[i][ii] == 'W')
+		set->plr->pov = M_PI;
+	set->map[i][ii] = '0';
+}
+
 void	init_struct(t_settings *set)
 {
 	static t_win		win;
-	static t_actions	actions;
 	static t_player		plr;
 	static t_ray		ray;
 	int					i;
@@ -23,21 +39,25 @@ void	init_struct(t_settings *set)
 	i = -1;
 	set->win = &win;
 	set->sprite = NULL;
-	set->actions = &actions;
 	set->map = NULL;
 	set->plr = &plr;
 	set->ray = &ray;
 	set->resol_x = -1;
 	set->resol_y = -1;
-	set->sprite = 0;
-	while (5 > i++)
-		set->xpm[i].addr = NULL;
+	set->sprite = NULL;
+	set->max_x = 0;
+	set->max_y = 1;
+	while (i < 5)
+		set->xpm[i++].addr = NULL;
 	if ((set->win->mlx = mlx_init()) == NULL)
 		error("Mxl init problem", NULL);
 }
 
 int		init_mlx_magic(t_settings *set, t_win *win, char *name)
 {
+	static t_actions	actions;
+
+	set->actions = &actions;
 	if (!(name = ft_strjoin("Cub3d:", name)))
 		error("Malloc problem (init_mlx_magic)", set);
 	win->win = mlx_new_window(win->mlx, set->resol_x, set->resol_y, name);
@@ -45,6 +65,8 @@ int		init_mlx_magic(t_settings *set, t_win *win, char *name)
 		error("Mxl init problem", NULL);
 	win->img = mlx_new_image(win->mlx, set->resol_x, set->resol_y);
 	win->addr = mlx_get_data_addr(win->img, &win->bpp, &win->line_l, &win->en);
+	if (win->img == NULL || win->addr == NULL)
+		error("Mxl init problem", NULL);
 	win->constant = (float)set->resol_x / 2 / tan(M_PI / 3);
 	set->ray->all_dist = (float *)malloc(sizeof(float) * set->resol_x);
 	if (set->ray->all_dist == NULL)
@@ -84,7 +106,6 @@ int		main(int argc, char **argv)
 	init_mlx_magic(&set, set.win, argv[1]);
 	if (set.save_flag == 1)
 	{
-		printf("make a picture");
 		actions_call(&set);
 		exit_game(0, &set);
 	}

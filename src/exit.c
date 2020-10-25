@@ -64,9 +64,9 @@ void	free_char_arr(void **arr)
 
 int		exit_game(int key, t_settings *set)
 {
-	key = 0;
 	write(1, "Good bye!\n", 10);
-	cuba_libre(set);
-	exit(key);
-	return (key);
+	if (key == ESC)
+		cuba_libre(set);
+	exit(0);
+	return (0);
 }

@@ -54,8 +54,6 @@ int	key_released(int keycode, t_settings *set)
 
 int	actions_call(t_settings *set)
 {
-	char	*message;
-	
 	if (set->actions->move_forward == 1)
 		move_forward_backward(set, set->plr->y, set->plr->x, SPEED);
 	if (set->actions->move_backward == 1)
@@ -70,13 +68,7 @@ int	actions_call(t_settings *set)
 		turn(set, -M_PI / 90);
 	mlx_do_sync(set->win->mlx);
 	ray_emission(set, set->plr->pov + M_PI / 6, 0);
-//	sprite_finder(set);
+	sprite_finder(set);
 	mlx_put_image_to_window(set->win->mlx, set->win->win, set->win->img, 0, 0);
-	message = ft_strjoin("Sptire collected: ", ft_itoa(set->plr->sprite));
-	mlx_string_put(set->win->mlx, set->win->win, 100, 100, 0xfffafa, message);
-	mlx_string_put(set->win->mlx, set->win->win, set->resol_x/2 - 10,  set->resol_y/2, 0xfffafa, "-");
-	mlx_string_put(set->win->mlx, set->win->win, set->resol_x/2 + 10, set->resol_y/2, 0xfffafa, "-");
-	mlx_string_put(set->win->mlx, set->win->win, set->resol_x/2, set->resol_y/2 - 10, 0xfffafa, "|");
-	mlx_string_put(set->win->mlx, set->win->win, set->resol_x/2, set->resol_y/2 + 10, 0xfffafa, "|");
 	return (0);
 }

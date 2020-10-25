@@ -166,5 +166,6 @@ void	sprite_finder(t_settings *settings);
 void	cuba_libre(t_settings *set);
 void	read_map(int fd, t_settings *settings, char *line);
 int     exit_game(int key, t_settings *set);
+void	pars_plr(t_settings *set, int i, int ii);
 
 #endif

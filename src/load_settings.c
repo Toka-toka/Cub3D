@@ -35,6 +35,7 @@ void	colors_pars(char **l, int *color, t_settings *settings)
 		i++;
 	}
 	color[0] = 0 << 24 | color[0] << 16 | color[1] << 8 | color[2];
+	free_char_arr((void**)l);
 }
 
 void	resolution_pars(char **line, t_settings *settings)
@@ -103,7 +104,6 @@ void	skip_spaces(t_settings *settings, char *line, int *i)
 		line++;
 	pars_settings(settings, line, symbol1, symbol2);
 	*i = *i + 1;
-
 }
 
 void	read_settings(int fd, t_settings *settings)
@@ -130,7 +130,7 @@ void	read_settings(int fd, t_settings *settings)
 		if (line[i] == '1' || line[i] == ' ')
 			i++;
 		else
-			error("Too many settings in file .cub", settings);
+			error("The 1-st line of a map is invalid", settings);
 	}
 	read_map(fd, settings, line);
 }
