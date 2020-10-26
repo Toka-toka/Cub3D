@@ -14,7 +14,7 @@
 
 # define CUB3D_H
 
-# include "../minilibx-linux/mlx.h"
+# include "../mlx/mlx.h"
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <math.h>
@@ -37,7 +37,7 @@
 typedef struct		s_list
 {
 	char			*content;
-    int			    len;
+	int				len;
 	struct s_list	*next;
 }					t_list;
 
@@ -162,5 +162,6 @@ void				cuba_libre(t_settings *set);
 void				read_map(int fd, t_settings *settings, char *line);
 int					exit_game(int key, t_settings *set);
 void				pars_plr(t_settings *set, int i, int ii);
+void				create_bmp(t_settings *set);
 
 #endif

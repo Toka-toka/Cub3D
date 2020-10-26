@@ -17,6 +17,8 @@ void	colors_pars(char **l, int *color, t_settings *settings)
 	int		i;
 	int		ii;
 
+	if (l == NULL)
+		error("Malloc problem (colors_pars)", settings);
 	if (l[0] == NULL || l[1] == NULL || l[2] == NULL || l[3] != NULL)
 		error("Wrong parametrs for color of floor \\ ceiling\n", settings);
 	i = 0;
@@ -38,7 +40,7 @@ void	colors_pars(char **l, int *color, t_settings *settings)
 	free_char_arr((void**)l);
 }
 
-void	resolution_pars(char **line, t_settings *settings)
+void	resolution_pars(char **l, t_settings *settings)
 {
 	int		i;
 	int		ii;
@@ -47,24 +49,24 @@ void	resolution_pars(char **line, t_settings *settings)
 
 	if (settings->x != -1 && settings->y != -1)
 		error("Double R\n", settings);
-	if (line[0] == NULL || line[1] == NULL || line[2] != NULL)
+	if (l == NULL || l[0] == NULL || l[1] == NULL || l[2] != NULL)
 		error("Too much \\ less parametrs for R\n", settings);
 	i = 0;
 	ii = 0;
-	while (line[0][i] != '\0')
-		if (line[0][i] < '0' || line[0][i++] > '9')
+	while (l[0][i] != '\0')
+		if (l[0][i] < '0' || l[0][i++] > '9')
 			error("Wrong simbols in R\n", settings);
-	while (line[1][ii] != '\0')
-		if (line[1][ii] < '0' || line[1][ii++] > '9')
+	while (l[1][ii] != '\0')
+		if (l[1][ii] < '0' || l[1][ii++] > '9')
 			error("Wrong simbols in R\n", settings);
-	if (line[0][0] == '0' || line[1][0] == '0')
+	if (l[0][0] == '0' || l[1][0] == '0')
 		error("R_x or R_y = 0\n", settings);
 	mlx_get_screen_size(settings->win->mlx, &x, &y);
-	if ((settings->x = ft_atoi(line[0])) > x || i > 5)
+	if ((settings->x = ft_atoi(l[0])) > x || i > 5)
 		settings->x = x;
-	if ((settings->y = ft_atoi(line[1])) > y || ii > 5)
+	if ((settings->y = ft_atoi(l[1])) > y || ii > 5)
 		settings->y = y;
-	free_char_arr((void**)line);
+	free_char_arr((void**)l);
 }
 
 void	pars_settings(t_settings *settings, char *line, char sym1, char sym2)

@@ -10,38 +10,47 @@
 #                                                                              #
 # **************************************************************************** #
 
-# FLAGS = -Wall -Wextra -Werror
-
-FLAGS = -Wall
+FLAGS = -Wall -Wextra -Werror -g -o
 
 NAME = cub3D
 
-INCLIB=../../../../lib
-
-HEADER = includes/cub3d.h
-
-SRC = src/*.c
+SRC = 	src/check_map.c\
+		src/draw.c\
+		src/exit.c\
+		src/key_events.c\
+		src/load_settings.c\
+		src/main.c\
+		src/move.c\
+		src/raycasting.c\
+		src/sprite.c\
+		src/textures.c\
+		src/save.c\
 
 OBJ = $(SRC:.c=.o)
 
-.PHONY: all clean fclean re
+MLXFLAG = -L. -lmlx -lXext -lX11 -lm
+
+LIBFT = libft.a
 
 all: $(NAME)
 
-$(NAME): $(SRC) $(HEADER)
+$(NAME): $(OBJ) $(HEADER)
+	make -C mlx
+	mv mlx/libmlx.a .
 	make -C libft
-#	cp libft/libft.a .
-	gcc $(FLAGS) -g -o $(NAME) $(SRC) libft/libft.a -Lminilibx-linux -lmlx -lXext -lX11 -lm
+	mv libft/$(LIBFT) .
+	gcc $(FLAGS) $(NAME) $(OBJ) $(LIBFT) $(MLXFLAG)
 
 clean:
 	rm -f $(OBJ)
+	make -C libft clean
+	make -C mlx clean
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) libmlx.a libft.a
 
 re: fclean all
 
-mac: 
-	gcc $(FLAGS) -g -o $(NAME) $(SRC) libft/libft.a -lmlx -framework OpenGL -framework AppKit
-
 bonus: all
+
+.PHONY: all clean fclean re

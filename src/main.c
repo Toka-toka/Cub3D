@@ -50,7 +50,7 @@ void	init_struct(t_settings *set)
 	while (i < 5)
 		set->xpm[i++].addr = NULL;
 	if ((set->win->mlx = mlx_init()) == NULL)
-		error("Mxl init problem", NULL);
+		error("Mxl init problem", set);
 }
 
 int		init_mlx_magic(t_settings *set, t_win *win, char *name)
@@ -91,7 +91,7 @@ int		check_agr(t_settings *set, int argc, char **argv)
 	if (argc == 3 && (ft_strncmp(argv[2], "--save", 7) != 0))
 		error("Second argument is not '--save'\n", set);
 	if ((fd = open(argv[1], O_APPEND)) == -1)
-		error("File cannot be opened\n", set);
+		error("File '.cub' cannot be opened\n", set);
 	argv[1][i] = '\0';
 	set->save_flag = argc == 3 ? 1 : 0;
 	return (fd);
@@ -107,6 +107,7 @@ int		main(int argc, char **argv)
 	if (set.save_flag == 1)
 	{
 		actions_call(&set);
+		create_bmp(&set);
 		exit_game(0, &set);
 	}
 	mlx_hook(set.win->win, 17, 1L << 17, exit_game, &set);

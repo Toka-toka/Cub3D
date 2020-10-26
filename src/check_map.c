@@ -60,11 +60,14 @@ void		pars_map(t_settings *set, int len_max, int lists, t_list *h)
 	int		i;
 	t_list	*temp;
 
-	set->map = (char**)malloc((lists + 1) * sizeof(char *));
+	if (!(set->map = (char**)malloc((lists + 1) * sizeof(char *))))
+		error("Malloc problem (pars_map)", set);
 	i = 0;
 	while (i < lists)
 	{
 		set->map[i] = (char*)malloc((len_max + 1) * sizeof(char ));
+		if (set->map[i] == NULL)
+			error("Malloc problem (pars_map)", set);
 		set->map[i] = ft_memset(set->map[i], ' ', len_max);
 		set->map[i][len_max] = '\0';
 		set->map[i] = ft_memcpy(set->map[i], h->content, h->len);
