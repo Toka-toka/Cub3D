@@ -75,6 +75,8 @@ void		load_textures(t_settings *set, t_xpm *x, char *l, int side)
 	int	bpp;
 	int	en;
 
+	if (set->xpm[side].addr != NULL)
+		error("Double path", set);
 	while (*l == ' ')
 		l++;
 	x->img = mlx_xpm_file_to_image(set->win->mlx, l, &x->width, &x->height);

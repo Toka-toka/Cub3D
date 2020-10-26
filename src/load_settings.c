@@ -17,6 +17,8 @@ void	colors_pars(char **l, int *color, t_settings *settings)
 	int		i;
 	int		ii;
 
+	if (color[0] != -1 || color[1] != -1 || color[2] != -1)
+		error("Double color", settings);
 	if (l == NULL)
 		error("Malloc problem (colors_pars)", settings);
 	if (l[0] == NULL || l[1] == NULL || l[2] == NULL || l[3] != NULL)
@@ -71,7 +73,7 @@ void	resolution_pars(char **l, t_settings *settings)
 
 void	pars_settings(t_settings *settings, char *line, char sym1, char sym2)
 {
-	if (sym1 == 'R')
+	if (sym1 == 'R' && sym2 == ' ')
 		resolution_pars(ft_split(line, ' '), settings);
 	else if (sym1 == 'E' && sym2 == 'A')
 		load_textures(settings, &settings->xpm[0], line, 0);
@@ -81,11 +83,11 @@ void	pars_settings(t_settings *settings, char *line, char sym1, char sym2)
 		load_textures(settings, &settings->xpm[2], line, 2);
 	else if (sym1 == 'S' && sym2 == 'O')
 		load_textures(settings, &settings->xpm[3], line, 3);
-	else if (sym1 == 'S')
+	else if (sym1 == 'S' && sym2 == ' ')
 		load_textures(settings, &settings->xpm[4], line, 4);
-	else if (sym1 == 'F')
+	else if (sym1 == 'F' && sym2 == ' ')
 		colors_pars(ft_split(line, ','), settings->color_f, settings);
-	else if (sym1 == 'C')
+	else if (sym1 == 'C' && sym2 == ' ')
 		colors_pars(ft_split(line, ','), settings->color_c, settings);
 	else
 		error("Invalid name or quantity of settings in file .cub\n", settings);

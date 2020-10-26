@@ -47,6 +47,12 @@ void	init_struct(t_settings *set)
 	set->sprite = NULL;
 	set->max_x = 0;
 	set->max_y = 1;
+	set->color_c[0] = -1;
+	set->color_c[1] = -1;
+	set->color_c[2] = -1;
+	set->color_f[0] = -1;
+	set->color_f[1] = -1;
+	set->color_f[2] = -1;
 	while (i < 5)
 		set->xpm[i++].addr = NULL;
 	if ((set->win->mlx = mlx_init()) == NULL)
@@ -60,8 +66,9 @@ int		init_mlx_magic(t_settings *set, t_win *win, char *name)
 	set->actions = &actions;
 	if (!(name = ft_strjoin("Cub3d:", name)))
 		error("Malloc problem (init_mlx_magic)", set);
-	win->win = mlx_new_window(win->mlx, set->x, set->y, name);
-	if (win->mlx == NULL || win->win == NULL)
+	if (set->save_flag != 1)
+		win->win = mlx_new_window(win->mlx, set->x, set->y, name);
+	if (win->mlx == NULL || (set->save_flag != 1 && win->win == NULL))
 		error("Mxl init problem", NULL);
 	win->img = mlx_new_image(win->mlx, set->x, set->y);
 	win->addr = mlx_get_data_addr(win->img, &win->bpp, &win->line_l, &win->en);
@@ -105,11 +112,7 @@ int		main(int argc, char **argv)
 	read_settings(check_agr(&set, argc, argv), &set);
 	init_mlx_magic(&set, set.win, argv[1]);
 	if (set.save_flag == 1)
-	{
-		actions_call(&set);
 		create_bmp(&set);
-		exit_game(0, &set);
-	}
 	mlx_hook(set.win->win, 17, 1L << 17, exit_game, &set);
 	mlx_hook(set.win->win, 2, 1L << 0, key_pressed, &set);
 	mlx_hook(set.win->win, 3, 1L << 1, key_released, &set);

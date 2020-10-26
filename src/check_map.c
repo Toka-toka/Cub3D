@@ -19,8 +19,11 @@ void		space_surround(t_settings *set, int i, int ii)
 		if (set->map[i + 1][ii] != '1' && set->map[i + 1][ii] != ' ')
 			error("The map is not closed\n", set);
 	}
-	if (set->map[i - 1][ii] != '1' && set->map[i - 1][ii] != ' ')
-		error("The map is not closed\n", set);
+	if (i > 0)
+	{
+		if (set->map[i - 1][ii] != '1' && set->map[i - 1][ii] != ' ')
+			error("The map is not closed\n", set);
+	}
 	if (set->map[i][ii + 1] != '1' && set->map[i][ii + 1] != ' ')
 		error("The map is not closed\n", set);
 	if (ii > 0)
@@ -32,7 +35,7 @@ void		space_surround(t_settings *set, int i, int ii)
 
 void		map_chek(char **map, int i, int ii, t_settings *set)
 {
-	i = 1;
+	i = 0;
 	while (map[i] != NULL)
 	{
 		ii = 0;

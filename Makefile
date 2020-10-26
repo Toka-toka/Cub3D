@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror -g -o
+FLAGS = -Wall -Wextra -Werror
 
 NAME = cub3D
 
@@ -39,7 +39,7 @@ $(NAME): $(OBJ) $(HEADER)
 	mv mlx/libmlx.a .
 	make -C libft
 	mv libft/$(LIBFT) .
-	gcc $(FLAGS) $(NAME) $(OBJ) $(LIBFT) $(MLXFLAG)
+	gcc $(FLAGS) -g -o $(NAME) $(OBJ) $(LIBFT) $(MLXFLAG)
 
 clean:
 	rm -f $(OBJ)
@@ -47,7 +47,7 @@ clean:
 	make -C mlx clean
 
 fclean: clean
-	rm -f $(NAME) libmlx.a libft.a
+	rm -f $(NAME) libmlx.a libft.a cub3D.bmp
 
 re: fclean all
 

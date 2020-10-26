@@ -48,7 +48,7 @@ void	column_draw(t_settings *settings, t_ray *ray, int x, int y)
 	column_scale(settings, ray);
 	while (ray->floor_h > 0)
 	{
-		pixel_put(settings, x, y, settings->color_f[0]);
+		pixel_put(settings, x, y, settings->color_c[0]);
 		ray->floor_h--;
 		y++;
 	}
@@ -62,7 +62,7 @@ void	column_draw(t_settings *settings, t_ray *ray, int x, int y)
 	}
 	while (ray->ceiling_h > 0)
 	{
-		pixel_put(settings, x, y, settings->color_c[0]);
+		pixel_put(settings, x, y, settings->color_f[0]);
 		y++;
 		ray->ceiling_h--;
 	}
