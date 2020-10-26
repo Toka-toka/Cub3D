@@ -1,0 +1,18 @@
+R    10000    10000
+NO           ./textures/64.xpm
+SO             ./textures/2048.xpm
+EA               ./textures/3.xpm
+WE        ./textures/WE.xpm
+S     ./textures/6.xpm
+C   135,206,235
+F           34,139,34
+
+111111111
+100S00021
+10000021
+1000021
+100021
+10021
+1021
+121
+11

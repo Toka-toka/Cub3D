@@ -34,12 +34,12 @@ LIBFT = libft.a
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(HEADER)
+$(NAME): $(SRC) $(HEADER)
 	make -C mlx
 	mv mlx/libmlx.a .
 	make -C libft
 	mv libft/$(LIBFT) .
-	gcc $(FLAGS) -g -o $(NAME) $(OBJ) $(LIBFT) $(MLXFLAG)
+	gcc $(FLAGS) -g -o $(NAME) $(SRC) $(LIBFT) $(MLXFLAG)
 
 clean:
 	rm -f $(OBJ)

@@ -75,7 +75,7 @@ typedef struct		s_win
 	void			*mlx;
 	void			*win;
 	void			*img;
-	void			*addr;
+	char			*addr;
 	int				line_l;
 	int				bpp;
 	int				en;
@@ -129,6 +129,7 @@ typedef	struct		s_settings
 	int				map_width;
 	int				max_x;
 	int				max_y;
+	int				bmp_head[9];
 	t_win			*win;
 	t_actions		*actions;
 	t_xpm			xpm[5];
@@ -162,6 +163,6 @@ void				cuba_libre(t_settings *set);
 void				read_map(int fd, t_settings *settings, char *line);
 int					exit_game(int key, t_settings *set);
 void				pars_plr(t_settings *set, int i, int ii);
-void				create_bmp(t_settings *set);
+void				save_picture(t_settings *set);
 
 #endif

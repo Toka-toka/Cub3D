@@ -47,12 +47,6 @@ void	init_struct(t_settings *set)
 	set->sprite = NULL;
 	set->max_x = 0;
 	set->max_y = 1;
-	set->color_c[0] = -1;
-	set->color_c[1] = -1;
-	set->color_c[2] = -1;
-	set->color_f[0] = -1;
-	set->color_f[1] = -1;
-	set->color_f[2] = -1;
 	while (i < 5)
 		set->xpm[i++].addr = NULL;
 	if ((set->win->mlx = mlx_init()) == NULL)
@@ -101,6 +95,12 @@ int		check_agr(t_settings *set, int argc, char **argv)
 		error("File '.cub' cannot be opened\n", set);
 	argv[1][i] = '\0';
 	set->save_flag = argc == 3 ? 1 : 0;
+	set->color_c[0] = -1;
+	set->color_c[1] = -1;
+	set->color_c[2] = -1;
+	set->color_f[0] = -1;
+	set->color_f[1] = -1;
+	set->color_f[2] = -1;
 	return (fd);
 }
 
@@ -112,7 +112,7 @@ int		main(int argc, char **argv)
 	read_settings(check_agr(&set, argc, argv), &set);
 	init_mlx_magic(&set, set.win, argv[1]);
 	if (set.save_flag == 1)
-		create_bmp(&set);
+		save_picture(&set);
 	mlx_hook(set.win->win, 17, 1L << 17, exit_game, &set);
 	mlx_hook(set.win->win, 2, 1L << 0, key_pressed, &set);
 	mlx_hook(set.win->win, 3, 1L << 1, key_released, &set);

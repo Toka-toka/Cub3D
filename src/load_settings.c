@@ -12,9 +12,8 @@
 
 #include "../includes/cub3d.h"
 
-void	colors_pars(char **l, int *color, t_settings *settings)
+void	colors_pars(char **l, int *color, t_settings *settings, int i)
 {
-	int		i;
 	int		ii;
 
 	if (color[0] != -1 || color[1] != -1 || color[2] != -1)
@@ -23,7 +22,6 @@ void	colors_pars(char **l, int *color, t_settings *settings)
 		error("Malloc problem (colors_pars)", settings);
 	if (l[0] == NULL || l[1] == NULL || l[2] == NULL || l[3] != NULL)
 		error("Wrong parametrs for color of floor \\ ceiling\n", settings);
-	i = 0;
 	while (i < 3)
 	{
 		ii = 0;
@@ -86,9 +84,9 @@ void	pars_settings(t_settings *settings, char *line, char sym1, char sym2)
 	else if (sym1 == 'S' && sym2 == ' ')
 		load_textures(settings, &settings->xpm[4], line, 4);
 	else if (sym1 == 'F' && sym2 == ' ')
-		colors_pars(ft_split(line, ','), settings->color_f, settings);
+		colors_pars(ft_split(line, ','), settings->color_f, settings, 0);
 	else if (sym1 == 'C' && sym2 == ' ')
-		colors_pars(ft_split(line, ','), settings->color_c, settings);
+		colors_pars(ft_split(line, ','), settings->color_c, settings, 0);
 	else
 		error("Invalid name or quantity of settings in file .cub\n", settings);
 }

@@ -1,67 +1,56 @@
-
 #include "../includes/cub3d.h"
 
-void	bmp_set_image(t_settings *set, int fd)
+int		write_head(t_settings *set, int fd)
 {
-	int				x;
-	int				y;
-	unsigned char	*color;
-
-	y = set->y;
-	while (--y >= 0)
-	{
-		x = -1;
-		while (++x < set->x)
-		{
-			color = (unsigned char*)set->win->addr;
-			write(fd, &color[(y * set->x + x) * set->win->bpp / 8], 4);
-		}
-	}
+	if (write(fd, "BM", 2) != 2 ||
+	write(fd, &set->bmp_head[0], 4) != 4 ||
+	write(fd, &set->bmp_head[1], 4) != 4 ||
+	write(fd, &set->bmp_head[2], 4) != 4 ||
+	write(fd, &set->bmp_head[3], 4) != 4 ||
+	write(fd, &set->bmp_head[4], 4) != 4 ||
+	write(fd, &set->bmp_head[5], 4) != 4 ||
+	write(fd, &set->bmp_head[6], 2) != 2 ||
+	write(fd, &set->bmp_head[7], 2) != 2 ||
+	write(fd, &set->bmp_head[8], 4) != 4 ||
+	write(fd, &set->bmp_head[8], 4) != 4 ||
+	write(fd, &set->bmp_head[8], 4) != 4 ||
+	write(fd, &set->bmp_head[8], 4) != 4 ||
+	write(fd, &set->bmp_head[8], 4) != 4 ||
+	write(fd, &set->bmp_head[8], 4) != 4)
+		return (-1);
+	else
+		return (0);
 }
 
-void	bmp_header(t_settings *set, int fd)
+void		init_value(t_settings *set)
 {
-	int		local;
-	local = 40;
-	write(fd, &local, 4);
-	write(fd, &set->x, 4);
-	write(fd, &set->y, 4);
-	local = 1;
-	write(fd, &local, 2);
-	write(fd, &set->win->bpp, 2);
-	local = -1;
-	while (++local < 28)
-		write(fd, "\0", 1);
-	local = 40;
-	write(fd, &local, 4);
-	write(fd, &set->x, 4);
-	write(fd, &set->y, 4);
-	local = 1;
-	write(fd, &local, 2);
-	write(fd, &set->win->bpp, 2);
-	local = -1;
-	while (++local < 28)
-		write(fd, "\0", 1);
+	set->bmp_head[0] = (set->x * set->y * 4) + 54;
+	set->bmp_head[1] = 0;
+	set->bmp_head[2] = 54;
+	set->bmp_head[3] = 40;
+	set->bmp_head[4] = set->x;
+	set->bmp_head[5] = -set->y;
+	set->bmp_head[6] = 1;
+	set->bmp_head[7] = 32;
+	set->bmp_head[8] = 0;
 }
 
-void			create_bmp(t_settings *set)
+void		save_picture(t_settings *set)
 {
 	int		fd;
-	int		f_size;
-	int		f_first;
+	int		size;
 
+	if ((fd = open("cub3d.bmp", O_CREAT | O_WRONLY |
+		O_TRUNC, S_IRUSR | S_IWUSR)) == -1)
+		error("Problem with file for write", set);
 	ray_emission(set, set->plr->pov + M_PI / 6, 0);
 	sprite_finder(set);
-	if ((fd = open("cub3D.bmp", O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU)) == -1)
-		error("File 'cub3D.bmp' didnt create", set);
-	f_first = 14 + 40 + 4;
-	f_size = f_first + set->x * set->y * 4;
-	write(fd, "BM", 2);
-	write(fd, &f_size, 4);
-	write(fd, "\0\0\0\0", 4);
-	write(fd, &f_first, 4);
-	bmp_header(set, fd);
-	bmp_set_image(set, fd);
+	init_value(set);
+	size = set->x * set->y * 4;
+	if (write_head(set, fd) != 0 ||
+		write(fd, set->win->addr, size) != size)
+		error("Write error", set);
 	close(fd);
-	exit(0);
+    write(1, "Picture saved in file 'screen.bmp'\n", 36);
+    exit_game(ESC, set);
 }

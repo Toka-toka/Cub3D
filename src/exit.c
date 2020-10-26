@@ -66,7 +66,12 @@ int		exit_game(int key, t_settings *set)
 {
 	write(1, "Good bye!\n", 10);
 	if (key == ESC)
+	{
+		mlx_destroy_image(set->win->mlx, set->win->img);
+		if (set->win->win)
+			mlx_destroy_window(set->win->mlx, set->win->win);
 		cuba_libre(set);
+	}
 	exit(0);
 	return (0);
 }
