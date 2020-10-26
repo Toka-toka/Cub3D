@@ -51,6 +51,6 @@ void		save_picture(t_settings *set)
 		write(fd, set->win->addr, size) != size)
 		error("Write error", set);
 	close(fd);
-    write(1, "Picture saved in file 'screen.bmp'\n", 36);
+    write(1, "Picture saved in file 'cub3d.bmp'\n", 36);
     exit_game(ESC, set);
 }
