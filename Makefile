@@ -34,12 +34,12 @@ LIBFT = libft.a
 
 all: $(NAME)
 
-$(NAME): $(SRC) $(HEADER)
+$(NAME): $(OBJ) $(HEADER)
 	make -C mlx
 	mv mlx/libmlx.a .
 	make -C libft
 	mv libft/$(LIBFT) .
-	gcc $(FLAGS) -g -o $(NAME) $(SRC) $(LIBFT) $(MLXFLAG)
+	gcc $(FLAGS) -g -o $(NAME) $(OBJ) $(LIBFT) $(MLXFLAG)
 
 clean:
 	rm -f $(OBJ)
@@ -47,7 +47,7 @@ clean:
 	make -C mlx clean
 
 fclean: clean
-	rm -f $(NAME) libmlx.a libft.a cub3D.bmp
+	rm -f $(NAME) libmlx.a libft.a cub3d.bmp
 
 re: fclean all
 

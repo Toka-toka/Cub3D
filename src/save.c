@@ -1,6 +1,6 @@
 #include "../includes/cub3d.h"
 
-int		write_head(t_settings *set, int fd)
+int			write_head(t_settings *set, int fd)
 {
 	if (write(fd, "BM", 2) != 2 ||
 	write(fd, &set->bmp_head[0], 4) != 4 ||
@@ -51,6 +51,6 @@ void		save_picture(t_settings *set)
 		write(fd, set->win->addr, size) != size)
 		error("Write error", set);
 	close(fd);
-    write(1, "Picture saved in file 'cub3d.bmp'\n", 36);
-    exit_game(ESC, set);
+	write(1, "Picture saved in file 'cub3d.bmp'\n", 36);
+	exit_game(ESC, set);
 }
